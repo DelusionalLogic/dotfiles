@@ -1,0 +1,161 @@
+#!/bin/bash
+
+# this is a simple config for herbstluftwm
+
+function hc() {
+    herbstclient "$@"
+}
+
+#======~===~==============~===========~==
+# COLORS
+#==~==========~=========~=============~~=
+
+# get xresource colors
+# read xresource colors to array "xrdb"
+xrdb=( $(xrdb -query | grep -P "color[0-9]*:" | sort | cut -f 2-) )
+
+# `sort` doesn't quite sort ascending, it sorts "0, 10, 11, 12, ..., 1, 2, 3, ...", so we need to fix.
+# while we're at it, we might as well use proper names.
+
+# define array "color" (actually a hash table)
+declare -A color
+
+# need this to get the values from xrdb one by one
+index=0
+
+# loop over color names
+for name in black brightgreen brightyellow brightblue brightmagenta brightcyan brightwhite red green yellow blue magenta cyan white grey brightred; do
+    # assign color value from array xrdb to hash "color"
+    color[${name}]=${xrdb[$index]}
+    # increase "index" by one, so we get the next color value for the next iteration
+    ((index++))
+done
+
+#======~===~==============~===========~==
+# END COLORS
+#==~==========~=========~=============~~=
+
+hc emit_hook reload
+
+#backlight
+xbacklight -set 20
+
+# wallpaper
+feh --bg-scale ~/Pictures/Wallpapers/active.*
+
+# remove all existing keybindings
+hc keyunbind --all
+
+# keybindings
+Mod=Mod4
+hc keybind $Mod-Shift-q quit
+hc keybind $Mod-Shift-r reload
+hc keybind $Mod-Shift-c close
+hc keybind $Mod-u spawn urxvt
+hc keybind $Mod-t spawn dmenu_run -i -p "Run:" -fn "-*-terminus-*-*-*-*-12-*-*-*-*-*-*-*" -nb ${color["black"]} -nf ${color["white"]} -sb ${color["white"]} -sf ${color["grey"]}
+
+#herbstclient load ${TAG_NAMES[0]} '(clients max:0)'
+
+# tags
+TAG_NAMES=( GEN EDIT DEV B S WEB )
+TAG_KEYS=( {1..6} 0 )
+
+hc rename default "${TAG_NAMES[0]}" || true
+for i in ${!TAG_NAMES[@]} ; do
+    hc add "${TAG_NAMES[$i]}"
+    key="${TAG_KEYS[$i]}"
+    if ! [ -z "$key" ] ; then
+        hc keybind "$Mod-$key" use "${TAG_NAMES[$i]}"
+        hc keybind "$Mod-Shift-$key" move "${TAG_NAMES[$i]}"
+    fi
+done
+
+# layouting
+hc keybind $Mod-r remove
+hc keybind $Mod-space cycle_layout 1
+hc keybind $Mod-v split vertical 0.5
+hc keybind $Mod-h split horizontal 0.5
+hc keybind $Mod-s floating toggle
+hc keybind $Mod-Control-s cli_floating toggle
+hc keybind $Mod-f fullscreen toggle
+hc keybind $Mod-p pseudotile toggle
+
+## resizing
+RESIZESTEP=0.05
+hc keybind $Mod-Control-Left resize left +$RESIZESTEP
+hc keybind $Mod-Control-Down resize down +$RESIZESTEP
+hc keybind $Mod-Control-Up resize up +$RESIZESTEP
+hc keybind $Mod-Control-Right resize right +$RESIZESTEP
+
+## mouse
+hc mousebind $Mod-Button1 move
+hc mousebind $Mod-Button2 resize
+hc mousebind $Mod-Button3 zoom
+
+## focus
+hc keybind $Mod-Tab        cycle_all +1
+hc keybind $Mod-Shift-Tab  cycle_all -1
+hc keybind $Mod-c cycle
+#
+hc keybind $Mod-Left  focus left
+hc keybind $Mod-Down  focus down
+hc keybind $Mod-Up    focus up
+hc keybind $Mod-Right focus right
+#
+hc keybind $Mod-Shift-Left  shift left
+hc keybind $Mod-Shift-Down  shift down
+hc keybind $Mod-Shift-Up    shift up
+hc keybind $Mod-Shift-Right shift right
+
+## colors
+hc set frame_border_active_color ''
+hc set frame_border_normal_color ''
+hc set frame_bg_normal_color ''
+hc set frame_bg_active_color ''
+hc set frame_bg_transparent 1
+hc set frame_border_width 0
+hc set window_border_width 2
+hc set window_gap 5
+hc set window_border_normal_color ${color["grey"]}
+hc set window_border_active_color ${color["brightgreen"]}
+hc set window_border_urgent_color ${color["red"]}
+hc set always_show_frame 1
+hc set default_frame_layout 2
+hc set snap_distance 5
+hc set snap_gap 5
+
+for i in ${!TAG_NAMES[@]}; do
+	tag="${TAG_NAMES[$i]}"
+	layoutfile=/home/delusional/herbstluftwm/layout/${tag}
+	if [ -f ${layoutfile} ]; then
+		hc load ${tag} "$(cat ${layoutfile})"
+	fi
+done
+
+## rules
+hc unrule -F
+#hc rule class=XTerm tag=3 # move all xterms to tag 3
+hc rule focus=off # normally do not focus new clients
+# give focus to most common terminals
+hc rule class~'(.*[Rr]xvt.*|.*[Tt]erm|Konsole)' focus=on
+hc rule windowtype~'_NET_WM_WINDOW_TYPE_(DIALOG|UTILITY|SPLASH)' pseudotile=on
+hc rule windowtype='_NET_WM_WINDOW_TYPE_DIALOG' focus=on
+hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK)' manage=off
+#
+hc rule class=Opera tag=2
+hc rule class~'(MPlayer|Vlc)' tag=3 fullscreen=on
+
+## Compositor
+compton --config ~/.config/compton.conf -b
+
+## Keybinds
+xbindkeys &
+
+## if you want to start a panel, do so here
+# find the panel
+panel=~/.config/bar/panel.sh
+[ -x "$panel" ] || panel=/etc/xdg/herbstluftwm/panel.sh
+for monitor in $(herbstclient list_monitors | cut -d: -f1) ; do
+ # start it on each monitor
+ $panel $monitor 2>/dev/null &
+done
