@@ -3,22 +3,6 @@
 source $HOME/.config/bar/xcolors.sh
 source $HOME/.config/bar/bar_config.sh
 
-monitor=${1:-0}
-geometry=( $(herbstclient monitor_rect "$monitor") )
-if [ -z "$geometry" ] ;then
-    echo "Invalid monitor $monitor"
-    exit 1
-fi
-# geometry has the format W H X Y
-x=$((${geometry[0]} + 10))
-y=$((${geometry[1]} + 10))
-panel_width=$((${geometry[2]} - 20))
-panel_height=17
-
-font="-misc-stlarch-*-*-*-*-10-*-*-*-*-*-*-*,-*-terminus-*-*-*-*-12-*-*-*-*-*-*-*"
-
-herbstclient pad $monitor $(($panel_height + $y - 10)) ##10 is a magic number to align the panel with the window, ignoring the window gap
-
 #=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # Import seperate config files
 #=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -43,7 +27,8 @@ register_renderer() {
 
 update_renderer() {
     render_def_id="$1"
-    render_def_data="$2"
+	shift
+    render_def_data="$*"
     render_func="${render_function[$render_def_id]}"
     echo "id: $render_def_id function: $render_func" >&2
     render_string=$($render_func "$render_def_data")
@@ -55,7 +40,8 @@ update_renderer() {
 
 post_data() {
     render_def_id="$1"
-    render_def_data="$2"
+	shift
+    render_def_data="$*"
     update_renderer "$render_def_id" "$render_def_data"
 }
 

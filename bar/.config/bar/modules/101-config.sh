@@ -20,13 +20,8 @@ color["none"]="-"
 color["bar_separator"]=$(getcolor grey)
 color["bar_window_title"]=$(getcolor white)
 
-color["bar_tag_empty"]=$(getcolor grey)
-color["bar_tag_noselected"]=$(getcolor green)
-color["bar_tag_thismon_noselected"]=$(getcolor grey) #Show here but not active
-color["bar_tag_thismon_selected"]=$(getcolor brightblue) #Shown here and active
-color["bar_tag_diffmon_noselected"]=$(getcolor grey) #Shown somewhere else but not active
-color["bar_tag_diffmon_selected"]=$(getcolor grey) #Show somewhere else and active
-color["bar_tag_urgent"]=$(getcolor brightred)
+color["bar_tag_selected"]=$(getcolor green)
+color["bar_tag_notselected"]=$(getcolor grey)
 
 color["volume_muted"]=$(getcolor red)
 color["volume_non_muted"]=$(getcolor brightgreen)
