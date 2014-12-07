@@ -12,12 +12,13 @@ bspc monitor -d I II III IV V VI VII VIII IX X
 
 bspc rule -a Gimp desktop=^8 follow=on floating=on
 bspc rule -a Chromium desktop=^2
+bspc rule -a Firefox desktop=^2
 bspc rule -a mplayer2 floating=on
 bspc rule -a Kupfer.py focus=on
 bspc rule -a Screenkey manage=off
 
 # wallpaper
-feh --bg-scale ~/Pictures/Wallpapers/active.*
+feh --bg-scale ~/Pictures/Wallpapers/active
 
 # hotkeys
 shxkd &
