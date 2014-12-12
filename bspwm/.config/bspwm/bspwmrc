@@ -22,6 +22,7 @@ feh --bg-scale ~/Pictures/Wallpapers/active
 
 # hotkeys
 shxkd &
+xbindkeys &
 
 ~/.config/bar/panel.sh &
 compton --config ~/.config/compton.conf -b
