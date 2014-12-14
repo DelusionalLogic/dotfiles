@@ -17,4 +17,5 @@ volume_draw() {
 register_renderer "right" "volume_draw"
 volume_id=$out_render_id
 
-pollblock_register "amixer -D pulse sget Master" 1 $volume_id
+pollblock_register "amixer -D pulse sget Master" 10 $volume_id
+

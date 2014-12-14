@@ -74,7 +74,7 @@ pollblock_register() {
 separator=" | "
 {
     echo "Loading modules" >&2
-    for r in $HOME/.config/bar/modules/*.sh; do
+    for r in $HOME/.config/bar/active_modules/*.sh; do
         echo "bar: reading module $r" >&2
         source $r
     done
@@ -120,16 +120,19 @@ separator=" | "
                 esac
                 ;;
         esac
-
-        echo -n "%{l}"
-        echo -n " "
-        render_all_cache render_cache_left[@]
-        echo -n "%{c}"
-        render_all_cache render_cache_center[@]
-        echo -n "%{r}"
-        render_all_cache render_cache_right[@]
-        echo -n " "
-        echo
+		
+		for (( curMon=0; curMon < monitors; curMon++ )); do
+				echo -n "%{S$curMon}"
+				echo -n "%{l}"
+				echo -n " "
+				render_all_cache render_cache_left[@]
+				echo -n "%{c}"
+				render_all_cache render_cache_center[@]
+				echo -n "%{r}"
+				render_all_cache render_cache_right[@]
+				echo -n " "
+		done
+		echo
     done
 
 } | bar -g ${panel_width}x${panel_height}+${x}+${y} -f "$font" -B "$bar_bg_color" -F "$bar_fg_color" -u 5

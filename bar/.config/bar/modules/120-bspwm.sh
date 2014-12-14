@@ -5,7 +5,6 @@ bspwm_render_wintitle() {
 }
 
 bspwm_render_tags() {
-	echo -n "$(setxcolor brightgreen)[ "
 	IFS=$':' 
 	for i in $1 ; do
 	tagfgcol=""
@@ -27,17 +26,24 @@ bspwm_render_tags() {
 	        tagfgcol="bar_tag_selected"
 	        tagstr=" + "
 	        ;;
+		'M' | 'W' | 'm')
+			echo -n "$(setxcolor brightgreen)["
+			;;
+		'L')
+			echo -n "$(setxcolor brightgreen)]"
+			;;
 		*)
 			continue
 			;;
 	esac
+	if [[ ! -z $tagstr ]] ; then
 	echo -n "$(setcolor $tagfgcol)"
 	# clickable tags
 	echo -n "%{A:settag ${i:1}:}"
 	echo -n "$tagstr" #${i:1} to get the text
 	echo -n "%{A}"
+	fi
 	done
-	echo " $(setxcolor brightgreen)]"
 }
 
 register_renderer "left" "bspwm_render_wintitle"

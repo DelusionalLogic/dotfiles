@@ -1,6 +1,6 @@
 #! /bin/sh
 
-bspc config border_width        2
+bspc config border_width        3
 bspc config window_gap         12
 
 bspc config split_ratio         0.52
@@ -10,9 +10,8 @@ bspc config focus_by_distance   true
 
 bspc monitor -d I II III IV V VI VII VIII IX X
 
-bspc rule -a Gimp desktop=^8 follow=on floating=on
-bspc rule -a Chromium desktop=^2
-bspc rule -a Firefox desktop=^2
+bspc rule -a Steam floating=on
+bspc rule -a feh floating=on
 bspc rule -a mplayer2 floating=on
 bspc rule -a Kupfer.py focus=on
 bspc rule -a Screenkey manage=off
@@ -24,5 +23,10 @@ feh --bg-scale ~/Pictures/Wallpapers/active
 shxkd &
 xbindkeys &
 
+#Kill panel and restart
+if [ $(pgrep 'panel') ]; then
+		pgrep 'panel' | xargs kill -s 9
+fi
 ~/.config/bar/panel.sh &
+
 compton --config ~/.config/compton.conf -b
