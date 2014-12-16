@@ -1,8 +1,8 @@
 wireless_quality() {
-	wifi_quality="$(echo "$1" | grep Quality | cut -d ' ' -f 2)"
-	if [[ wifi_quality -gt 90 ]]; then
+		wifi_quality="$(echo "$1" | grep -oP "(?<=Quality=)[^\s\/]*")"
+	if [[ wifi_quality -gt 65 ]]; then
     	echo -n "$(icon wifi_good wifi_good)"
-	elif [[ wifi_quality -gt 20 ]]; then
+	elif [[ wifi_quality -gt 30 ]]; then
     	echo -n "$(icon wifi_bad wifi_bad)"
 	else
     	echo -n "$(icon wifi_bad wifi_bad)"
@@ -10,7 +10,7 @@ wireless_quality() {
 }
 
 wireless_name() {
-    wifi_name="$(echo "$1" | grep Essid | cut -d ' ' -f 2)"
+    wifi_name="$(echo "$1" | grep -oP "(?<=ESSID:.)[^\s\"]*")"
     if [[ -z $wifi_name ]]; then
     	wifi_name="Not connected"
     fi
@@ -26,4 +26,4 @@ wifi_draw() {
 register_renderer "right" "wifi_draw"
 wifi_id=$out_render_id
 
-pollblock_register "wicd-cli -yd" 10 $wifi_id
+pollblock_register "sudo iwconfig wlp3s0" 10 $wifi_id
