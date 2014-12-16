@@ -74,7 +74,8 @@ pollblock_register() {
 separator=" | "
 {
     echo "Loading modules" >&2
-    for r in $HOME/.config/bar/active_modules/*.sh; do
+	_modfiles="$HOME/.config/bar/active_modules/*.sh"
+    for r in $_modfiles; do
         echo "bar: reading module $r" >&2
         source $r
     done
