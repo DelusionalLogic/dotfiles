@@ -42,6 +42,7 @@ table.sort(modules_dir)
 for k,v in pairs(modules_dir) do
 		if(v ~= "." and v ~= "..") then
 				env = setmetatable({}, {__index = _G})
+				print("Loading module " .. v)
 				local f = loadfile("active_modules_lua/" .. v, "tb", env)()
 				table.insert(modules, env)
 		end

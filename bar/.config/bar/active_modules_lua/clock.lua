@@ -6,7 +6,6 @@ function start()
 end
 
 function update(time)
-		hello()
 		local time = os.date("%H:%M")
 		print(time)
 		renderTo(id, time)
