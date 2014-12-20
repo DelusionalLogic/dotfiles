@@ -1,14 +1,17 @@
 require 'textcolor'
 
-local id
+local renderer
 function start() 
-		id = registerRenderSpot("clock", side.right)	
+		renderer = getRenderer("clock", side.right)	
 end
 
 function update(time)
-		local time = os.date("%H:%M")
-		print(time)
-		renderTo(id, time)
+		renderer:clear()
+		local icon = ""
+		local time = os.date(" %H:%M")
+
+		renderer:render(icon, color.white)
+		renderer:render(time, color.white)
 end
 
 function stop() end

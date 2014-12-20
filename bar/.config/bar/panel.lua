@@ -1,5 +1,6 @@
 #!/bin/lua
 
+class = require "30log"
 posix = require "posix"
 time = require "posix.sys.time"
 
@@ -10,21 +11,38 @@ side = {
 }
 
 local quit = false
-local dirty = true
 
-renderSpots = {}
-for k,v in pairs(side) do renderSpots[v] = {} end
-function registerRenderSpot(name, side)
-		table.insert(renderSpots[side], {name = name, content = ""}) 
-		return {side = side, id = #renderSpots[side]}
+Renderer = class {cache = nil, calls = {}}
+
+function Renderer:render(data, color)
+		table.insert(self.calls, {data = data, color = color})
+		self.cache = nil
 end
 
-function renderTo(id, data)
-		local spot = renderSpots[id.side][id.id]
-		if spot.content ~= data then
-				dirty = true
-				spot.content = data
+function Renderer:clear()
+		self.calls = {}
+		self.cache = nil
+end
+
+function Renderer:output()
+		local wasCached = true
+		if self.cache == nil then
+				wasCached = false
+				local renderOut = ""
+				for _,render in pairs(self.calls) do
+						renderOut = renderOut .. "%{F" .. getColor(render.color) .. "}" .. render.data
+				end
+				self.cache = renderOut
 		end
+		return self.cache, wasCached
+end
+
+renderers = {}
+for k,v in pairs(side) do renderers[v] = {} end
+function getRenderer(name, side)
+		local renderer = Renderer:new()
+		table.insert(renderers[side], renderer) 
+		return renderer
 end
 
 utils_dir = posix.dir("utils")
@@ -58,20 +76,24 @@ while not quit do
 		for _,v in pairs(modules) do
 				v.update(curTime)
 		end
-		if dirty then
-				local cache = ""
-				for id,spots in pairs(renderSpots) do 
-						if id == side.right then cache = cache .. "%{r}"
-						elseif id == side.center then cache = cache .. "%{c}"
-						elseif id == side.left then cache = cache .. "%{l}" end 
-						for _,spot in pairs(spots) do
-								cache = cache .. spot.content
+		local renderOut = ""
+		for id,renderers in pairs(renderers) do 
+				if id == side.right then renderOut = renderOut .. "%{r}"
+				elseif id == side.center then renderOut = renderOut .. "%{c}"
+				elseif id == side.left then renderOut = renderOut .. "%{l}" end 
+				local isFirst = true
+				for _,renderer in pairs(renderers) do
+						if isFirst then
+								isFirst = false
+						else
+								renderOut = renderOut .. " | "
 						end
+						renderOut = renderOut .. renderer:output()
 				end
-				cache = cache .. "\n"
-				bar:write(cache)
-				bar:flush()
 		end
+		renderOut = renderOut .. "\n"
+		bar:write(renderOut)
+		bar:flush()
 		posix.sleep(1)
 end
 
