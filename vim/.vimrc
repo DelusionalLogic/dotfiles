@@ -22,6 +22,8 @@ NeoBundle 'sjl/gundo.vim'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
 NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'tpope/vim-dispatch'
+NeoBundle 'Valloric/YouCompleteMe'
 
 " Required:
 call neobundle#end()
@@ -40,6 +42,11 @@ syntax enable "enable syntax highlighting!
 
 set tabstop=4 "set tab size
 set softtabstop=4 "set spaces in tabs
+set shiftwidth=4 "once again tabstop
+
+set smarttab "tab inserts indents instead of tab char
+
+set hidden "Let you hide buffers with changes
 
 set number "show gutter with numbers
 set cursorline "highlight current line

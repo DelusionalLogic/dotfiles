@@ -17,21 +17,19 @@ declare -A color
 
 color["none"]="-"
 
-color["bar_separator"]=$(getcolor grey)
 color["bar_window_title"]=$(getcolor white)
-
-color["bar_tag_selected"]=$(getcolor green)
+color["bar_tag_selected"]=$(getcolor brightmagenta)
 color["bar_tag_notselected"]=$(getcolor grey)
 
 color["volume_muted"]=$(getcolor red)
-color["volume_non_muted"]=$(getcolor brightgreen)
+color["volume_non_muted"]=$(getcolor green)
 color["volume_text"]=$(getcolor white)
 
 color["wifi_good"]=$(getcolor blue)
 color["wifi_bad"]=$(getcolor red)
 color["wifi_text"]=$(getcolor white)
 
-color["clock_icon"]=$(getcolor white)
+color["clock_icon"]=$(getcolor cyan)
 color["clock_text"]=$(getcolor white)
 
 color["battery_charging"]=$(getcolor brightgreen)

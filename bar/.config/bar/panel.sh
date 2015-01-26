@@ -57,7 +57,7 @@ render_all_cache() {
 }
 
 pollblock_command=()
-pollblock_min_interval=10
+pollblock_min_interval=5
 pollblock_id=()
 pollblock_linebuffer=()
 
@@ -71,7 +71,7 @@ pollblock_register() {
     fi
 }
 
-separator=" | "
+separator="%{F$separator_col}$separator"
 {
     echo "Loading modules" >&2
 	_modfiles="$HOME/.config/bar/active_modules/*.sh"
