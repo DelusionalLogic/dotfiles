@@ -1,4 +1,4 @@
-bar_bg_color=$(getcolor black)
+bar_bg_color="#FF1F1F1F"
 bar_fg_color=$(getcolor white)
 
 font="-misc-stlarch-*-*-*-*-10-*-*-*-*-*-*-*,-*-terminus-*-*-*-*-12-*-*-*-*-*-*-*"

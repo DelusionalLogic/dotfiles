@@ -27,10 +27,10 @@ bspwm_render_tags() {
 				tagstr=" + "
 				;;
 			'M' | 'W' | 'm')
-				echo -n "$(setxcolor brightmagenta)["
+				echo -n "$(setxcolor red)["
 				;;
 			'L')
-				echo -n "$(setxcolor brightmagenta)]"
+				echo -n "$(setxcolor red)]"
 				;;
 			*)
 				continue
