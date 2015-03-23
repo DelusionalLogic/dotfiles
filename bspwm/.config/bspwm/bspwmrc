@@ -11,7 +11,7 @@ bspc config focused_border_color '#AF865A'
 bspc config normal_border_color '#4F4F4F'
 bspc config urgent_border_color '#D17B49'
 
-bspc monitor HDMI-0 -d I II III IV V 
+bspc monitor LVDS1 -d I II III IV V 
 bspc monitor DVI-I-2 -d VI VII VIII IX X 
 
 bspc rule -a Steam floating=on
@@ -26,7 +26,7 @@ if [ -e "$BSPWM_TREE" ] ; then
 fi
 
 # polkit
-/usr/lib/kde4/libexec/polkit-kde-authentication-agent-1 &
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
 # wallpaper
 feh --bg-scale ~/Pictures/Wallpapers/active
@@ -39,7 +39,7 @@ xbindkeys &
 if [ $(pgrep 'panel') ]; then
 		pgrep 'panel' | xargs kill -s 9
 fi
-~/.config/bar/panel.sh &
+~/.config/bar/panel.sh 2>/dev/null &
 
 xflux -l 57.0137 -g 9.9832 &
 
