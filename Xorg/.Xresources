@@ -6,5 +6,6 @@ urxvt*perl-ext-common: default,matcher,clipboard
 urxvt*url-launcher: xdg-open
 urxvt*matcher.button: 1
 urxvt*clipboard.autocopy: true
+urxvt*iconFile: /usr/share/icons/Moka/48x48/apps/terminal.png
 ! Scollbar
 *scrollstyle: plain

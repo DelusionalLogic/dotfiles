@@ -24,6 +24,7 @@ NeoBundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'tpope/vim-dispatch'
 NeoBundle 'Valloric/YouCompleteMe'
+NeoBundle 'jrozner/vim-antlr'
 
 " Required:
 call neobundle#end()
