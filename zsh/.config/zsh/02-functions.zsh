@@ -17,6 +17,10 @@ preexec() {
 	esac
 } # }}}
 
+chpwd() {
+	ls
+}
+
 # {{{ Archiving - Compress/decompress various archive types with a single command
 ark() {
 	case $1 in

@@ -2,10 +2,16 @@
 
 !Font
 urxvt*font: xft:Terminus:pixelsize=12,xft:Inconsolata\ for\ Powerline:pixelsize=12
-urxvt*perl-ext-common: default,matcher,clipboard
+urxvt*perl-ext-common: default,matcher,selection-to-clipboard
 urxvt*url-launcher: xdg-open
 urxvt*matcher.button: 1
 urxvt*clipboard.autocopy: true
 urxvt*iconFile: /usr/share/icons/Moka/48x48/apps/terminal.png
 ! Scollbar
 *scrollstyle: plain
+*scrollBar: false
+Xft.dpi: 96.0
+Xcursor.theme: OpenZone_Ice_Slim
+Xcursor.there_core: true
+Xcursor.size: 0
+URxvt*geometry: 140x40
