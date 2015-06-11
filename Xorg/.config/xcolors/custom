@@ -1,5 +1,5 @@
-*background: #202223
-*foreground: #c0b18b
+urxvt*background: #202223
+urxvt*foreground: #c0b18b
 !black
 *color0:#4A3637
 *color8:#4A3637

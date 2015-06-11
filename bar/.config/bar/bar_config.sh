@@ -3,7 +3,7 @@ bar_fg_color=$(getcolor white)
 
 font="-misc-stlarch-*-*-*-*-10-*-*-*-*-*-*-*,-*-terminus-*-*-*-*-12-*-*-*-*-*-*-*"
 
-monitors=2
+monitors=1
 panel_height=17
 
 separator_col=$(getcolor grey)

@@ -26,4 +26,4 @@ wifi_draw() {
 register_renderer "right" "wifi_draw"
 wifi_id=$out_render_id
 
-pollblock_register "sudo iwconfig wlp3s0" 10 $wifi_id
+pollblock_register "iwconfig wlp3s0" 10 $wifi_id

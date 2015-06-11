@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 source $HOME/.config/bar/xcolors.sh
 source $HOME/.config/bar/bar_config.sh
@@ -40,6 +40,7 @@ update_renderer() {
 
 post_data() {
     render_def_id="$1"
+	echo "Posting data from $render_def_id" >&2
 	shift
     render_def_data="$*"
     update_renderer "$render_def_id" "$render_def_data"

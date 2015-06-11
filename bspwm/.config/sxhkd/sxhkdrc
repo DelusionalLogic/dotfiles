@@ -113,7 +113,10 @@ super + alt + Return
 	simpleswitcher -now
 
 super + space
-	dmenu_run
+	~/.config/bar/dmenu.sh	
+
+super + q
+	~/scripts/lock.sh
 
 # make sxhkd reload its configuration files:
 super + Escape

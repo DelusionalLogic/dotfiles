@@ -9,7 +9,7 @@ urxvt*clipboard.autocopy: true
 urxvt*iconFile: /usr/share/icons/Moka/48x48/apps/terminal.png
 ! Scollbar
 *scrollstyle: plain
-*scrollBar: false
+urxvt*scrollBar: false
 Xft.dpi: 96.0
 Xcursor.theme: OpenZone_Ice_Slim
 Xcursor.there_core: true
