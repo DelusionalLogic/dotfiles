@@ -14,17 +14,26 @@ call neobundle#begin(expand('/home/delusional/.vim/bundle'))
 " Required:
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-" Add or remove your Bundles here:
+" Colors
+NeoBundle 'flazz/vim-colorschemes'
+
+" Syntax
+NeoBundle 'Valloric/YouCompleteMe'
+NeoBundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
+NeoBundle 'jrozner/vim-antlr'
+
+" Interface
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'dhruvasagar/vim-vinegar'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'flazz/vim-colorschemes'
 NeoBundle 'sjl/gundo.vim'
+NeoBundle 'tpope/vim-commentary'
+
+" Integration
 NeoBundle 'airblade/vim-gitgutter'
-NeoBundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
-NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'tpope/vim-fugitive.git'
 NeoBundle 'tpope/vim-dispatch'
-NeoBundle 'Valloric/YouCompleteMe'
-NeoBundle 'jrozner/vim-antlr'
 
 " Required:
 call neobundle#end()
@@ -37,15 +46,26 @@ filetype plugin indent on
 NeoBundleCheck
 "End NeoBundle Scripts-------------------------
 
-set laststatus=2
+set gdefault "Default to global substitution on line
+
+set laststatus=2 "Always display the statusline
+
+set showcmd "Show partially typed command
 
 syntax enable "enable syntax highlighting!
+
+set ttyfast "I'm on a modern computer damn it. My tty is fast
+
+set scrolloff=7 "7 Lines to the cursor
 
 set tabstop=4 "set tab size
 set softtabstop=4 "set spaces in tabs
 set shiftwidth=4 "once again tabstop
 
+set showtabline=1 "Show tab lines when it's at least two deep
+
 set smarttab "tab inserts indents instead of tab char
+set autoindent
 
 set hidden "Let you hide buffers with changes
 
@@ -59,9 +79,13 @@ set wildmenu "visual command menu
 set lazyredraw "only redraw when needed
 
 set showmatch "show matching parens
+set matchtime=15
 
+set ignorecase
+set smartcase
 set incsearch "search as you type
 set hlsearch "highlight matches
+set magic
 
 " turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
@@ -78,8 +102,21 @@ set foldmethod=indent "Fold based on indentation
 nnoremap j gj
 nnoremap k gk
 
+nnoremap <CR><CR> i<CR><ESC>
+
 " toggle gundo
 nnoremap <leader>u :GundoToggle<CR>
+
+" Copy/paste to system clipboard
+vmap <Leader>y "+y
+vmap <Leader>d "+d
+nmap <Leader>yy "+yy
+nmap <Leader>p "+p
+nmap <Leader>P "+P
+vmap <Leader>p "+p
+vmap <Leader>P "+P
+
+cnoremap w!! w !sudo tee %
 
 " CtrlP settings
 let g:ctrlp_match_window = 'bottom,order:ttb'
@@ -87,6 +124,7 @@ let g:ctrlp_switch_buffer = 0
 let g:ctrlp_working_path_mode = 0
 
 set nobackup
+set nowritebackup
 set noswapfile
 
 " toggle between number and relativenumber
@@ -99,6 +137,8 @@ function! ToggleNumber()
 	endif
 endfunc
 
+nnoremap <leader>l :call ToggleNumber()<CR>
+
 " Convenient ncommand to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
 " Only define it when not defined already.
@@ -107,11 +147,16 @@ if !exists(":DiffOrig")
 			\ | wincmd p | diffthis
 endif
 
-set numberwidth=6
+colorscheme 0x7A69_dark
+highlight VertSplit ctermfg=244 ctermbg=NONE cterm=bold
+
+set numberwidth=5
 highlight LineNr term=bold cterm=NONE ctermfg=Black ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
 set nu
 
 let g:airline_powerline_fonts=1
+let g:airline_THEME="Badwolf"
+set noshowmode
 
 highlight clear SignColumn
 highlight GitGutterChange ctermbg=NONE ctermfg=Yellow 

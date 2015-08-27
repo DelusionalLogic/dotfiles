@@ -34,3 +34,6 @@ done
 
 eval $( dircolors -b $XDG_CONFIG_HOME/zsh/LS_COLORS/LS_COLORS )
 export LS_COLORS
+
+GPG_TTY=$(tty)
+export GPG_TTY

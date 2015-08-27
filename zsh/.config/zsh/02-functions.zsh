@@ -72,3 +72,26 @@ mkgit() {
 	git remote add origin git@github.com:crshd/$1.git
 	git push origin master
 } # }}}
+
+slideshow() {
+	feh -FrzD $1 $2
+}
+
+m () {
+	echo udevil mount /dev/$1
+	udevil mount /dev/$1
+	echo mounted media:
+	LANG=C grep --color=auto media =(mount)
+}
+
+u () {
+	echo udevil umount /dev/$1
+	udevil umount /dev/$1
+	if [[ $1 = sr0 ]]
+	then
+		echo eject /dev/sr0
+		eject /dev/sr0
+	fi
+	echo mounted media:
+	LANG=C grep --color=auto media =(mount)
+}
