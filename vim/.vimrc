@@ -46,6 +46,29 @@ filetype plugin indent on
 NeoBundleCheck
 "End NeoBundle Scripts-------------------------
 
+
+augroup FileSpecific
+	autocmd!
+	"Markdown
+	autocmd BufRead,BufNewFile *.md set filetype=markdown
+	autocmd FileType markdown setlocal spell
+	autocmd BufRead,BufNewFile *.md setlocal textwidth=80
+
+	"Git commits
+	autocmd FileType gitcommit setlocal textwidth=72
+	autocmd FileType gitcommit setlocal spell
+
+	"CSS
+	autocmd FileType css,scss,sass setlocal iskeyword+=-
+
+	" Fugitive
+	autocmd User fugitive 
+				\ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
+				\   nnoremap <buffer> .. :edit %:h<CR> |
+				\ endif
+	autocmd BufReadPost fugitive://* set bufhidden=delete
+augroup END
+
 set gdefault "Default to global substitution on line
 
 set laststatus=2 "Always display the statusline
@@ -101,6 +124,12 @@ set foldmethod=indent "Fold based on indentation
 " move vertically by visual line
 nnoremap j gj
 nnoremap k gk
+
+" Better move between splits
+nnoremap <C-H> <C-W><C-H>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
 
 nnoremap <CR><CR> i<CR><ESC>
 
