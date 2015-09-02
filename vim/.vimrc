@@ -156,6 +156,8 @@ set nobackup
 set nowritebackup
 set noswapfile
 
+set complete+=kspell
+
 " toggle between number and relativenumber
 function! ToggleNumber()
 	if(&relativenumber == 1)
