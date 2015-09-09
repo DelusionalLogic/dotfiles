@@ -189,7 +189,7 @@ if !exists(":DiffOrig")
 			\ | wincmd p | diffthis
 endif
 
-colorscheme 0x7A69_dark
+colorscheme base16-flat
 highlight VertSplit ctermfg=244 ctermbg=NONE cterm=bold
 
 set numberwidth=5
