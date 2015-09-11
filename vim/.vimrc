@@ -74,8 +74,6 @@ augroup END
 
 set gdefault "Default to global substitution on line
 
-set laststatus=2 "Always display the statusline
-
 set showcmd "Show partially typed command
 
 syntax enable "enable syntax highlighting!
@@ -197,8 +195,9 @@ highlight LineNr term=bold cterm=NONE ctermfg=Black ctermbg=NONE gui=NONE guifg=
 set nu
 
 let g:airline_powerline_fonts=1
-let g:airline_THEME="Badwolf"
+let g:airline_theme='base16'
 set noshowmode
+set laststatus=2 "Always display the statusline
 
 highlight clear SignColumn
 highlight GitGutterChange ctermbg=NONE ctermfg=Yellow 
