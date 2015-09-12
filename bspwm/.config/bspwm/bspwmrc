@@ -12,7 +12,7 @@ bspc config normal_border_color '#4F4F4F'
 bspc config urgent_border_color '#D17B49'
 
 bspc monitor LVDS1 -d I II III IV V 
-bspc monitor DVI-I-2 -d VI VII VIII IX X 
+bspc monitor VGA1 -d VI VII VIII IX X 
 
 bspc rule -a Steam floating=on
 bspc rule -a feh floating=on
@@ -36,12 +36,14 @@ shxkd &
 xbindkeys &
 
 #Kill panel and restart
-#if [ $(pgrep 'panel') ]; then
-#		pgrep 'panel' | xargs kill -s 9
-#fi
+if [ $(pgrep 'bard') ]; then
+		pgrep 'bard' | xargs kill -s 9
+fi
 #~/.config/bar/panel.sh 2>/dev/null &
-bard -c ~/.config/bard
+bard -c ~/.config/bard &
+bspc config top_padding 17
 
 xflux -l 57.0137 -g 9.9832 &
 
 compton --config ~/.config/compton.conf -b
+unclutter &

@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 source $HOME/.config/bar/xcolors.sh
 source $HOME/.config/bar/bar_config.sh
@@ -72,6 +72,7 @@ pollblock_register() {
     fi
 }
 
+echo ${panel_width}x${panel_height}+${x}+${y}
 separator="%{F$separator_col}$separator"
 {
     echo "Loading modules" >&2
