@@ -1,3 +1,12 @@
+# Lets kick this shit into vi mode
+bindkey -v
+export KEYTIMEOUT=1
+
+# backspace and ^h working even after
+# returning from command mode
+bindkey '^?' backward-delete-char
+bindkey '^h' backward-delete-char
+
 bindkey "\e[1~" beginning-of-line
 bindkey "\e[4~" end-of-line
 bindkey "\e[5~" beginning-of-history
@@ -21,3 +30,8 @@ bindkey "\e[H" beginning-of-line
 bindkey "\e[F" end-of-line
 bindkey '\e[A' history-beginning-search-backward
 bindkey '\e[B' history-beginning-search-forward
+
+# ctrl-r starts searching history backward
+bindkey '^r' history-incremental-search-backward
+
+bindkey '^f' vi-forward-word

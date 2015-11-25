@@ -15,11 +15,17 @@ setopt \
 # Completion for alias
 setopt completealiases
 
+#Autojump hook
+source /etc/profile.d/autojump.zsh
+
 #Command not found hook
 source /usr/share/doc/pkgfile/command-not-found.zsh
 
 #syntax highlight7
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+#Autocompletion
+source ~/.config/zsh/autosuggestions/autosuggestions.zsh
 
 #=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # Import seperate config files

@@ -1,14 +1,24 @@
 # {{{ Title stuffs
 precmd() {
-
-	vcs_info
-	setprompt
-
 	case $TERM in
 		rxvt-unicode-256color | screen-256color ) 
 			print -Pn "\e]0;%n@%m: %~\a" ;;
 	esac
 }
+
+function zle-line-init {
+	zle autosuggest-start
+	vcs_info
+	setprompt
+    zle reset-prompt
+}
+
+function zle-keymap-select {
+	setprompt
+    zle reset-prompt
+}
+zle -N zle-line-init
+zle -N zle-keymap-select
 
 preexec() {
 	case $TERM in
