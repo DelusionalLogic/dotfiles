@@ -1,3 +1,5 @@
+fpath=(~/.config/zsh/autocomplete $fpath)
+
 autoload -U colors && colors
 autoload -U compinit && compinit
 autoload -U vcs_info && vcs_info

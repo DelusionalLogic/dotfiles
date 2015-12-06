@@ -1,0 +1,35 @@
+#compdef wallpaper
+
+_wallpaper_commands() {
+	local -a _commands
+	_commands=(
+	"set:Set Wallpaper"
+	"list:List Wallpapers"
+	"unlock:Unlock Wallpaper"
+	"lock:Lock Wallpaper"
+	"apply:Apply current wallpaper"
+	)
+	if (( CURRENT == 1 )); then
+		_describe -t commands 'wallpaper command' _commands
+	else
+		cmd="${${_commands[(r)$words[1]:*]%%:*}}"
+
+		if (( $#cmd )); then
+			curcontext="${curcontext%:*:*}:wallpaper-${cmd}:"
+
+			_call_function ret _wallpaper_$cmd || _message "No more arguments"
+
+		else
+			_message "Unknown wallpaper command: $words[1]"
+		fi
+		return ret
+	fi
+}
+
+_wallpaper_set() {
+	_wanted wallpapers_target expl "wallpapers" \
+		compadd "$@" - $(wallpaper list)
+}
+
+_arguments -s \
+	'*::wallpaper commands:_wallpaper_commands'
