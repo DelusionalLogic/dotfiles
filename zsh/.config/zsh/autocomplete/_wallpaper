@@ -8,6 +8,9 @@ _wallpaper_commands() {
 	"unlock:Unlock Wallpaper"
 	"lock:Lock Wallpaper"
 	"apply:Apply current wallpaper"
+	"get:URL"
+	"current:Current Wallpaper"
+	"delete:Remove Wallpaper"
 	)
 	if (( CURRENT == 1 )); then
 		_describe -t commands 'wallpaper command' _commands
@@ -27,6 +30,15 @@ _wallpaper_commands() {
 }
 
 _wallpaper_set() {
+	_wanted wallpapers_target expl "wallpapers" \
+		compadd "$@" - $(wallpaper list)
+}
+
+_wallpaper_get() {
+	_urls
+}
+
+_wallpaper_delete() {
 	_wanted wallpapers_target expl "wallpapers" \
 		compadd "$@" - $(wallpaper list)
 }
