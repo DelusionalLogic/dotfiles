@@ -84,7 +84,7 @@ mkgit() {
 } # }}}
 
 slideshow() {
-	feh -FrzD $1 $2
+	feh -FrzZD $1 $2
 }
 
 m () {

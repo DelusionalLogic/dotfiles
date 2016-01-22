@@ -29,4 +29,4 @@ getcolor() {
 	echo "${xcolor["$1"]}"
 }
 
-dmenu_run -nb "$(getcolor black)" -nf $(getcolor white) -sb $(getcolor blue) -p "Run: " -fn "-*-terminus-*-*-*-*-12-*-*-*-*-*-*-*"
+dmenu_run -nb "$(getcolor black)" -nf $(getcolor white) -sb $(getcolor blue) -p "Run: " -fn "Terminus 12"

@@ -8,10 +8,10 @@ super + alt + {shift + ,_}Escape
 	 bspc query -T > "$BSPWM_TREE"; \
 		bspc query -H > "$BSPWM_HISTORY"; \
 		bspc query -S > "$BSPWM_STACK"; \
-		bspc quit}
+		bspc quit 1}
 
 super + w
-	bspc window -c
+	bspc node -c
 
 super + t
 	bspc desktop -l next
@@ -19,11 +19,11 @@ super + t
 super + b
 	bspc desktop -B
 
-super + {shift+s,s,f,x,X,m}
-	bspc window -t {pseudo_tiled,floating,fullscreen,locked,sticky,private}
+super + {shift+s,s,f,d}
+	bspc node -t {pseudo_tiled,floating,fullscreen,tiled}
 
-super + alt + {shift+s,s,f,x,X,m}
-	bspc rule -a \* -o {pseudo_tiled,floating,fullscreen,locked,sticky,private}=on
+super + alt + {shift+s,s,f,d}
+	bspc rule -a \* -o state={pseudo_tiled,floating,fullscreen,tiled}
 
 super + alt + {1-9,0}
 	bspc rule -a \* -o desktop=^{1-9,10}
@@ -31,31 +31,28 @@ super + alt + {1-9,0}
 super + alt + space
 	bspc rule -r \*
 
-super + {a,shift + a}
-	bspc desktop -F {vertical,horizontal}
-
 super + {grave,Tab}
-	bspc {window,desktop} -f last
+	bspc {node,desktop} -f last
 
 super + apostrophe
-	bspc window -s last
+	bspc node -s last
 
 super + {o,i}
 	bspc control --record-history off; \
-	bspc window {older,newer} -f; \
+	bspc node {older,newer} -f; \
 	bspc control --record-history on
 
 super + y
-	bspc window -w last.manual
+	bspc node -w last.manual
 
 super + m
-	bspc window -s biggest
+	bspc node -s biggest
 
 super + {_,shift + }{h,j,k,l}
-	bspc window -{f,s} {left,down,up,right}
+	bspc node -{f,s} {west,south,north,east}
 
 super + {_,shift + }c
-	bspc window -f {next,prev}
+	bspc node -f {next,prev}
 
 super + {comma,period}
 	bspc desktop -C {backward,forward}
@@ -70,22 +67,24 @@ super + z
 	bspc control --toggle-visibility
 
 super + ctrl + {h,j,k,l}
-	bspc window -p {left,down,up,right}
+	bspc node -p {west,south,north,east}
 
-super + ctrl + {_,shift + }space
-	bspc {window -p cancel,desktop -c}
+super + ctrl + space
+	bspc {node -p cancel}
 
+# expand the tiled space in the given direction
 super + alt + {h,j,k,l}
-	bspc window -e {left -10,down +10,up -10,right +10}
+	bspc node {@west -r -10,@south -r +10,@north -r -10,@east -r +10}
 
+# contract the tiled space in the given direction
 super + alt + shift + {h,j,k,l}
-	bspc window -e {right -10,up +10,down -10,left +10}
+	bspc node {@east -r -10,@north -r +10,@south -r -10,@west -r +10}
 
 super + ctrl + {1-9}
-	bspc window -r 0.{1-9}
+	bspc node -o 0.{1-9}
 
 super + {_,shift + }{1-9,0}
-	bspc {desktop -f,window -d} ^{1-9,10}
+	bspc {desktop -f,node -d} ^{1-9,10}
 
 super + {ae, oslash}
 	bspc desktop -f {prev,next}.free
@@ -107,13 +106,21 @@ super + @button{1-3}
 #
 
 super + Return
-	urxvt
+	urxvtc
 
 super + alt + Return
-	simpleswitcher -now
+	rofi -show window -fuzzy -hide-scrollbar
+	#simpleswitcher -now
+
+super + shift + Return
+	rofi -show ssh -fuzzy -hide-scrollbar
 
 super + space
-	~/.config/bar/dmenu.sh	
+	rofi -show run -fuzzy -hide-scrollbar
+#	~/.config/bar/dmenu.sh	
+#
+super + e
+	~/scripts/shutdown_rofi.sh
 
 super + q
 	~/scripts/lock.sh

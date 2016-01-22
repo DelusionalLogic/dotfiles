@@ -19,8 +19,9 @@ NeoBundle 'flazz/vim-colorschemes'
 
 " Syntax
 NeoBundle 'Valloric/YouCompleteMe'
-NeoBundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
 NeoBundle 'jrozner/vim-antlr'
+NeoBundle 'lervag/vimtex'
+NeoBundle 'rust-lang/rust.vim'
 
 " Interface
 NeoBundle 'scrooloose/nerdtree'
@@ -29,11 +30,13 @@ NeoBundle 'bling/vim-airline'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'sjl/gundo.vim'
 NeoBundle 'tpope/vim-commentary'
+NeoBundle 'dhruvasagar/vim-table-mode'
 
 " Integration
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'tpope/vim-fugitive.git'
 NeoBundle 'tpope/vim-dispatch'
+NeoBundle 'derekwyatt/vim-protodef'
 
 " Required:
 call neobundle#end()
@@ -71,6 +74,8 @@ augroup FileSpecific
 				\ endif
 	autocmd BufReadPost fugitive://* set bufhidden=delete
 augroup END
+
+let g:tex_flavor='latex' "Default to latex filetype
 
 set gdefault "Default to global substitution on line
 

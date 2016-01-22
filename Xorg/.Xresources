@@ -15,3 +15,5 @@ Xcursor.theme: OpenZone_Ice_Slim
 Xcursor.there_core: true
 Xcursor.size: 0
 URxvt*geometry: 140x40
+Xft.rgba: none
+Xft.hintstyle: hintfull
