@@ -4,26 +4,26 @@ for i in $2 ; do
 	tagstr=""
 	case ${i:0:1} in
 		'F')
-			tagfgcol="\$color[green]"
-			tagstr=" %{T\$font[icon]}\uE0F6 "
+			tagfgcol="\$color[yellow]"
+			tagstr=" %{T\$font[icon]}+ "
 			;;
 		'f')
 			tagfgcol="\$color[grey]"
-			tagstr=" %{T\$font[icon]}\uE0F6 "
+			tagstr=" %{T\$font[icon]}- "
 			;;
 		'o')
 			tagfgcol="\$color[blue]"
-			tagstr=" %{T\$font[icon]}\uE098 "
+			tagstr=" %{T\$font[icon]}- "
 			;;
 		'O')
-			tagfgcol="\$color[green]"
-			tagstr=" %{T\$font[icon]}\uE098 "
+			tagfgcol="\$color[yellow]"
+			tagstr=" %{T\$font[icon]}+ "
 			;;
 		'M' | 'W' | 'm')
-			echo -n "%{F\$color[yellow]} "
+			echo -n "%{F\$color[red]} ["
 			;;
 		'L')
-			echo -n "%{F\$color[yellow]} "
+			echo -n "%{F\$color[red]} ]"
 			;;
 		*)
 			continue
