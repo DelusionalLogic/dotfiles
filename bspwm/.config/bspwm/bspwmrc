@@ -45,7 +45,8 @@ xsetroot -cursor_name left_ptr &
 #		pgrep 'bard' | xargs kill -s 9
 #fi
 #~/.config/bar/panel.sh 2>/dev/null &
-/home/delusional/bard/build/src/bard -c /home/delusional/.config/bard &
+bard -c /home/delusional/.config/bard &
+#/home/delusional/bard/build/src/bard -c /home/delusional/.config/bard &
 
 urxvtd &
 xflux -l 57.0137 -g 9.9832 &

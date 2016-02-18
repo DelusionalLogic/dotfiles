@@ -28,6 +28,8 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 
 #Autocompletion
 source ~/.config/zsh/autosuggestions/zsh-autosuggestions.zsh
+#Arcanist
+source /usr/share/php/arcanist/resources/shell/bash-completion
 
 #=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # Import seperate config files
