@@ -27,7 +27,7 @@ source /usr/share/doc/pkgfile/command-not-found.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 #Autocompletion
-source ~/.config/zsh/autosuggestions/autosuggestions.zsh
+source ~/.config/zsh/autosuggestions/zsh-autosuggestions.zsh
 
 #=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # Import seperate config files

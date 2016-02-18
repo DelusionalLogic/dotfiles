@@ -8,6 +8,8 @@ alias cls='clear'
 alias l='ls -Xp --color=auto'
 alias ls='ls -Xp --color=auto'
 
+alias open='xdg-open'
+
 # Git
 alias g='git'
 alias ga='git add'
