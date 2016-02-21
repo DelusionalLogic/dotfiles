@@ -1,0 +1,58 @@
+#!/bin/bash
+
+wallDir="$HOME/Pictures/Wallpapers"
+
+case "$1" in
+	set)
+		if [[ ! -e "$wallDir/$2" ]]; then
+			echo "Wallpaper does not exist"
+			exit 1
+		fi
+		ln -nsf "$wallDir/$2" "$wallDir/active"
+		touch "$wallDir/lock"
+		feh --bg-scale ~/Pictures/Wallpapers/active
+		;;
+	list)
+		find "$wallDir" -type f \( -iname "*.jpg" -o -iname "*.png" \) -printf "%f\n"
+		;;
+	unlock)
+		rm "$wallDir/lock"
+		;;
+	lock)
+		touch "$wallDir/lock"
+		;;
+	apply)
+		#Randomize wallpaper
+		if [[ ! -e "$wallDir/lock" ]]; then
+			ln -nsf "$(find ~/Pictures/Wallpapers -type f -iname "*.jpg" -o -iname "*.png" | shuf -n 1)" "/home/delusional/Pictures/Wallpapers/active"
+		fi
+		feh --bg-scale ~/Pictures/Wallpapers/active
+		;;
+	get)
+		cd "$wallDir" && wget $2 || exit 1
+		;;
+	current)
+		readlink "$wallDir/active" || exit 1
+		;;
+	delete)
+		URL=$2
+		if [[ -z $URL ]]; then
+			URL="$(readlink "$wallDir/active")"
+		fi
+		rm "$URL"
+		;;
+	*)
+		echo "Invalid option"
+		echo ""
+		echo "Supported options are:"
+		echo "set - set the given wallpaper as the current wallpaper and lock it"
+		echo "unlock - unlock the wallpaper"
+		echo "lock - lock the current wallpaper"
+		echo "apply - apply wallpaper, randomizing it if lock is not set"
+		echo "get - download wallpaper from url"
+		echo "current - get the current wallpaper"
+		echo "delete - delete wallpaper"
+		exit 1
+		;;
+esac
+

@@ -4,7 +4,7 @@ for i in $2 ; do
 	tagstr=""
 	case ${i:0:1} in
 		'F')
-			tagfgcol="\$color[yellow]"
+			tagfgcol="\$color[grey]"
 			tagstr=" %{T\$font[icon]}+ "
 			;;
 		'f')
@@ -12,7 +12,7 @@ for i in $2 ; do
 			tagstr=" %{T\$font[icon]}- "
 			;;
 		'o')
-			tagfgcol="\$color[blue]"
+			tagfgcol="\$color[yellow]"
 			tagstr=" %{T\$font[icon]}- "
 			;;
 		'O')

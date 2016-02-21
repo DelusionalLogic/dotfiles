@@ -7,6 +7,7 @@ precmd() {
 }
 
 function zle-line-init {
+	vcs_info
 	setprompt
     zle .reset-prompt
 }
