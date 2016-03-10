@@ -1,4 +1,4 @@
-IFS=$':' 
+IFS=$':'
 for i in $2 ; do
 	tagfgcol=""
 	tagstr=""

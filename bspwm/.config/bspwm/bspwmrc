@@ -12,8 +12,9 @@ bspc config normal_border_color '#4F4F4F'
 bspc config urgent_border_color '#D17B49'
 bspc config top_padding 17
 
-bspc monitor HDMI-0 -d I II III IV V 
-bspc monitor DVI-I-1 -d VI VII VIII IX X 
+#Setup workspaces
+autorandr -c
+bspwm_reorder
 
 bspc rule -a Steam state=floating desktop=V follow=on
 bspc rule -a feh state=floating
@@ -45,10 +46,15 @@ xsetroot -cursor_name left_ptr &
 #		pgrep 'bard' | xargs kill -s 9
 #fi
 #~/.config/bar/panel.sh 2>/dev/null &
-bard -c /home/delusional/.config/bard &
+bard -c ~/.config/bard 1>&2 2>/dev/null &
 #/home/delusional/bard/build/src/bard -c /home/delusional/.config/bard &
 
 urxvtd &
 xflux -l 57.0137 -g 9.9832 &
 
 compton --config ~/.config/compton.conf -b
+
+(sleep 1 &&	. ~/scripts/lock.sh) &
+xkbcomp ~/.config/xkb/layout.xkb $DISPLAY
+
+wmname LG3D
