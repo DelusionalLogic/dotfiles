@@ -1,53 +1,62 @@
 let mapleader=","       " leader is comma
+let maplocalleader=",,"       " leader is comma
 
-"NeoBundle Scripts-----------------------------
-if has('vim_starting')
-  set nocompatible "Be iMproved
-  " Required:
-  set runtimepath+=/home/delusional/.vim/bundle/neobundle.vim/
+"dein Scripts-----------------------------
+if &compatible
+  set nocompatible               " Be iMproved
 endif
 
 " Required:
-call neobundle#begin(expand('/home/delusional/.vim/bundle'))
+set runtimepath^=/home/delusional/.vim/repos/github.com/Shougo/dein.vim
 
-" Let NeoBundle manage NeoBundle
 " Required:
-NeoBundleFetch 'Shougo/neobundle.vim'
+call dein#begin(expand('/home/delusional/.vim/'))
+
+" Let dein manage dein
+" Required:
+call dein#add('Shougo/dein.vim')
 
 " Colors
-NeoBundle 'flazz/vim-colorschemes'
+call dein#add('flazz/vim-colorschemes')
+call dein#add('chriskempson/base16-vim')
 
 " Syntax
-NeoBundle 'Valloric/YouCompleteMe'
-NeoBundle 'jrozner/vim-antlr'
-NeoBundle 'lervag/vimtex'
-NeoBundle 'rust-lang/rust.vim'
+call dein#add('Valloric/YouCompleteMe')
+call dein#add('jrozner/vim-antlr')
+call dein#add('lervag/vimtex')
+call dein#add('rust-lang/rust.vim')
 
 " Interface
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'dhruvasagar/vim-vinegar'
-NeoBundle 'bling/vim-airline'
-NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'sjl/gundo.vim'
-NeoBundle 'tpope/vim-commentary'
-NeoBundle 'dhruvasagar/vim-table-mode'
+call dein#add('scrooloose/nerdtree')
+call dein#add('dhruvasagar/vim-vinegar')
+call dein#add('vim-airline/vim-airline')
+call dein#add('vim-airline/vim-airline-themes')
+call dein#add('kien/ctrlp.vim')
+call dein#add('sjl/gundo.vim')
+call dein#add('tpope/vim-commentary')
+call dein#add('dhruvasagar/vim-table-mode')
+
+" Speed
+call dein#add('easymotion/vim-easymotion')
 
 " Integration
-NeoBundle 'airblade/vim-gitgutter'
-NeoBundle 'tpope/vim-fugitive.git'
-NeoBundle 'tpope/vim-dispatch'
-NeoBundle 'derekwyatt/vim-protodef'
+call dein#add('airblade/vim-gitgutter')
+call dein#add('tpope/vim-fugitive.git')
+call dein#add('tpope/vim-dispatch')
+call dein#add('derekwyatt/vim-protodef')
 
 " Required:
-call neobundle#end()
+call dein#end()
 
 " Required:
 filetype plugin indent on
 
-" If there are uninstalled bundles found on startup,
-" this will conveniently prompt you to install them.
-NeoBundleCheck
-"End NeoBundle Scripts-------------------------
+" If you want to install not installed plugins on startup.
+if dein#check_install()
+  call dein#install()
+endif
+
+"End dein Scripts-------------------------
 
 " Vim man plugin
 runtime! ftplugin/man.vim
@@ -68,7 +77,7 @@ augroup FileSpecific
 	autocmd FileType css,scss,sass setlocal iskeyword+=-
 
 	" Fugitive
-	autocmd User fugitive 
+	autocmd User fugitive
 				\ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
 				\   nnoremap <buffer> .. :edit %:h<CR> |
 				\ endif
@@ -76,6 +85,8 @@ augroup FileSpecific
 augroup END
 
 let g:tex_flavor='latex' "Default to latex filetype
+let g:vimtex_latexmk_progname = 'nvr'
+let g:vimtex_view_method = 'zathura'
 
 set gdefault "Default to global substitution on line
 
@@ -83,7 +94,9 @@ set showcmd "Show partially typed command
 
 syntax enable "enable syntax highlighting!
 
-set ttyfast "I'm on a modern computer damn it. My tty is fast
+if !has('nvim')
+	set ttyfast "I'm on a modern computer damn it. My tty is fast
+endif
 
 set scrolloff=7 "7 Lines to the cursor
 
@@ -182,7 +195,7 @@ function! ToggleNumber()
 	endif
 endfunc
 
-nnoremap <leader>l :call ToggleNumber()<CR>
+nnoremap <leader>ll :call ToggleNumber()<CR>
 
 " Convenient ncommand to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
@@ -192,7 +205,6 @@ if !exists(":DiffOrig")
 			\ | wincmd p | diffthis
 endif
 
-colorscheme base16-flat
 highlight VertSplit ctermfg=244 ctermbg=NONE cterm=bold
 
 set numberwidth=5
@@ -205,10 +217,10 @@ set noshowmode
 set laststatus=2 "Always display the statusline
 
 highlight clear SignColumn
-highlight GitGutterChange ctermbg=NONE ctermfg=Yellow 
-highlight GitGutterAdd ctermbg=NONE ctermfg=DarkGreen 
-highlight GitGutterDelete ctermbg=NONE ctermfg=Red 
-highlight GitGutterChangeDelete ctermbg=NONE ctermfg=Blue 
+highlight GitGutterChange ctermbg=NONE ctermfg=Yellow
+highlight GitGutterAdd ctermbg=NONE ctermfg=DarkGreen
+highlight GitGutterDelete ctermbg=NONE ctermfg=Red
+highlight GitGutterChangeDelete ctermbg=NONE ctermfg=Blue
 
 "Shell command to open cmd output in scratch buffer
 function! s:ExecuteInShell(command)
@@ -225,3 +237,24 @@ function! s:ExecuteInShell(command)
 	echo 'Shell command ' . command . ' executed.'
 endfunction
 command! -complete=shellcmd -nargs=+ Shell call s:ExecuteInShell(<q-args>)
+
+set background=dark
+colorscheme base16-flat
+
+"easymotion
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+
+" These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
+" Without these mappings, `n` & `N` works fine. (These mappings just provide
+" different highlight method and have some other features )
+map  n <Plug>(easymotion-next)
+map  N <Plug>(easymotion-prev)
+map <Leader>l <Plug>(easymotion-lineforward)
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+map <Leader>h <Plug>(easymotion-linebackward)
+map s <Plug>(easymotion-overwin-f2)
+
+let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
+let g:EasyMotion_smartcase = 1 " US layout
