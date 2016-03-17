@@ -1,4 +1,6 @@
+export PATH=~/.localbin:$PATH
 export EDITOR=nvim
+
 export PAGER=less
 export BROWSER=firefox
 #export MOZ_USE_OMTC=1
@@ -12,9 +14,8 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export PATH="${PATH}:/home/delusional/.localbin"
 export M2_HOME="/opt/maven"
 
-export BSPWM_TREE="$XDG_DATA_HOME/bspwm.tree"
-export BSPWM_HISTORY="$XDG_DATA_HOME/bspwm.history"
-export BSPWM_STACK="$XDG_DATA_HOME/bspwm.stack"
+export BSPWM_STATE="$XDG_DATA_HOME/bspwm.state"
+
 export SXHKD_SHELL=/bin/bash
 
 export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
