@@ -1,5 +1,5 @@
 let mapleader=","       " leader is comma
-let maplocalleader=",,"       " leader is comma
+let maplocalleader=",," " localleader is comma
 
 "dein Scripts-----------------------------
 if &compatible

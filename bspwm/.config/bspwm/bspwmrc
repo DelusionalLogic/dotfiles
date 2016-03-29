@@ -13,8 +13,7 @@ bspc config urgent_border_color '#D17B49'
 bspc config top_padding 17
 
 #Setup workspaces
-autorandr -c
-bspwm_reorder
+autorandr -c --force
 
 bspc rule -a Steam state=floating desktop=V follow=on
 bspc rule -a feh state=floating
@@ -24,9 +23,9 @@ bspc rule -a vlc state=floating
 bspc rule -a Kupfer.py state=floating
 bspc rule -a Screenkey manage=off
 
-if [ -e "$BSPWM_TREE" ] ; then
-	bspc restore -T "$BSPWM_TREE" -H "$BSPWM_HISTORY" -S "$BSPWM_STACK"
-	rm "$BSPWM_TREE" "$BSPWM_HISTORY" "$BSPWM_STACK"
+if [ -e "$BSPWM_STATE" ] ; then
+	bspc wm -l "$BSPWM_STATE"
+	rm "$BSPWM_STATE"
 fi
 
 # polkit

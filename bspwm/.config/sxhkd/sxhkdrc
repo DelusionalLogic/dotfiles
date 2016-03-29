@@ -5,9 +5,7 @@
 
 super + alt + {shift + ,_}Escape
 	{bspc quit 1,\
-	 bspc query -T > "$BSPWM_TREE"; \
-		bspc query -H > "$BSPWM_HISTORY"; \
-		bspc query -S > "$BSPWM_STACK"; \
+	bspc wm -d > "$BSPWM_STATE",
 		bspc quit 1}
 
 super + w
@@ -43,7 +41,7 @@ super + {o,i}
 	bspc control --record-history on
 
 super + y
-	bspc node -w last.manual
+	bspc node -n last.!automatic
 
 super + m
 	bspc node -s biggest
@@ -55,16 +53,16 @@ super + {_,shift + }c
 	bspc node -f {next,prev}
 
 super + {comma,period}
-	bspc desktop -C {backward,forward}
+	bspc node -C {backward,forward}
 
 super + r
-    bspc desktop -R 90
+    bspc node @/ -R 90
 
 super + bracket{left,right}
 	bspc desktop -f {prev,next}
 
 super + z
-	bspc control --toggle-visibility
+	bspc node --toggle-visibility
 
 super + ctrl + {h,j,k,l}
 	bspc node -p {west,south,north,east}

@@ -24,7 +24,7 @@ source /etc/profile.d/autojump.zsh
 source /usr/share/doc/pkgfile/command-not-found.zsh
 
 #syntax highlight7
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 #Autocompletion
 source ~/.config/zsh/autosuggestions/zsh-autosuggestions.zsh
