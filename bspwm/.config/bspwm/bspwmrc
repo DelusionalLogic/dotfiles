@@ -12,9 +12,6 @@ bspc config normal_border_color '#4F4F4F'
 bspc config urgent_border_color '#D17B49'
 bspc config top_padding 17
 
-#Setup workspaces
-autorandr -c --force
-
 bspc rule -a Steam state=floating desktop=V follow=on
 bspc rule -a feh state=floating
 bspc rule -a mplayer2 state=floating

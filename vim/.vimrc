@@ -38,6 +38,7 @@ call dein#add('dhruvasagar/vim-table-mode')
 
 " Speed
 call dein#add('easymotion/vim-easymotion')
+call dein#add('tpope/vim-surround')
 
 " Integration
 call dein#add('airblade/vim-gitgutter')
@@ -97,6 +98,8 @@ syntax enable "enable syntax highlighting!
 if !has('nvim')
 	set ttyfast "I'm on a modern computer damn it. My tty is fast
 endif
+
+set modeline
 
 set scrolloff=7 "7 Lines to the cursor
 
