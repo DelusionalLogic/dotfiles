@@ -53,7 +53,7 @@ xflux -l 57.0137 -g 9.9832 &
 
 compton --config ~/.config/compton.conf -b
 
-(sleep 1 &&	. ~/scripts/lock.sh) &
-xkbcomp ~/.config/xkb/layout.xkb $DISPLAY
-
 wmname LG3D
+
+source ~/.config/bspwm/device
+
