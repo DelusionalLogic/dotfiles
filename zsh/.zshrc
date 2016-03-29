@@ -23,11 +23,9 @@ source /etc/profile.d/autojump.zsh
 #Command not found hook
 source /usr/share/doc/pkgfile/command-not-found.zsh
 
-#syntax highlight7
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 #Autocompletion
 source ~/.config/zsh/autosuggestions/zsh-autosuggestions.zsh
+
 #Arcanist
 source /usr/share/php/arcanist/resources/shell/bash-completion
 
