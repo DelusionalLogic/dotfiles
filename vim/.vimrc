@@ -1,67 +1,49 @@
 let mapleader=","       " leader is comma
 let maplocalleader=",," " localleader is comma
 
-"dein Scripts-----------------------------
 if &compatible
   set nocompatible               " Be iMproved
 endif
 
-" Required:
-set runtimepath^=/home/delusional/.vim/repos/github.com/Shougo/dein.vim
-
-" Required:
-call dein#begin(expand('/home/delusional/.vim/'))
-
-" Let dein manage dein
-" Required:
-call dein#add('Shougo/dein.vim')
+call plug#begin('~/.vim/plugged')
 
 " Colors
-call dein#add('flazz/vim-colorschemes')
-call dein#add('chriskempson/base16-vim')
+Plug 'flazz/vim-colorschemes'
+Plug 'chriskempson/base16-vim'
 
 " Syntax
-call dein#add('Valloric/YouCompleteMe')
-call dein#add('jrozner/vim-antlr')
-call dein#add('lervag/vimtex')
-call dein#add('rust-lang/rust.vim')
+Plug 'Valloric/YouCompleteMe', { 'do': 'python2.7 ./install.py --all' }
+Plug 'jrozner/vim-antlr'
+Plug 'lervag/vimtex'
+Plug 'rust-lang/rust.vim'
 
 " Interface
-call dein#add('scrooloose/nerdtree')
-call dein#add('dhruvasagar/vim-vinegar')
-call dein#add('vim-airline/vim-airline')
-call dein#add('vim-airline/vim-airline-themes')
-call dein#add('kien/ctrlp.vim')
-call dein#add('sjl/gundo.vim')
-call dein#add('tpope/vim-commentary')
-call dein#add('dhruvasagar/vim-table-mode')
+Plug 'scrooloose/nerdtree'
+Plug 'dhruvasagar/vim-vinegar'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'kien/ctrlp.vim'
+Plug 'sjl/gundo.vim'
+Plug 'tpope/vim-commentary'
+Plug 'dhruvasagar/vim-table-mode'
 
 " Speed
-call dein#add('easymotion/vim-easymotion')
-call dein#add('tpope/vim-surround')
+Plug 'easymotion/vim-easymotion'
+Plug 'tpope/vim-surround'
 
 " Integration
-call dein#add('airblade/vim-gitgutter')
-call dein#add('tpope/vim-fugitive.git')
-call dein#add('tpope/vim-dispatch')
-call dein#add('derekwyatt/vim-protodef')
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-dispatch'
+Plug 'derekwyatt/vim-protodef'
 
 " Required:
-call dein#end()
+call plug#end()
 
-" Required:
 filetype plugin indent on
-
-" If you want to install not installed plugins on startup.
-if dein#check_install()
-  call dein#install()
-endif
-
-"End dein Scripts-------------------------
 
 " Vim man plugin
 runtime! ftplugin/man.vim
-
 
 augroup FileSpecific
 	autocmd!
