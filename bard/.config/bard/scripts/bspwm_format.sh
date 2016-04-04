@@ -1,29 +1,29 @@
 IFS=$':'
-for i in $2 ; do
+for i in $1 ; do
 	tagfgcol=""
 	tagstr=""
 	case ${i:0:1} in
 		'F')
-			tagfgcol="\$color[grey]"
+			tagfgcol="\$xcolor[grey]"
 			tagstr=" %{T\$font[icon]}+ "
 			;;
 		'f')
-			tagfgcol="\$color[grey]"
+			tagfgcol="\$xcolor[grey]"
 			tagstr=" %{T\$font[icon]}- "
 			;;
 		'o')
-			tagfgcol="\$color[yellow]"
+			tagfgcol="\$xcolor[yellow]"
 			tagstr=" %{T\$font[icon]}- "
 			;;
 		'O')
-			tagfgcol="\$color[yellow]"
+			tagfgcol="\$xcolor[yellow]"
 			tagstr=" %{T\$font[icon]}+ "
 			;;
 		'M' | 'W' | 'm')
-			echo -n "%{F\$color[red]} ["
+			echo -n "%{F\$xcolor[red]} ["
 			;;
 		'L')
-			echo -n "%{F\$color[red]} ]"
+			echo -n "%{F\$xcolor[red]} ]"
 			;;
 		*)
 			continue
