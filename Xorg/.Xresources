@@ -1,5 +1,15 @@
 #include "/home/delusional/.config/xcolors/active"
 
+rofi.color-enabled: true
+! State:           'bg',     'fg',     'bgalt',  'hlbg',   'hlfg'
+rofi.color-normal: base00,  base05,  base00,  base0D,  base00
+rofi.color-urgent: base09,  base00,  base09,  base09,  base00
+rofi.color-active: base0E,  base00,  base0E,  base0B,  base00
+
+!                  'background', 'border'
+rofi.color-window: base00,      base01
+
+
 !Font
 urxvt*font: xft:Terminus:pixelsize=12,xft:Inconsolata\ for\ Powerline:pixelsize=12
 urxvt*perl-ext-common: default,matcher,selection-to-clipboard

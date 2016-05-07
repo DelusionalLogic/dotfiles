@@ -12,6 +12,7 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 
 export PATH="${PATH}:/home/delusional/.localbin"
+export PATH="$(ruby -e 'print Gem.user_dir')/bin:$PATH"
 export M2_HOME="/opt/maven"
 
 export BSPWM_STATE="$XDG_DATA_HOME/bspwm.state"

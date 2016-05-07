@@ -41,7 +41,10 @@ super + {o,i}
 	bspc control --record-history on
 
 super + y
-	bspc node -n last.!automatic
+	bspc query -N -n focused.automatic && bspc node -n last.!automatic || bspc node last.leaf -n focused
+
+super + ctrl + {x,y,z}
+	bspc node focused -g {locked,sticky,private}
 
 super + m
 	bspc node -s biggest
@@ -114,7 +117,7 @@ super + shift + Return
 	rofi -show ssh -fuzzy -hide-scrollbar
 
 super + space
-	rofi -show run -fuzzy -hide-scrollbar
+	rofi -show run -fuzzy -hide-scrollbar -color-enabled
 #	~/.config/bar/dmenu.sh	
 #
 super + e
@@ -124,7 +127,7 @@ super + q
 	~/scripts/lock.sh
 
 super + p
-	passmenu
+	passrofil
 
 # make sxhkd reload its configuration files:
 super + Escape
