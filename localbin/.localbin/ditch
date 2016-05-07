@@ -1,0 +1,253 @@
+#!/usr/bin/env bash
+# ~/.local/bin/ditch
+# Create a menu using the twitch team and stream APIs.
+
+# Requires: jshon, bemenu, livestreamer
+# Optional: notify-send
+
+# Files
+# ~/.config/ditch/teams      List of twitch teams.
+# ~/.config/ditch/streamers  List of individual streamers.
+
+readonly progn=ditch
+readonly data_dir="${XDG_CONFIG_HOME:-$HOME/.config}/$progn"
+
+# Used to store downloaded json.
+readonly TMPDIR="${TMPDIR:-/tmp}"
+
+# Number of entries to display at once.
+readonly lines=20
+read -r font < "${XDG_CONFIG_HOME:-$HOME/.config}"/dmenu/font
+
+# Options passed to bemenu, the prompt is passed later.
+bemenu_opts=(
+    --fn "$font" -w -i -l "$lines"
+    --tf '#9b859d' --tb '#262626'
+    --nf '#a7a7a7' --nb '#1e1e1e'
+    --hf '#9b859d' --hb '#262626'
+    --scf '#9b859d' --scb '#1e1e1e'
+    --scrollbar autohide
+)
+
+puts() { # strings -> stdout
+    printf -- "$1\n" "${@:2}"
+}
+
+has() { # string -> bool
+    hash "$1" &> /dev/null
+}
+
+err() { # strings -> stderr
+    local msg
+
+    puts "$progn: $@" >&2
+
+    if has notify-send; then
+        msg="$(puts "$@")"
+        notify-send -u critical -- "$progn" "$msg"
+    fi
+}
+
+chunk_by() { # integer, array -> stdout
+    local chunk="$1"
+    local list=("${@:2}")
+    local tmp
+
+    while ((${#list[@]})); do
+        # NOTE: There is no way to get the length of an offset in the same
+        #       operation so temporary storage is needed.
+        tmp=("${list[@]:0:chunk}")
+        printf -- '%s,' "${tmp[@]}"
+        # Assuming chunking by 2, the following occurs on the array [1 2 3 4 5]
+        # 1st loop: [{ 1 2 } 3 4 5]  => 1,2,&limit=2
+        # 2nd loop: [{ 3 4 } 5]      => 3,4,&limit=2
+        # 3rd loop: [{ 5 }]          => 5,&limit=1
+
+        puts '&limit=%d' "${#tmp[@]}"
+
+        list=("${list[@]:chunk}")
+        # 1st loop: [ 1 2 { 3 4 5 }] => list = [3 4 5]
+        # 2nd loop: [ 3 4 { 5 }]     => list = [5]
+        # 3rd loop: [ 5 { }]         => done
+    done
+}
+
+get_user_data() { # disk -> stdout
+    local team list chunk nelem tmp
+
+    if [[ -s "$data_dir"/teams ]]; then
+        while read -r team; do
+            puts '%s' "$team"
+        done < "$data_dir"/teams
+    fi
+
+    if [[ -s "$data_dir"/streamers ]]; then
+        mapfile -t list < "$data_dir"/streamers
+
+        # Twitch lets us use a maximum of 100 streamers per query.
+        chunk=100
+        nelem=${#list[@]}
+
+        if ((nelem < chunk)); then
+            chunk_by "$nelem" "${list[@]}"
+        else
+            chunk_by "$chunk" "${list[@]}"
+        fi
+    fi
+}
+
+# Download all the json chunks to individual files, each file will be read
+# sequentially later but this allows me to (fork) background this function.
+fetch_json() { # string -> stdout
+    local s="$1"
+    local stream data
+
+    # We assume streams always contain the string "&limit=".
+    if [[ "$s" == *\&limit=* ]]; then
+        data="$(mktemp -t "$progn"-channels-XXX.json)"
+        curl -s "https://api.twitch.tv/kraken/streams?channel=$s" > "$data"
+    else
+        data="$(mktemp -t "$progn"-teams-XXX.json)"
+        curl -s "http://api.twitch.tv/api/team/$s/live_channels.json" > "$data"
+    fi
+}
+
+parallel_fetch_json() { # array -> fork_bg
+    local list=("$@")
+
+    # Fire off all the curl calls as soon as possible.
+    for i in "${list[@]}"; do
+        fetch_json "$i" &
+    done
+
+    # Wait for all the get_json jobs to finish before continuing.
+    wait
+}
+
+# Parsed json is printed in series of three lines, the first is the username,
+# then the url to their stream and finally the title.
+parse_json() { # disk -> stdout
+    local i json args
+
+    # Around 50-70% of time is spent here as jshon read()'s every character.
+    for i in "$TMPDIR"/*.json; do
+        if [[ "$i" == *$progn-channels-* ]]; then
+            args=(-CQ -e streams -a -e channel -e name -upe game -upe url -upe status)
+            jshon "${args[@]}" < "$i"
+        fi
+
+        if [[ "$i" == *$progn-teams-* ]]; then
+            args=(-CQ -e channels -a -e channel -e name -upe meta_game -upe link -upe title)
+            jshon "${args[@]}" < "$i"
+        fi
+
+        # Make sure we remove the json once we're done so it doesn't interfere
+        # with proceeding runs and doesn't clutter up $TMPDIR.
+        rm -f -- "$i"
+    done
+}
+
+get_user_picks() { # global(stream, menu, bemenu_opts) -> command -> stdout
+    local fmt i
+    local max=0
+
+    # Display the number of current streams in bemenu's prompt.
+    bemenu_opts+=(-p "Stream ${#stream[@]}")
+
+    # Calculate the required spacing by finding the longest streamer name.
+    # for i in "${!stream[@]}"; do
+    #     ((${#i} > max)) && max=${#i}
+    # done
+
+    # # Use awk to pretty-print the user and title in 2 columns.
+    # fmt='{f = $1; $1 = ""; printf "%-'$max's %s\n", f, $0}'
+    puts '%s' "${!menu[@]}" | column -s '│' -t  | bemenu "${bemenu_opts[@]}"
+}
+
+play_stream() { # string, string -> either(command, stderr)
+    local url="$1"
+    local title="$2"
+    local err options
+
+    shopt -s extglob
+    # Strip consecutive spaces and replace single quotes.
+    title="${title//+( )/ }" title="${title//\'/’}"
+
+    options=(--quiet)
+
+    if has mpv; then
+        options+=(--player-args "--force-media-title='$title' {filename}")
+    fi
+
+    if ! err="$(livestreamer "${options[@]}" "$url")"; then
+        err '%s' "${err:-livestreamer}"
+    fi
+}
+
+populate_arrays() { # -> global(menu, stream)
+    local streamer game url title
+
+    while {
+        read -r streamer
+        read -r game
+        read -r url
+        read -r title
+    } do
+        # Jshon will return null for keys without values (or missing keys
+        # entirely), since a valid url can never be null we'll use this as a
+        # sentinel for bad values and skip any we find.
+        if [[ "$url" != null ]]; then
+
+            # Manually de-json the title.  XXX This doesn't handle all json
+            # escapes but we don't have to.
+            title="${title%\"*}" title="${title#\"}" title="${title//\\/}"
+
+            # Pango markup is supported.
+            # begin='<span weight="bold" fgcolor="#555555">' end='</span>'
+            # game="$begin$game$end"
+
+            # The menu is what we will use for displaying via bemenu, we will later
+            # extract the first word from the result which is $name used as the key
+            # in streams to access the $url.
+            menu["$streamer│$game│$title"]=1
+            stream["$streamer"]="$url"
+        fi
+    done
+}
+
+process_results() { # global(stream) -> fork_bg
+    local streamer title url
+
+    while read -r streamer title; do
+        [[ -z "$title" ]] && title="$streamer"
+
+        # Check if the selection actually matches a stream.
+        if [[ "${stream[$streamer]}" ]]; then
+            url="${stream[$streamer]}"
+        else
+            err '%s: Cannot find associated stream.' "$streamer"
+            exit 1
+        fi
+
+        play_stream "$url" "$title" &
+    done
+}
+
+# Main routine.
+mapfile -t twitch_list < <(get_user_data)
+
+if [[ "${twitch_list[@]}" ]]; then
+    parallel_fetch_json "${twitch_list[@]}"
+else
+    err 'No configuration data found.'
+    exit 1
+fi
+
+# populate_arrays will update the associative arrays "stream" and "menu".
+declare -A stream menu
+populate_arrays < <(parse_json)
+
+results="$(get_user_picks)"
+if [[ "$results" ]]; then
+    process_results <<< "$results"
+fi

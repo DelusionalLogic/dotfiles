@@ -1,0 +1,16 @@
+tput setaf 2
+cat << "EOF"
+                  .---.         ,,
+       ,,        /     \       ;,,'
+      ;, ;      (  o  o )      ; ;
+        ;,';,,,  \   ~ /      ,; ;
+     ,,,  ;,,,,;;,`   '-,;'''',,,'
+    ;,, ;,, ,,,,   ,;  ,,,'';;,,;''';
+EOF
+echo "$(tput setaf 4)=======$(tput setaf 2);,,,;$(tput setaf 4)====$(tput setaf 2)~~'$(tput setaf 4)==$(tput setaf 2)'';,,''',,;''''$(tput setaf 4)====="
+echo "                  $(tput setaf 1)GIT$(tput setaf 2)     '''            "
+echo "$(tput setaf 4)========================================="
+tput sgr0
+git status -s
+echo "$(tput setaf 4)========================================="
+tput sgr0
