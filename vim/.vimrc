@@ -17,6 +17,8 @@ Plug 'Shougo/deoplete.nvim'
 Plug 'jrozner/vim-antlr'
 Plug 'lervag/vimtex'
 Plug 'rust-lang/rust.vim'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 
 " Interface
 Plug 'scrooloose/nerdtree'
@@ -31,6 +33,7 @@ Plug 'dhruvasagar/vim-table-mode'
 " Speed
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
+Plug 'godlygeek/tabular'
 
 " Integration
 Plug 'airblade/vim-gitgutter'
@@ -245,8 +248,25 @@ map s <Plug>(easymotion-overwin-f2)
 let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 let g:EasyMotion_smartcase = 1 " US layout
 
+
+"Deoplete
+
 let g:deoplete#enable_at_startup=1
 inoremap <silent><expr> <Tab>
 		\ pumvisible() ? "\<C-n>" :
 		\ "\<Tab>"
 
+"Ultisnips
+let g:UltiSnipsExpandTrigger = "<nop>"
+let g:ulti_expand_or_jump_res = 0
+function! ExpandSnippetOrCarriageReturn()
+    let snippet = UltiSnips#ExpandSnippetOrJump()
+    if g:ulti_expand_or_jump_res > 0
+        return snippet
+    else
+        return "\<CR>"
+    endif
+endfunction
+inoremap <expr> <CR> pumvisible() ? "\<C-R>=ExpandSnippetOrCarriageReturn()\<CR>" : "\<CR>"
+
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
