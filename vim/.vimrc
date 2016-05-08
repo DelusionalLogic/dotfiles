@@ -12,7 +12,8 @@ Plug 'flazz/vim-colorschemes'
 Plug 'chriskempson/base16-vim'
 
 " Syntax
-Plug 'Valloric/YouCompleteMe', { 'do': 'python2.7 ./install.py --all' }
+"Plug 'Valloric/YouCompleteMe', { 'do': 'python2.7 ./install.py --all' }
+Plug 'Shougo/deoplete.nvim'
 Plug 'jrozner/vim-antlr'
 Plug 'lervag/vimtex'
 Plug 'rust-lang/rust.vim'
@@ -243,3 +244,9 @@ map s <Plug>(easymotion-overwin-f2)
 
 let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 let g:EasyMotion_smartcase = 1 " US layout
+
+let g:deoplete#enable_at_startup=1
+inoremap <silent><expr> <Tab>
+		\ pumvisible() ? "\<C-n>" :
+		\ "\<Tab>"
+
