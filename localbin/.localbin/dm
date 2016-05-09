@@ -1,0 +1,6 @@
+#!/bin/bash
+
+session=$1
+
+echo "$1" > ~/.dmsession
+pkill x

@@ -10,7 +10,7 @@ case "$1" in
 		fi
 		ln -nsf "$wallDir/$2" "$wallDir/active"
 		touch "$wallDir/lock"
-		feh --bg-scale ~/Pictures/Wallpapers/active
+		feh --bg-fill "$wallDir/active"
 		;;
 	list)
 		find "$wallDir" -type f \( -iname "*.jpg" -o -iname "*.png" \) -printf "%f\n"
@@ -24,9 +24,9 @@ case "$1" in
 	apply)
 		#Randomize wallpaper
 		if [[ ! -e "$wallDir/lock" ]]; then
-			ln -nsf "$(find ~/Pictures/Wallpapers -type f -iname "*.jpg" -o -iname "*.png" | shuf -n 1)" "/home/delusional/Pictures/Wallpapers/active"
+			ln -nsf "$(find $wallDir -type f -iname "*.jpg" -o -iname "*.png" | shuf -n 1)" "$wallDir/active"
 		fi
-		feh --bg-scale ~/Pictures/Wallpapers/active
+		feh --bg-fill "$wallDir/active"
 		;;
 	get)
 		cd "$wallDir" && wget $2 || exit 1
@@ -39,7 +39,7 @@ case "$1" in
 		if [[ -z $URL ]]; then
 			URL="$(readlink "$wallDir/active")"
 		fi
-		rm "$URL"
+		rm "$wallDir/$URL"
 		;;
 	*)
 		echo "Invalid option"
