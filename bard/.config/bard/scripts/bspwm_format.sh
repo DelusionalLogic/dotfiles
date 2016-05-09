@@ -1,7 +1,13 @@
 IFS=$':'
+grpcol="\$xcolor[gray]"
 for i in $1 ; do
 	tagfgcol=""
 	tagstr=""
+	first=false
+	if [[ ${i:0:1} == 'W' ]]; then
+		i=${i:1:-1}
+		first=true
+	fi
 	case ${i:0:1} in
 		'F')
 			tagfgcol="\$xcolor[grey]"
@@ -19,11 +25,18 @@ for i in $1 ; do
 			tagfgcol="\$xcolor[yellow]"
 			tagstr=" %{T\$font[icon]}+ "
 			;;
-		'M' | 'W' | 'm')
-			echo -n "%{F\$xcolor[red]} ["
+		'm')
+			[ $first = false ] && echo -n " "
+			echo -n "%{F\$xcolor[grey]}["
+			grpcol="\$xcolor[grey]"
+			;;
+		'M')
+			[ $first = false ] && echo -n " "
+			echo -n "%{F\$xcolor[red]}["
+			grpcol="\$xcolor[red]"
 			;;
 		'L')
-			echo -n "%{F\$xcolor[red]} ]"
+			echo -n "%{F$grpcol}]"
 			;;
 		*)
 			continue

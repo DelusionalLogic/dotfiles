@@ -19,6 +19,7 @@ bspc rule -a mpv state=floating
 bspc rule -a vlc state=floating
 bspc rule -a Kupfer.py state=floating
 bspc rule -a Screenkey manage=off
+bspc rule -a "Google Play Music Desktop Player" desktop=10 follow=off
 
 if [ -e "$BSPWM_STATE" ] ; then
 	bspc wm -l "$BSPWM_STATE"
@@ -42,7 +43,7 @@ xsetroot -cursor_name left_ptr &
 #		pgrep 'bard' | xargs kill -s 9
 #fi
 #~/.config/bar/panel.sh 2>/dev/null &
-~/bard/build/src/bard -c ~/.config/bard 1>&2 2>/tmp/bard.out &
+~/bard/build/src/bard -c ~/.config/bard 1>&2 2>/dev/null &
 #/home/delusional/bard/build/src/bard -c /home/delusional/.config/bard &
 
 urxvtd &

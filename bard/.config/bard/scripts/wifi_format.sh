@@ -6,7 +6,7 @@ if [[ -z $essid ]]; then
 fi
 
 echo -n "%{T\$font[icon]}"
-if [[ quality -gt 80 ]]; then
+if [[ quality -gt 60 ]]; then
 	echo -en "%{F\$xcolor[blue]}\uE222"
 elif [[ quality -gt 40 ]]; then
 	echo -en "%{F\$xcolor[yellow]}\uE221"

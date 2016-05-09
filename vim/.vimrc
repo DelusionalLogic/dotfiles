@@ -40,6 +40,8 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-dispatch'
 Plug 'derekwyatt/vim-protodef'
+Plug 'krisajenkins/vim-pipe'
+Plug 'krisajenkins/vim-postgresql-syntax'
 
 " Required:
 call plug#end()
@@ -248,9 +250,11 @@ map s <Plug>(easymotion-overwin-f2)
 let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 let g:EasyMotion_smartcase = 1 " US layout
 
+" PostgreSQL commands
+autocmd FileType sql let b:vimpipe_command="psql -d uni"
+autocmd FileType sql let b:vimpipe_filetype="postgresql"
 
 "Deoplete
-
 let g:deoplete#enable_at_startup=1
 inoremap <silent><expr> <Tab>
 		\ pumvisible() ? "\<C-n>" :

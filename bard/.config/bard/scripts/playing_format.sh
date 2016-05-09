@@ -1,5 +1,6 @@
-playing=$1
-if [[ -z $playing ]]; then
+state=$1
+playing=$2
+if [[ $state = "false" ]]; then
 	exit 1
 fi
-echo -en "%{F\$color[blue]}%{T\$font[icon]}%{T-}%{F-} $1"
+echo -en "%{F\$xcolor[blue]}%{T\$font[icon]}%{T-}%{F-} $playing"
