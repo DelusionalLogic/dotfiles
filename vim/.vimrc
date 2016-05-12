@@ -21,8 +21,9 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 " Interface
-Plug 'scrooloose/nerdtree'
-Plug 'dhruvasagar/vim-vinegar'
+Plug 'francoiscabrol/ranger.vim'
+Plug 'rbgrouleff/bclose.vim'
+
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'kien/ctrlp.vim'
@@ -157,6 +158,8 @@ vmap <Leader>P "+P
 
 cnoremap w!! w !sudo tee %
 
+nnoremap - :call OpenRanger()<CR>
+
 " CtrlP settings
 let g:ctrlp_match_window = 'bottom,order:ttb'
 let g:ctrlp_switch_buffer = 0
@@ -260,6 +263,18 @@ inoremap <silent><expr> <Tab>
 		\ pumvisible() ? "\<C-n>" :
 		\ "\<Tab>"
 
+if !exists('g:deoplete#omni_patterns')
+	let g:deoplete#omni_patterns = {}
+endif
+let g:deoplete#omni_patterns.tex =
+			\ '\v\\%('
+			\ . '\a*cite\a*%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+			\ . '|\a*ref%(\s*\{[^}]*|range\s*\{[^,}]*%(}\{)?)'
+			\ . '|hyperref\s*\[[^]]*'
+			\ . '|includegraphics\*?%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+			\ . '|%(include%(only)?|input)\s*\{[^}]*'
+			\ . ')\m'
+
 "Ultisnips
 let g:UltiSnipsExpandTrigger = "<nop>"
 let g:ulti_expand_or_jump_res = 0
@@ -274,3 +289,11 @@ endfunction
 inoremap <expr> <CR> pumvisible() ? "\<C-R>=ExpandSnippetOrCarriageReturn()\<CR>" : "\<CR>"
 
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-l>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+
+let g:UltiSnipsSnippetsDir="~/.config/nvim/ultisnips"
+
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "ultisnips"]
