@@ -14,11 +14,18 @@ Plug 'chriskempson/base16-vim'
 " Syntax
 "Plug 'Valloric/YouCompleteMe', { 'do': 'python2.7 ./install.py --all' }
 Plug 'Shougo/deoplete.nvim'
-Plug 'jrozner/vim-antlr'
-Plug 'lervag/vimtex'
+
+"LaTeX
+Plug 'lervag/vimtex', {'for': 'tex'}
+"Rust
 Plug 'rust-lang/rust.vim'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+Plug 'racer-rust/vim-racer', {'for': 'rust'}
+
+"C and C++
+Plug 'zchee/deoplete-clang'
+
+" Snippets
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
 " Interface
 Plug 'francoiscabrol/ranger.vim'
@@ -26,8 +33,8 @@ Plug 'rbgrouleff/bclose.vim'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'kien/ctrlp.vim'
-Plug 'sjl/gundo.vim'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
 Plug 'tpope/vim-commentary'
 Plug 'dhruvasagar/vim-table-mode'
 
@@ -41,8 +48,6 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-dispatch'
 Plug 'derekwyatt/vim-protodef'
-Plug 'krisajenkins/vim-pipe'
-Plug 'krisajenkins/vim-postgresql-syntax'
 
 " Required:
 call plug#end()
@@ -56,8 +61,7 @@ augroup FileSpecific
 	autocmd!
 	"Markdown
 	autocmd BufRead,BufNewFile *.md set filetype=markdown
-	autocmd FileType markdown setlocal spell
-	autocmd BufRead,BufNewFile *.md setlocal textwidth=80
+	autocmd FileType markdown setlocal spell textwidth=80
 
 	"Git commits
 	autocmd FileType gitcommit setlocal textwidth=72
@@ -156,8 +160,10 @@ nmap <Leader>P "+P
 vmap <Leader>p "+p
 vmap <Leader>P "+P
 
+"Save as root with w!!
 cnoremap w!! w !sudo tee %
 
+"Lets use ranger to browse all the files why dont we
 nnoremap - :call OpenRanger()<CR>
 
 " CtrlP settings
@@ -165,13 +171,16 @@ let g:ctrlp_match_window = 'bottom,order:ttb'
 let g:ctrlp_switch_buffer = 0
 let g:ctrlp_working_path_mode = 0
 
+"Stop creating all those stupid files vim
 set nobackup
 set nowritebackup
 set noswapfile
 
+"Omnicomplete settings
 set complete+=kspell
 set completeopt=longest,menuone,noselect
 
+"Map tab to down and up when in omnicomplete
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
 			\ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
@@ -210,6 +219,7 @@ let g:airline_theme='base16'
 set noshowmode
 set laststatus=2 "Always display the statusline
 
+"GitGutter colors
 highlight clear SignColumn
 highlight GitGutterChange ctermbg=NONE ctermfg=Yellow
 highlight GitGutterAdd ctermbg=NONE ctermfg=DarkGreen
@@ -253,10 +263,6 @@ map s <Plug>(easymotion-overwin-f2)
 let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 let g:EasyMotion_smartcase = 1 " US layout
 
-" PostgreSQL commands
-autocmd FileType sql let b:vimpipe_command="psql -d uni"
-autocmd FileType sql let b:vimpipe_filetype="postgresql"
-
 "Deoplete
 let g:deoplete#enable_at_startup=1
 inoremap <silent><expr> <Tab>
@@ -274,6 +280,22 @@ let g:deoplete#omni_patterns.tex =
 			\ . '|includegraphics\*?%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
 			\ . '|%(include%(only)?|input)\s*\{[^}]*'
 			\ . ')\m'
+
+"Deoplete-clang
+
+let g:deoplete#sources#clang#libclang_path = '/usr/lib/libclang.so'
+let g:deoplete#sources#clang#clang_header = '/usr/lib/clang'
+
+"Vim-Racer
+
+let g:racer_cmd = "/usr/bin/racer"
+let $RUST_SRC_PATH="/usr/src/rust/src/"
+
+let g:racer_no_default_keymappings=1
+
+nmap gd <Plug>RacerGoToDefinition
+nmap gD <Plug>RacerGoToDefinitionSplit
+nmap K  <Plug>RacerShowDocumentation
 
 "Ultisnips
 let g:UltiSnipsExpandTrigger = "<nop>"
