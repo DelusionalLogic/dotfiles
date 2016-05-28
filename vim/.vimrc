@@ -19,7 +19,7 @@ Plug 'Shougo/deoplete.nvim'
 Plug 'lervag/vimtex', {'for': 'tex'}
 "Rust
 Plug 'rust-lang/rust.vim'
-Plug 'racer-rust/vim-racer', {'for': 'rust'}
+Plug 'racer-rust/vim-racer'
 
 "C and C++
 Plug 'zchee/deoplete-clang'
