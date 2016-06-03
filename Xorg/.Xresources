@@ -11,7 +11,9 @@ rofi.color-window: base00,      base01
 
 
 !Font
-urxvt*font: xft:Terminus:pixelsize=12,xft:Inconsolata\ for\ Powerline:pixelsize=12
+urxvt*font: xft:Terminus:pixelsize=12, \
+			xft:Unifont:pixelsize=12, \
+			xft:Inconsolata\ for\ Powerline:pixelsize=12
 urxvt*perl-ext-common: default,matcher,selection-to-clipboard
 urxvt*url-launcher: xdg-open
 urxvt*matcher.button: 1

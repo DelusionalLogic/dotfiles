@@ -78,6 +78,8 @@ augroup FileSpecific
 	autocmd BufReadPost fugitive://* set bufhidden=delete
 augroup END
 
+set formatoptions=qrn1j
+
 let g:tex_flavor='latex' "Default to latex filetype
 let g:vimtex_latexmk_progname = 'nvr'
 let g:vimtex_view_method = 'zathura'
@@ -91,6 +93,19 @@ syntax enable "enable syntax highlighting!
 if !has('nvim')
 	set ttyfast "I'm on a modern computer damn it. My tty is fast
 endif
+
+"Pretty stuff
+set list
+set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
+
+set synmaxcol=800
+
+"Trailing whitespace
+augroup trailing
+    au!
+    au InsertEnter * :set listchars-=trail:⌴
+    au InsertLeave * :set listchars+=trail:⌴
+augroup END
 
 set modeline
 
@@ -115,9 +130,6 @@ filetype indent on "file specific indentation rules
 set wildmenu "visual command menu
 
 set lazyredraw "only redraw when needed
-
-set showmatch "show matching parens
-set matchtime=15
 
 set ignorecase
 set smartcase
@@ -187,6 +199,16 @@ inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
 
 inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
 			\ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
+" Make sure Vim returns to the same line when you reopen a file.
+" Thanks, Amit
+augroup line_return
+    au!
+    au BufReadPost *
+        \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \     execute 'normal! g`"zvzz' |
+        \ endif
+augroup END
 
 " toggle between number and relativenumber
 function! ToggleNumber()

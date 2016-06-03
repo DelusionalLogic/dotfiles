@@ -1,10 +1,10 @@
 #!/bin/bash
 
-function contains_mon() {
+function contains() {
 	local e
-	for e in "${@:2}"; do 
+	for e in "${@:2}"; do
 		e=$(bspc query -M -m "$e")
-		[[ "$e" == "$1" ]] && return 0; 
+		[[ "$e" == "$1" ]] && return 0;
 	done
 	return 1
 }
@@ -35,6 +35,7 @@ echo "Giving $desktops desktops to each with $extras extras"
 #Swapping monitors
 i=1
 for monitor in "${order[@]}"; do
+	monitor=$(bspc query -M -m "$monitor")
 
 	mon_first="$(bspc query -M | awk NR==$i)"
 	if [[ $monitor != $mon_first ]]; then
@@ -45,18 +46,16 @@ for monitor in "${order[@]}"; do
 	#Make $desktops + 1 temporary desktops to swap around at will
 	#We should end up with these getting deleted at the last stage
 	tmps=$(seq -f tmp%g -s " " $((($desktops+1) * ($i-1)+1)) $((($desktops+1) * $i)))
-	echo $tmps
-	bspc monitor $monitor -a $tmps
+	bspc monitor $monitor -a $tmps &>/dev/null
 
 	i=$((i+1))
 done
-
-bspc query -D
 
 #Swapping desktops
 i=1
 desk_cnt=1
 for monitor in "${order[@]}"; do
+	monitor=$(bspc query -M -m "$monitor")
 	echo "Swapping desktops on $monitor"
 	this_desktops=$desktops
 	if [[ "$i" -le "$extras" ]]; then
@@ -66,8 +65,9 @@ for monitor in "${order[@]}"; do
 	desks="$(seq -s " " 1 $this_desktops)"
 	for desk in $desks; do
 		deskname="$(bspc query -D -m $monitor | awk NR==$desk)"
-		if [[ $deskname -ne $desk_cnt ]]; then
-			echo "Swap $deskname and $desk_cnt"
+		thisd=$(bspc query -D -d "$desk_cnt")
+		if [[ $deskname -ne $thisd ]]; then
+			echo "Swap $deskname and $thisd"
 			bspc desktop $deskname -s $desk_cnt
 		fi
 		desk_cnt=$(($desk_cnt + 1))
@@ -76,12 +76,10 @@ for monitor in "${order[@]}"; do
 	i=$((i+1))
 done
 
-bspc query -D
-
 for mon in "${removed[@]}"; do
 	echo $mon
-	bspc monitor $mon -d "$mon"
-	bspc wm -r $mon
+	bspc monitor $mon -d $mon
+	# bspc wm -r $mon
 done
 
 #Adjust number of desktops
