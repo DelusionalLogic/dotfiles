@@ -32,6 +32,29 @@ bindkey '\e[A' history-beginning-search-backward
 bindkey '\e[B' history-beginning-search-forward
 
 # ctrl-r starts searching history backward
-bindkey '^r' history-incremental-search-backward
+bindkey '^R' history-incremental-search-backward
 
-bindkey '^f' vi-forward-word
+bindkey '^F' vi-forward-word
+
+autoload edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd "^V" edit-command-line
+bindkey -M viins "^V" edit-command-line
+
+bindkey -M vicmd "ga" what-cursor-position
+bindkey -M vicmd "g~" vi-oper-swap-case
+bindkey -M vicmd "di" delete-in
+bindkey -M vicmd "ci" change-in
+bindkey -M vicmd "da" delete-around
+bindkey -M vicmd "ca" delete-around
+
+bindkey -M vicmd "^M" accept-line
+bindkey -M vicmd "1"-"9" digit-argument
+
+bindkey -M vicmd "=" list-choices
+bindkey -M vicmd "^D" list-choices
+
+bindkey -M vicmd  ":"  _complete_help 
+bindkey -M vicmd   ";" _read_comp
+
+bindkey -M viins "^U" all-matches
