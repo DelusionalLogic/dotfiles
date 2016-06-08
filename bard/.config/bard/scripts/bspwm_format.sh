@@ -1,6 +1,7 @@
 IFS=$':'
-grpcol="\$xcolor[gray]"
-for i in $1 ; do
+grpcol="$inactive_col"
+echo "$input" >&2
+for i in $input ; do
 	tagfgcol=""
 	tagstr=""
 	first=false
@@ -10,30 +11,32 @@ for i in $1 ; do
 	fi
 	case ${i:0:1} in
 		'F')
-			tagfgcol="\$xcolor[grey]"
-			tagstr=" %{T\$font[icon]}+ "
+			tagfgcol="$inactive_col"
+			tagstr=" + "
 			;;
 		'f')
-			tagfgcol="\$xcolor[grey]"
-			tagstr=" %{T\$font[icon]}- "
+			tagfgcol="$inactive_col"
+			tagstr=" - "
 			;;
 		'o')
-			tagfgcol="\$xcolor[yellow]"
-			tagstr=" %{T\$font[icon]}- "
+			tagfgcol="$active_col"
+			tagstr=" - "
 			;;
 		'O')
-			tagfgcol="\$xcolor[yellow]"
-			tagstr=" %{T\$font[icon]}+ "
+			tagfgcol="$active_col"
+			tagstr=" + "
 			;;
 		'm')
 			[ $first = false ] && echo -n " "
-			echo -n "%{F\$xcolor[grey]}["
-			grpcol="\$xcolor[grey]"
+			tagfgcol="$inactive_col"
+			tagstr="["
+			grpcol="$inactive_col"
 			;;
 		'M')
 			[ $first = false ] && echo -n " "
-			echo -n "%{F\$xcolor[red]}["
-			grpcol="\$xcolor[red]"
+			tagfgcol="$sep_col"
+			tagstr="["
+			grpcol="$sep_col"
 			;;
 		'L')
 			echo -n "%{F$grpcol}]"

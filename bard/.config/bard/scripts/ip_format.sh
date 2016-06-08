@@ -1,11 +1,9 @@
-essid=$1
-
-if [[ -z $essid ]]; then
-	essid="Not connected"
-	echo -en "%{F\$xcolor[red]}\uE21F"
-	echo " %{T-}%{F-}$essid"
+if [[ -z $ip ]]; then
+	ip="Not connected"
+	echo -en "%{F$nconnected_col}\uE21F"
+	echo " %{T-}%{F-}$ip"
 else
-	echo -en "%{F\$xcolor[blue]}\uE222"
-	echo " %{T-}%{F-}$essid"
+	echo -en "%{F$connected_col}\uE222"
+	echo " %{T-}%{F-}$ip"
 fi
 
