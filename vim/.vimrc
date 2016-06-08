@@ -14,6 +14,7 @@ Plug 'chriskempson/base16-vim'
 " Syntax
 "Plug 'Valloric/YouCompleteMe', { 'do': 'python2.7 ./install.py --all' }
 Plug 'Shougo/deoplete.nvim'
+Plug 'scrooloose/syntastic'
 
 "LaTeX
 Plug 'lervag/vimtex', {'for': 'tex'}
@@ -146,7 +147,7 @@ set foldnestmax=10 "no folds over 10
  "open/close folder
 nnoremap <space> za
 
-set foldmethod=indent "Fold based on indentation
+set foldmethod=marker "Fold based on indentation
 
 " move vertically by visual line
 nnoremap j gj
@@ -190,7 +191,7 @@ set noswapfile
 
 "Omnicomplete settings
 set complete+=kspell
-set completeopt=longest,menuone,noselect
+set completeopt=longest,menuone,noselect,preview
 
 "Map tab to down and up when in omnicomplete
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -233,7 +234,6 @@ endif
 highlight VertSplit ctermfg=244 ctermbg=NONE cterm=bold
 
 set numberwidth=5
-highlight LineNr term=bold cterm=NONE ctermfg=Black ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
 set nu
 
 let g:airline_powerline_fonts=1
@@ -241,12 +241,14 @@ let g:airline_theme='base16'
 set noshowmode
 set laststatus=2 "Always display the statusline
 
-"GitGutter colors
+"GitGutter colors {{{
 highlight clear SignColumn
 highlight GitGutterChange ctermbg=NONE ctermfg=Yellow
 highlight GitGutterAdd ctermbg=NONE ctermfg=DarkGreen
 highlight GitGutterDelete ctermbg=NONE ctermfg=Red
 highlight GitGutterChangeDelete ctermbg=NONE ctermfg=Blue
+
+" }}}
 
 "Shell command to open cmd output in scratch buffer
 function! s:ExecuteInShell(command)
@@ -267,7 +269,7 @@ command! -complete=shellcmd -nargs=+ Shell call s:ExecuteInShell(<q-args>)
 set background=dark
 colorscheme base16-flat
 
-"easymotion
+" EasyMotion {{{
 map  / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
 
@@ -285,7 +287,10 @@ map s <Plug>(easymotion-overwin-f2)
 let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 let g:EasyMotion_smartcase = 1 " US layout
 
-"Deoplete
+" }}}
+
+"Deoplete {{{
+
 let g:deoplete#enable_at_startup=1
 inoremap <silent><expr> <Tab>
 		\ pumvisible() ? "\<C-n>" :
@@ -303,12 +308,16 @@ let g:deoplete#omni_patterns.tex =
 			\ . '|%(include%(only)?|input)\s*\{[^}]*'
 			\ . ')\m'
 
-"Deoplete-clang
+" }}}
+
+"Deoplete-clang {{{
 
 let g:deoplete#sources#clang#libclang_path = '/usr/lib/libclang.so'
 let g:deoplete#sources#clang#clang_header = '/usr/lib/clang'
 
-"Vim-Racer
+" }}}
+
+"Vim-Racer {{{
 
 let g:racer_cmd = "/usr/bin/racer"
 let $RUST_SRC_PATH="/usr/src/rust/src/"
@@ -319,7 +328,9 @@ nmap gd <Plug>RacerGoToDefinition
 nmap gD <Plug>RacerGoToDefinitionSplit
 nmap K  <Plug>RacerShowDocumentation
 
-"Ultisnips
+" }}}
+
+" Ultisnips {{{
 let g:UltiSnipsExpandTrigger = "<nop>"
 let g:ulti_expand_or_jump_res = 0
 function! ExpandSnippetOrCarriageReturn()
@@ -341,3 +352,17 @@ let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsSnippetsDir="~/.config/nvim/ultisnips"
 
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "ultisnips"]
+
+" }}}
+
+" Syntastic {{{
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" }}}
