@@ -1,4 +1,4 @@
-export PATH=~/.localbin:$PATH
+export PATH=~/.localbin:~/.local/bin:$PATH
 export EDITOR=nvim
 
 export PAGER=less
@@ -24,7 +24,9 @@ export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswi
 export QEMU_AUDIO_DRV=pa
 
 ##SSH agent
-eval $(keychain --eval --agents ssh -Q --quiet id_ecdsa)
+# eval $(keychain --eval --agents ssh -Q --quiet id_ecdsa)
+gpg-connect-agent /bye
+export SSH_AUTH_SOCK=/run/user/1000/gnupg/S.gpg-agent.ssh
 
 #systemd
 systemctl --user import-environment PATH
