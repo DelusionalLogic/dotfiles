@@ -1,1 +1,0 @@
-/usr/share/base16/vim/base16-solarized.vim

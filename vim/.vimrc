@@ -14,13 +14,24 @@ Plug 'chriskempson/base16-vim'
 " Syntax
 "Plug 'Valloric/YouCompleteMe', { 'do': 'python2.7 ./install.py --all' }
 Plug 'Shougo/deoplete.nvim'
+Plug 'Shougo/neoinclude.vim'
 Plug 'scrooloose/syntastic'
+
+"PHP
+Plug 'm2mdas/phpcomplete-extended', {'for': 'php'}
 
 "LaTeX
 Plug 'lervag/vimtex', {'for': 'tex'}
 "Rust
 Plug 'rust-lang/rust.vim'
 Plug 'racer-rust/vim-racer'
+
+"Love2D
+Plug 'alols/vim-love-efm'
+Plug 'davisdude/vim-love-docs'
+
+"Python
+Plug 'zchee/deoplete-jedi'
 
 "C and C++
 Plug 'zchee/deoplete-clang'
@@ -34,10 +45,15 @@ Plug 'rbgrouleff/bclose.vim'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
 Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
 Plug 'tpope/vim-commentary'
 Plug 'dhruvasagar/vim-table-mode'
+
+" Unite
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/neomru.vim'
+Plug 'Shougo/neoyank.vim'
 
 " Speed
 Plug 'easymotion/vim-easymotion'
@@ -48,7 +64,7 @@ Plug 'godlygeek/tabular'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-dispatch'
-Plug 'derekwyatt/vim-protodef'
+Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
 " Required:
 call plug#end()
@@ -56,7 +72,7 @@ call plug#end()
 filetype plugin indent on
 
 " Vim man plugin
-runtime! ftplugin/man.vim
+"runtime! ftplugin/man.vim
 
 augroup FileSpecific
 	autocmd!
@@ -299,14 +315,26 @@ inoremap <silent><expr> <Tab>
 if !exists('g:deoplete#omni_patterns')
 	let g:deoplete#omni_patterns = {}
 endif
-let g:deoplete#omni_patterns.tex =
-			\ '\v\\%('
-			\ . '\a*cite\a*%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
-			\ . '|\a*ref%(\s*\{[^}]*|range\s*\{[^,}]*%(}\{)?)'
-			\ . '|hyperref\s*\[[^]]*'
-			\ . '|includegraphics\*?%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
-			\ . '|%(include%(only)?|input)\s*\{[^}]*'
-			\ . ')\m'
+" let g:deoplete#omni_patterns.tex =
+" 			\ '\v\\%('
+" 			\ . '\a*cite\a*%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+" 			\ . '|\a*ref%(\s*\{[^}]*|range\s*\{[^,}]*%(}\{)?)'
+" 			\ . '|hyperref\s*\[[^]]*'
+" 			\ . '|includegraphics\*?%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+" 			\ . '|%(include%(only)?|input)\s*\{[^}]*'
+" 			\ . ')\m'
+
+if !exists('g:deoplete#omni#input_patterns')
+	let g:deoplete#omni#input_patterns = {}
+endif
+let g:deoplete#omni#input_patterns.tex = 
+			\   '\\(?:'
+			\  .   '\w*cite\w*(?:\s*\[[^]]*\]){0,2}\s*{[^}]*'
+			\  .  '|\w*ref(?:\s*\{[^}]*|range\s*\{[^,}]*(?:}{)?)'
+			\  .  '|hyperref\s*\[[^]]*'
+			\  .  '|includegraphics\*?(?:\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+			\  .  '|(?:include(?:only)?|input)\s*\{[^}]*'
+			\  .')'
 
 " }}}
 
@@ -315,7 +343,21 @@ let g:deoplete#omni_patterns.tex =
 let g:deoplete#sources#clang#libclang_path = '/usr/lib/libclang.so'
 let g:deoplete#sources#clang#clang_header = '/usr/lib/clang'
 
+let g:deoplete#sources#clang#flags = [
+	\ "-I", "/usr/include/gio-unix-2.0/",
+	\ "-I", "/usr/include/glib-2.0/",
+	\ "-I", "/usr/include/glib-2.0/include",
+	\]
+
+	" \ system("pkg-config --cflags gio-unix-2.0"),
 " }}}
+
+"PHPcompleter-extended {{{
+"
+let g:phpcomplete_index_composer_command = 'composer'
+let g:deoplete#omni#input_patterns.php = '[^. \t]->|[a-zA-Z_]\w*::|(?:new|use|extends|implements)\s|(?:\$)'
+
+"}}}
 
 "Vim-Racer {{{
 
@@ -364,5 +406,64 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+" }}}
+
+" Unite.vim {{{
+nnoremap <C-p> :Unite -auto-resize -start-insert -buffer-name=Files file<CR>
+nnoremap <LocalLeader>b :Unite -auto-resize -buffer-name=Buffers buffer<CR>
+
+autocmd FileType unite call s:unite_settings()
+function! s:unite_settings()
+	" Overwrite settings.
+	nmap <buffer> <ESC> <Plug>(unite_exit)
+
+	imap <buffer> jj      <Plug>(unite_insert_leave)
+	"imap <buffer> <C-w>     <Plug>(unite_delete_backward_path)
+
+	imap <buffer><expr> j unite#smart_map('j', '')
+	imap <buffer> <TAB>   <Plug>(unite_select_next_line)
+	imap <buffer> <C-w>     <Plug>(unite_delete_backward_path)
+	imap <buffer> '     <Plug>(unite_quick_match_default_action)
+	nmap <buffer> '     <Plug>(unite_quick_match_default_action)
+	imap <buffer><expr> x
+				\ unite#smart_map('x', "\<Plug>(unite_quick_match_jump)")
+	nmap <buffer> x     <Plug>(unite_quick_match_jump)
+	nmap <buffer> <C-z>     <Plug>(unite_toggle_transpose_window)
+	imap <buffer> <C-z>     <Plug>(unite_toggle_transpose_window)
+	nmap <buffer> <C-j>     <Plug>(unite_toggle_auto_preview)
+	nmap <buffer> <C-r>     <Plug>(unite_narrowing_input_history)
+	imap <buffer> <C-r>     <Plug>(unite_narrowing_input_history)
+	nnoremap <silent><buffer><expr> l
+				\ unite#smart_map('l', unite#do_action('default'))
+
+	let unite = unite#get_current_unite()
+	if unite.profile_name ==# 'search'
+		nnoremap <silent><buffer><expr> r     unite#do_action('replace')
+	else
+		nnoremap <silent><buffer><expr> r     unite#do_action('rename')
+	endif
+	
+	if unite.buffer_name ==# 'Buffers'
+		nnoremap <silent><buffer><expr> dd    unite#do_action('wipeout')
+	endif
+
+	nnoremap <silent><buffer><expr> cd     unite#do_action('lcd')
+	nnoremap <buffer><expr> S      unite#mappings#set_current_sorters(
+				\ empty(unite#mappings#get_current_sorters()) ?
+				\ ['sorter_reverse'] : [])
+
+	" Runs "split" action by <C-s>.
+	imap <silent><buffer><expr> <C-s>     unite#do_action('split')
+endfunction
+
+let g:unite_source_history_yank_enable = 1
+nnoremap <LocalLeader>y :Unite -no-split -start-insert -auto-resize -buffer-name=Yank_History history/yank<CR>
+
+nnoremap <F9> :Unite -auto-resize -buffer-name=Unite_Menu menu<CR>
+inoremap <F9> :Unite -auto-resize -buffer-name=Unite_Menu menu<CR>
+
+nnoremap <C-L> :Unite -no-split -auto-resize -buffer-name=Lines line<CR>
+inoremap <C-L> :Unite -no-split -auto-resize -buffer-name=Lines line<CR>
 
 " }}}
