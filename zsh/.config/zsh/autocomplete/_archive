@@ -1,0 +1,42 @@
+#compdef archive
+
+_archive_commands() {
+	local -a _commands
+	_commands=(
+	"new:Create archive"
+	"update:Update cache"
+	"list:List archives"
+	"get:Get archive"
+	)
+	if (( CURRENT == 1 )); then
+		_describe -t commands 'archive command' _commands
+	else
+		cmd="${${_commands[(r)$words[1]:*]%%:*}}"
+
+		if (( $#cmd )); then
+			curcontext="${curcontext%:*:*}:archive-${cmd}:"
+
+			_call_function ret _archive_$cmd || _message "No more arguments"
+
+		else
+			_message "Unknown archive command: $words[1]"
+		fi
+		return ret
+	fi
+}
+
+_archive_get() {
+	_wanted archive_target expl "archives" \
+		compadd "$@" - $(archive list)
+}
+
+_archive_new() {
+	if (( CURRENT == 2 )); then
+		_describe -t commands 'archive name'
+	else
+		_files
+	fi
+}
+
+_arguments -s \
+	'*::archive commands:_archive_commands'

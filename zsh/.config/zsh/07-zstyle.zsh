@@ -15,6 +15,9 @@ zstyle ':completion:*:*:kill:*'           menu yes select
 zstyle ':completion:*:kill:*'             force-list always
 zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=36=31"
 
+# Highlight the first ambiguous letter
+zstyle ':completion:*'                    show-ambiguity true
+
 ## VCS
 # vcs_info
 zstyle ':vcs_info:*'                      enable git hg svn
@@ -32,9 +35,8 @@ zstyle ':completion:*'                       accept-exact '*(N)'
 zstyle ':completion:*'                       separate-sections 'yes'
 zstyle ':completion:*'                       list-dirs-first true
 zstyle ':completion:*:default'               list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*'                       menu select=200
 zstyle ':completion:*'                       use-perl=1
-zstyle ':completion:*'                       my-accounts='m@japh.se'
+zstyle ':completion:*'                       my-accounts='slashwin.dk'
 
 zstyle ':completion:*'                       squeeze-slashes true
 zstyle ':completion:*:cd:*'                  ignore-parents parent pwd
@@ -114,7 +116,7 @@ zstyle ':completion:*:(ssh|scp):*:users' ignored-patterns \
       adm bin daemon halt lp named shutdown sync
 
 zstyle ':completion:*:(ssh|scp):*:my-accounts' users-hosts \
-  'crshd@shellmix.com' 'mobile@192.168.0.112' 'mobile@192.168.1.49'
+  'delusional@home.slashwin.dk' 'admin@slashwin.dk'
 
 
 zstyle ':completion:*:*:*:users' ignored-patterns \
