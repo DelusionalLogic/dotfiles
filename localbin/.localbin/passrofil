@@ -12,10 +12,14 @@ else
     exit
 fi
 
+if [[ -n $(command -v gpg) ]] && [[ -n $(command -v lpass_askpass) ]]; then
+	askpass=$(command -v lpass_askpass);
+fi
+
 # Get list of sites
 if [[ -z "$@" ]]; then
 # -e 's/^[^\/]*\///' 
-    list=$(lpass ls --sync auto --color never | sed -e 's/ \[id.*//' | sort -u | tail -n +2)
+    list=$(LPASS_ASKPASS=$askpass lpass ls --sync auto --color never | sed -e 's/ \[id.*//' | sort -u | tail -n +2)
 
     # Do the thing
     action=$(printf "$list" | $menu -i -p "lpass: ")

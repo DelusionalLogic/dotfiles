@@ -1,0 +1,91 @@
+#!/bin/bash
+
+scratch="/tmp/archive"
+config="$HOME/.config/archive"
+templates="$config/templates"
+cache="$config/cache"
+
+server="delusional@home.slashwin.dk"
+remotePath="/home/delusional/archive"
+remote="$server:$remotePath"
+
+new() {
+	local name="$1"
+	shift
+	local files=("$@")
+
+	local archDir="$scratch/./$name"
+
+	echo "Creating new archive $name"
+	mkdir -p "$archDir" || exit 1
+	echo "Compressing files"
+	tar -czvf "$archDir/files.tar.gz" "${files[@]}" || exit 1
+	echo "Creating description"
+	cp "$templates/desc" "$archDir/desc"
+	vim "$archDir/desc" || exit 1
+	echo "Sending files to remote server"
+	rsync --progress -Rr "$archDir" "$remote" || exit 1
+	echo "removing $archDir"
+	rm  -r "$archDir"
+}
+
+list() {
+	cat "$cache"
+}
+
+update() {
+	echo "Listing archives on the remote server"
+	local archives=$(ssh "$server" "cd $remotePath; find -type f -name files.tar.gz | cut -d / -f 2- | xargs dirname")
+	echo "Writing archives to cache"
+	echo "$archives" > "$cache"
+	echo "Archives written to cache"
+}
+
+get() {
+	local name="$1"
+	local path="$2"
+	if [ -z "$path" ]; then
+		path="$(basename $name)"
+	fi
+
+	echo "Retrieving archive $name into $path"
+	mkdir -p "$path"
+	echo "Downloading file from remote server"
+	rsync --progress -r "$remote/./$name/" "$path" || exit 1
+	mkdir "$path/files" || exit 1
+	tar -xvf "$path/files.tar.gz" -C "$path/files" || exit 1
+}
+
+help() {
+	echo "Commands: "
+	echo "new [name] [folder...] - Archive folders"
+	echo "list - List archives"
+	echo "update - Update the archive list"
+	echo "get [name] - Get archive"
+}
+
+
+mkdir -p "$scratch"
+
+command="$1"
+shift
+case "$command" in
+	new)
+		new "$@"
+		;;
+	list)
+		list "$@"
+		;;
+	update)
+		update "$@"
+		;;
+	get)
+		get "$@"
+		;;
+	*)
+		echo "Invalid command"
+		echo ""
+		help
+		exit 1
+		;;
+esac

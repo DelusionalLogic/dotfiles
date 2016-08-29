@@ -20,7 +20,7 @@ local function render()
 end
 
 local cbs = {
-	song = function(p)
+	track = function(p)
 		if type(p.artist) == "string" and type(p.title) == "string" then
 			song = p.title .. " - " .. p.artist
 			render()

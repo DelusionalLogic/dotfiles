@@ -1,0 +1,2 @@
+urxvt -bg "rgba:0000/0000/0000/0000" -name vis -depth 32 +sb -g 319x60-0-0 -e vis &
+xdotool search --sync --classname vis windowsize %@ 1920 0
