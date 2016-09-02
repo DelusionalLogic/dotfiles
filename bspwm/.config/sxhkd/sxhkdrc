@@ -117,6 +117,9 @@ super + q
 super + p
 	passrofil
 
+Caps_Lock
+	~/scripts/capsinform
+
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd

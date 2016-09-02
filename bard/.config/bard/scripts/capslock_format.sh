@@ -1,6 +1,6 @@
-if [[ "$1" = "on" ]]; then
-	echo -en "%{F\$xcolor[blue]}%{T\$font[icon]}\uE0AE Caps"
+if [[ "$status" == "on" ]]; then
+	echo -en "%{F$on_col}%{T$icon}\uE0AE Caps"
 else
-	echo -en "%{F\$xcolor[grey]}%{T\$font[icon]}\uE0AE Caps"
+	echo -en "%{F$off_col}%{T$icon}\uE0AE Caps"
 fi
 echo ""

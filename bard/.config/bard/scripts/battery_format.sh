@@ -1,4 +1,4 @@
-
+#!/bin/bash
 echo -n "%{T$icon}"
 if [ "$status" == "Charging" ] || [ "$status" == "Full" ]; then
 	echo -en "%{F$charging_col}\uE239"
@@ -9,4 +9,4 @@ elif [ "$status" == "Discharging" ] && [[ $percentage > 10 ]]; then
 else
 	echo -en "%{F$low_col}\uE236"
 fi
-echo " %{T-}%{F-}percentage"
+echo "%{F-}%{T-} $percentage"
