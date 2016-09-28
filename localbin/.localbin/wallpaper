@@ -1,4 +1,8 @@
 #!/bin/bash
+HEADER_COL='\033[0;36m'
+COMMAND_COL='\033[0;33m'
+INVALID_COL='\033[0;31m'
+RESET_COL='\033[0m'
 
 wallDir="$HOME/Pictures/Wallpapers"
 
@@ -42,16 +46,28 @@ case "$1" in
 		rm "$wallDir/$URL"
 		;;
 	*)
-		echo "Invalid option"
+
+		printf "${HEADER_COL}"
+		cat << "EOF"
+
+        _....,_         _,...._
+    _.-` _,..,_'.     .'_,..,_ `-._
+     _,-`/ o \ '.     .' / o \`-,_     I saw that
+      '-.\___/.-`     `-.\___/.-'
+
+EOF
+		printf "${RESET_COL}"
+
+		echo -e "${INVALID_COL}Invalid option${RESET_COL}"
 		echo ""
-		echo "Supported options are:"
-		echo "set - set the given wallpaper as the current wallpaper and lock it"
-		echo "unlock - unlock the wallpaper"
-		echo "lock - lock the current wallpaper"
-		echo "apply - apply wallpaper, randomizing it if lock is not set"
-		echo "get - download wallpaper from url"
-		echo "current - get the current wallpaper"
-		echo "delete - delete wallpaper"
+		echo -e "${INVALID_COL}Supported options are:${RESET_COL}"
+		echo -e "${COMMAND_COL}set${RESET_COL} - set the given wallpaper as the current wallpaper and lock it"
+		echo -e "${COMMAND_COL}unlock${RESET_COL} - unlock the wallpaper"
+		echo -e "${COMMAND_COL}lock${RESET_COL} - lock the current wallpaper"
+		echo -e "${COMMAND_COL}apply${RESET_COL} - apply wallpaper, randomizing it if lock is not set"
+		echo -e "${COMMAND_COL}get${RESET_COL} - download wallpaper from url"
+		echo -e "${COMMAND_COL}current${RESET_COL} - get the current wallpaper"
+		echo -e "${COMMAND_COL}delete${RESET_COL} - delete wallpaper"
 		exit 1
 		;;
 esac

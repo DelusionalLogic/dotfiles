@@ -51,6 +51,7 @@ end
 
 signal.signal(1, stop)
 signal.signal(2, stop)
+signal.signal(15, stop)
 
 ws:on_error(function(ws, msg)
 	io.stderr:write("Error: " .. msg .. "\n")
