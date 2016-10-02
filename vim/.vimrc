@@ -28,14 +28,15 @@ Plug 'racer-rust/vim-racer'
 
 "Love2D
 Plug 'alols/vim-love-efm'
-Plug 'davisdude/vim-love-docs'
 
 "Python
 Plug 'zchee/deoplete-jedi'
 
+"Lua
+Plug 'xolox/vim-misc' | Plug 'xolox/vim-lua-ftplugin'
+
 "C and C++
 Plug 'zchee/deoplete-clang'
-
 " Snippets
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
@@ -283,7 +284,7 @@ endfunction
 command! -complete=shellcmd -nargs=+ Shell call s:ExecuteInShell(<q-args>)
 
 set background=dark
-colorscheme base16-flat
+colorscheme base16-flat-mod
 
 " EasyMotion {{{
 map  / <Plug>(easymotion-sn)
@@ -327,6 +328,9 @@ endif
 if !exists('g:deoplete#omni#input_patterns')
 	let g:deoplete#omni#input_patterns = {}
 endif
+if !exists('g:deoplete#omni#functions')
+	let g:deoplete#omni#functions = {}
+endif
 let g:deoplete#omni#input_patterns.tex = 
 			\   '\\(?:'
 			\  .   '\w*cite\w*(?:\s*\[[^]]*\]){0,2}\s*{[^}]*'
@@ -336,6 +340,16 @@ let g:deoplete#omni#input_patterns.tex =
 			\  .  '|(?:include(?:only)?|input)\s*\{[^}]*'
 			\  .')'
 
+" }}}
+
+" Lua {{{
+	let g:lua_check_syntax = 0
+	let g:lua_complete_omni = 1
+	let g:lua_complete_dynamic = 0
+	let g:lua_define_completion_mappings = 0
+
+	" let g:deoplete#omni#functions.lua = 'xolox#lua#omnifunc'
+	let g:deoplete#omni#functions.lua = 'xolox#lua#completefunc'
 " }}}
 
 "Deoplete-clang {{{
@@ -391,7 +405,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-l>"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 
-let g:UltiSnipsSnippetsDir="~/.config/nvim/ultisnips"
+"let g:UltiSnipsSnippetsDir="~/.config/nvim/ultisnips"
 
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "ultisnips"]
 
