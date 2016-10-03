@@ -1,0 +1,22 @@
+# GPG settings sourced from .mutt/muttrc
+# Use GPGME
+set crypt_use_gpgme = yes
+set crypt_autosign = yes
+set pgp_sign_as = DC1E28824A1B9821B7E43D3DF1FBF142B8152A85
+set pgp_timeout = 3600
+set pgp_good_sign="^gpgv?: Good signature from "
+
+# Sign replies to signed email
+set crypt_replysign = yes
+
+# Encrypt replies to encrypted email
+set crypt_replyencrypt = yes
+
+# Encrypt and sign replies to encrypted and signed email
+set crypt_replysignencrypted = yes
+
+# Attempt to verify email signatures automatically
+set crypt_verify_sig = yes
+
+# fetch keys
+# set pgp_getkeys_command="pkspxycwrap %r"

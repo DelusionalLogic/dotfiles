@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+if [[ -n $(command -v gpg) ]] && [[ -n $(command -v lpass_askpass) ]]; then
+	askpass=$(command -v lpass_askpass);
+fi
+
+LPASS_ASKPASS=$askpass /usr/bin/lpass $@

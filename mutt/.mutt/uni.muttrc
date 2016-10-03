@@ -1,0 +1,16 @@
+#######################
+# jwr specific options
+#######################
+
+color status     brightwhite  black
+color indicator  brightwhite  black
+color index      brightblue   default    "~f fit@fklub.dk"
+
+set from      = "jejens13@student.aau.dk"
+#set sendmail  = "muttdown -a uni"
+set sendmail  = "msmtp -a uni"
+set mbox      = "+uni/archive"
+set record    = "+uni/INBOX.Sent"
+set postponed = "+uni/INBOX.Draft"
+
+macro index S "<save-message>+uni/INBOX.Spam<enter>"               "mark message as spam"

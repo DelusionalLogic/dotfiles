@@ -1,0 +1,101 @@
+#!/bin/env lua
+local colors = require "ansicolors"
+
+io.write(colors([[%{bright}%{cyan}
+  _____
+ |_____|
+[ ~    :]
+[ ( - ) ]
+|_______|
+
+]]))
+
+
+local http = require "socket.http"
+local gumbo = require "gumbo"
+
+function iter (state, i)
+	i = i + 1
+	if i > state.stop then
+		return
+	end
+	local v = state.list[i]
+	if v then
+		return i, v
+	end
+end
+
+function slicepairs(list, start, stop)
+	if start == nil then start = 1 end
+	return iter, {list=list, stop=stop}, start-1
+end
+
+function getPassWd(name)
+	local p = io.popen(string.format("lpass show \"%s\"", name))
+	local pass = {}
+	for line in p:lines() do
+		key, val = string.match(line, "(.+): (.+)")
+		pass[key] = val
+	end
+	p:close()
+	return pass
+end
+
+local pass = getPassWd("Miele Logic 8201.mieleturvask.dk")
+local url = string.format("http://%s:%s@8201.mieleturvask.dk", pass.Username, pass.Password)
+
+local body, code = http.request(url)
+
+local root = gumbo.parse(body)
+local tbl = root:getElementsByTagName("table")[3]
+
+washer = {}
+for i, row in slicepairs(tbl:getElementsByTagName("tr"), 2, 6) do
+	local this = {
+		id = tonumber(row.children[2].textContent),
+		state = string.match(row.children[10].textContent, ".*Ledig.*") ~= nil,
+	}
+
+	if not this.state then
+		this.timeleft = string.match(row.children[10].attributes.title.value, "Resttid: (.+). -" )
+	end
+	table.insert(washer, this)
+end
+
+dryer = {}
+for i, row in slicepairs(tbl:getElementsByTagName("tr"), 7, 8) do
+	local this = {
+		id = tonumber(row.children[2].textContent),
+		state = string.match(row.children[10].textContent, ".*Ledig.*") ~= nil,
+	}
+
+	if not this.state then
+		this.timeleft = string.match(row.children[10].attributes.title.value, "Resttid: (.+). -" )
+	end
+	table.insert(dryer, this)
+end
+
+print(colors("%{blue}Washers"))
+for k, v in ipairs(washer) do
+	io.write("Machine ")
+	io.write(tostring(v.id))
+	io.write(" .......... ")
+
+	local thisState = v.state and "Free" or string.format("In Use (%s)", v.timeleft)
+	local thisColor = v.state and "green" or "red"
+	io.write(colors(string.format("%%{%s}%s", thisColor, thisState)))
+	io.write("\n")
+end
+
+print()
+print(colors("%{blue}Dryers"))
+for k, v in ipairs(dryer) do
+	io.write("Machine ")
+	io.write(tostring(v.id))
+	io.write(" .......... ")
+
+	local thisState = v.state and "Free" or string.format("In Use (%s)", v.timeleft)
+	local thisColor = v.state and "green" or "red"
+	io.write(colors(string.format("%%{%s}%s", thisColor, thisState)))
+	io.write("\n")
+end

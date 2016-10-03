@@ -1,0 +1,15 @@
+#########################
+# gmail specific options
+#########################
+
+color status     brightwhite   green
+color indicator  brightwhite   green
+
+set from      = "delusionallogic@gmail.com"
+set sendmail  = "muttdown -a gmail"
+set mbox      = "+gmail/archive"
+set record    = "+gmail/[Gmail].Sent Mail"
+set postponed = "+gmail/[Gmail].Drafts"
+
+macro index S "<save-message>+gmail/[Gmail].Spam<enter>"         "mark message as spam"
+
