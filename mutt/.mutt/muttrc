@@ -129,6 +129,8 @@ subscribe aur-general@archlinux.org
 
 subscribe fit@lists.fklub.dk
 subscribe fit@fklub.dk
+subscribe fembers@lists.fklub.dk
+subscribe fembers@fklub.dk
 
 # these just give me headaches
 bind index,pager \#     noop
