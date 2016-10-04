@@ -77,7 +77,7 @@ for monitor in "${order[@]}"; do
 done
 
 for mon in "${removed[@]}"; do
-	echo $mon
+	echo "Deleting $mon"
 	bspc monitor $mon -d $mon
 	# bspc wm -r $mon
 done

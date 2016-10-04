@@ -1,0 +1,18 @@
+#!/bin/zsh
+
+pipe=/tmp/capsinfo
+
+if [[ ! -p $pipe ]]; then
+	mkfifo $pipe
+fi
+
+while true; do
+	if read line < $pipe; then
+		if [[ "$line" == "off" ]]; then
+			echo "off"
+		elif [[ "$line" == "on" ]]; then
+			echo "on"
+		fi
+	fi
+done
+
