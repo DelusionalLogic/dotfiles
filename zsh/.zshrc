@@ -1,7 +1,6 @@
 fpath=(~/.config/zsh/autocomplete $fpath)
 
 autoload -U colors && colors
-autoload -U compinit && compinit -u
 autoload -U vcs_info && vcs_info
 
 zmodload zsh/complist
@@ -21,33 +20,31 @@ setopt completealiases
 source ~/.zplug/init.zsh
 
 #Autojump hook
-source /etc/profile.d/autojump.zsh
+zplug "/etc/profile.d/autojump.zsh", from:local
 
 #Command not found hook
-source /usr/share/doc/pkgfile/command-not-found.zsh
+zplug "/usr/share/doc/pkgfile/command-not-found.zsh", from:local
 
 #Autocompletion
 zplug "zsh-users/zsh-autosuggestions"
 #source ~/.config/zsh/autosuggestions/zsh-autosuggestions.zsh
 
 #Arcanist
-source /usr/share/php/arcanist/resources/shell/bash-completion
+zplug "/usr/share/php/arcanist/resources/shell/bash-completion", from:local
+
+zplug "djui/alias-tips"
+zplug "arzzen/calc.plugin.zsh"
+zplug "Seinh/git-prune"
+zplug "RobSis/zsh-completion-generator"
+
+. /usr/share/fzf/key-bindings.zsh
 
 #Make sure this is last!
 zplug "zsh-users/zsh-syntax-highlighting", nice:10
 
+zplug "~/.config/zsh", from:local, nice:11
+
 zplug load
-
-#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# Import seperate config files
-#=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-
-for r in $HOME/.config/zsh/*.zsh; do
-  if [[ $DEBUG > 0 ]]; then
-    echo "zsh: sourcing $r"
-  fi
-  source $r
-done
 
 eval $( dircolors -b $XDG_CONFIG_HOME/zsh/LS_COLORS/LS_COLORS )
 export LS_COLORS

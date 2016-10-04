@@ -8,9 +8,9 @@ ZSH_HIGHLIGHT_STYLES[alias]='fg=blue,bold'
 ZSH_HIGHLIGHT_STYLES[function]='fg=blue,bold'
 
 # Commands and builtins
-ZSH_HIGHLIGHT_STYLES[command]="fg=blue,bold"
-ZSH_HIGHLIGHT_STYLES[hashed-command]="fg=blue,bold"
-ZSH_HIGHLIGHT_STYLES[builtin]="fg=blue,bold"
+ZSH_HIGHLIGHT_STYLES[command]="fg=blue"
+ZSH_HIGHLIGHT_STYLES[hashed-command]="fg=blue"
+ZSH_HIGHLIGHT_STYLES[builtin]="fg=blue"
 
 # Paths
 ZSH_HIGHLIGHT_STYLES[path]='fg=white'
@@ -30,7 +30,10 @@ ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]="fg=green"
 
 # PATTERNS
 # rm -rf
-ZSH_HIGHLIGHT_PATTERNS+=('rm -rf *' 'fg=grey,bold,bg=red')
+ZSH_HIGHLIGHT_PATTERNS+=('rm -rf *' 'fg=red,bold')
 
 # Sudo
-ZSH_HIGHLIGHT_PATTERNS+=('sudo ' 'fg=grey,bold,bg=red')
+ZSH_HIGHLIGHT_PATTERNS+=('sudo ' 'fg=red')
+
+#Autosuggestion
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=white,bold'

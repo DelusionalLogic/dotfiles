@@ -1,6 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =4
-let g:netrw_dirhist_1='/etc/sysctl.d'
-let g:netrw_dirhist_2='/home/delusional/dotfiles/vim/.vim'
-let g:netrw_dirhist_3='/home/delusional/Documents/muttdown/muttdown'
-let g:netrw_dirhist_4='/home/delusional'
