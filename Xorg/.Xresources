@@ -7,7 +7,7 @@ rofi.color-urgent: base09,  base00,  base09,  base09,  base00
 rofi.color-active: base0E,  base00,  base0E,  base0B,  base00
 
 !                  'background', 'border'
-rofi.color-window: base00,      base01
+rofi.color-window: base00,      base0D
 
 
 !Font
