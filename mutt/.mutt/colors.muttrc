@@ -6,7 +6,7 @@
   color normal     white        default
 
 # main colors
-  color tree       brightmagenta default
+  color tree       brightcyan    default
   color error      brightred     default
   color message    brightgreen   default
 
@@ -24,23 +24,23 @@ uncolor index "~D"
 # and recolor them appropriately
   color index      brightyellow  default "~P"
   color index      green         default "~C @.com"
-  color index      red           default "~N ~u"  # new ML mail
-  color index      brightred     default "~N !~u" # new non-ML mail
+  color index      brightred     default "~N ~u"  # new ML mail
+  color index      red           default "~N !~u" # new non-ML mail
   color index      brightgreen   default "~T"
-  color index      brightblack   default "~D"
+  color index      brightwhite   default "~D"
 
 # set up the headers
-  color header     brightmagenta default "^from:"
+  color header     brightcyan    default "^from:"
   color header     green         default "^to:"
   color header     yellow        default "^cc:"
   color header     blue          default "^date:"
   color header     brightgreen   default "^subject:"
 
 # message bodies
-  color attachment brightblack   default
-  color search     red           brightblack
+  color attachment brightwhite   default
+  color search     red           brightwhite
   color signature  cyan          default
-  color tilde      brightblack   default
+  color tilde      brightwhite   default
   color hdrdefault yellow        default
   color bold       brightyellow  default
 
@@ -66,8 +66,8 @@ uncolor index "~D"
   color quoted5    brightgreen   default
   color quoted6    brightyellow  default
   color quoted7    brightcyan    default
-     
+
 # PGP messages
   color body      brightgreen    default "^gpg: Good signature .*"
   color body      yellow         default "^gpg: "
-  color body      brightred      default "^gpg: BAD signature from. *"
+  color body      brightred      default ".*BAD.* signature from.*"

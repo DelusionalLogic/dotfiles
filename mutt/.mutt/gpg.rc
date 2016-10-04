@@ -5,6 +5,7 @@ set crypt_autosign = yes
 set pgp_sign_as = DC1E28824A1B9821B7E43D3DF1FBF142B8152A85
 set pgp_timeout = 3600
 set pgp_good_sign="^gpgv?: Good signature from "
+set pgp_long_ids
 
 # Sign replies to signed email
 set crypt_replysign = yes
