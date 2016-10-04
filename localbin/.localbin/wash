@@ -2,17 +2,33 @@
 local colors = require "ansicolors"
 
 io.write(colors([[%{bright}%{cyan}
-  _____
- |_____|
-[ ~    :]
-[ ( - ) ]
-|_______|
+     _____
+    |_____|
+   [ ~    :]    never give up;
+   [ ( - ) ]    for even rivers someday wash dams away.
+   |_______|
 
 ]]))
 
 
 local http = require "socket.http"
 local gumbo = require "gumbo"
+
+local lpass = {
+	cred = function(name)
+		local p = io.popen(string.format("lpass show \"%s\"", name))
+		local pass = {}
+		for line in p:lines() do
+			key, val = string.match(line, "(.+): (.+)")
+			if not string.match(key, "^%u*$") then
+				key = string.gsub(key, "^%A*(%a)", string.lower)
+			end
+			pass[key] = val
+		end
+		p:close()
+		return pass
+	end
+}
 
 function iter (state, i)
 	i = i + 1
@@ -30,19 +46,9 @@ function slicepairs(list, start, stop)
 	return iter, {list=list, stop=stop}, start-1
 end
 
-function getPassWd(name)
-	local p = io.popen(string.format("lpass show \"%s\"", name))
-	local pass = {}
-	for line in p:lines() do
-		key, val = string.match(line, "(.+): (.+)")
-		pass[key] = val
-	end
-	p:close()
-	return pass
-end
+local pass = lpass.cred("Miele Logic 8201.mieleturvask.dk")
 
-local pass = getPassWd("Miele Logic 8201.mieleturvask.dk")
-local url = string.format("http://%s:%s@8201.mieleturvask.dk", pass.Username, pass.Password)
+local url = string.format("http://%s:%s@8201.mieleturvask.dk", pass.username, pass.password)
 
 local body, code = http.request(url)
 
@@ -57,7 +63,7 @@ for i, row in slicepairs(tbl:getElementsByTagName("tr"), 2, 6) do
 	}
 
 	if not this.state then
-		this.timeleft = string.match(row.children[10].attributes.title.value, "Resttid: (.+). -" )
+		this.timeleft = string.match(row.children[10].attributes.title.value, "Resttid: (.+)%. %-" )
 	end
 	table.insert(washer, this)
 end
@@ -70,7 +76,7 @@ for i, row in slicepairs(tbl:getElementsByTagName("tr"), 7, 8) do
 	}
 
 	if not this.state then
-		this.timeleft = string.match(row.children[10].attributes.title.value, "Resttid: (.+). -" )
+		this.timeleft = string.match(row.children[10].attributes.title.value, "Resttid: (.+)%. %-" )
 	end
 	table.insert(dryer, this)
 end

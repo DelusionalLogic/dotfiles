@@ -1,5 +1,25 @@
 #!/bin/zsh
 
+HEADER_COL='\033[1;36m'
+RESET_COL='\033[0m'
+
+if [[ -t 1 ]]; then
+	print "${HEADER_COL}"
+	cat << ENDLOGO
+            .-""-.
+           / .--. \\
+          / /    \\ \\
+          | |    | |
+          | |.-""-.|
+         ///\`.::::.\`\\
+        ||| ::/  \:: ;      They weren't crazy. They were tired of being locked up.
+        ||; ::\__/:: ;      Even I could see that.
+         \\\\\\ '::::' /
+          \`=':-..-'\`
+ENDLOGO
+	print "${RESET_COL}"
+fi
+
 if [[ -n $(command -v gpg) ]] && [[ -n $(command -v lpass_askpass) ]]; then
 	askpass=$(command -v lpass_askpass);
 fi
