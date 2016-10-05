@@ -2,8 +2,8 @@
 # gmail specific options
 #########################
 
-color status     brightwhite   green
-color indicator  brightwhite   green
+color status     red   brightblack
+color indicator  red   brightblack
 
 set from      = "delusionallogic@gmail.com"
 set sendmail  = "muttdown -a gmail"

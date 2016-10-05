@@ -31,6 +31,12 @@ export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswi
 
 export QEMU_AUDIO_DRV=pa
 
+PATH="/home/delusional/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/home/delusional/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/delusional/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/delusional/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/delusional/perl5"; export PERL_MM_OPT;
+
 ##SSH agent
 # eval $(keychain --eval --agents ssh -Q --quiet id_ecdsa)
 gpg-connect-agent /bye

@@ -114,8 +114,16 @@ source ~/.mutt/gpg.rc                                            # use GPG
 
 # account specific sources
 folder-hook personal/* source ~/.mutt/personal.muttrc
+macro index gh       "<change-folder> =personal/INBOX<enter>"  "go to Inbox"
+
 folder-hook gmail/* source ~/.mutt/gmail.muttrc 
+macro index gl       "<change-folder> =gmail/INBOX<enter>"     "go to Gmail inbox"
+
 folder-hook uni/* source ~/.mutt/uni.muttrc 
+macro index gj       "<change-folder> =uni/INBOX<enter>"       "go to Uni Inbox"
+macro index gf       "<change-folder> =uni/FIT<enter>"         "go to Uni FIT"
+
+
 
 # Mailing lists
 lists arch-announce@archlinux.org                                # Arch announcements
@@ -171,9 +179,6 @@ bind pager CO sidebar-open
 macro index,pager b '<enter-command>toggle sidebar_visible<enter>'
 bind index B bounce-message
 
-macro index gh       "<change-folder> =personal/INBOX<enter>"  "go to Inbox"
-macro index gj       "<change-folder> =uni/INBOX<enter>"       "go to Uni Inbox"
-macro index gl       "<change-folder> =gmail/INBOX<enter>"     "go to Gmail inbox"
 macro index \Cr      "<tag-prefix><clear-flag>N"               "mark tagged messages as read"
 macro index \Cp      "<pipe-message>cat > ~/"                  "save message as" 
 macro index \CB        "<limit>~b "                              "search message bodies"

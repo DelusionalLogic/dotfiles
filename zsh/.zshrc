@@ -51,3 +51,4 @@ export LS_COLORS
 
 GPG_TTY=$(tty)
 export GPG_TTY
+
