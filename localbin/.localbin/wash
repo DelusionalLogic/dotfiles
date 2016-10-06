@@ -63,7 +63,7 @@ for i, row in slicepairs(tbl:getElementsByTagName("tr"), 2, 6) do
 	}
 
 	if not this.state then
-		this.timeleft = string.match(row.children[10].attributes.title.value, "Resttid: (.+)%. %-" )
+		this.timeleft = string.match(row.children[10].attributes.title.value, "Resttid: (.+)%." )
 	end
 	table.insert(washer, this)
 end
@@ -76,7 +76,7 @@ for i, row in slicepairs(tbl:getElementsByTagName("tr"), 7, 8) do
 	}
 
 	if not this.state then
-		this.timeleft = string.match(row.children[10].attributes.title.value, "Resttid: (.+)%. %-" )
+		this.timeleft = string.match(row.children[10].attributes.title.value, "Resttid: (.+)%." )
 	end
 	table.insert(dryer, this)
 end

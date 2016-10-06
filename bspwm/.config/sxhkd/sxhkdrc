@@ -95,7 +95,7 @@ super + {ae, oslash}
 #
 
 super + Return
-	urxvtc
+	termite
 
 super + alt + Return
 	rofi -show window -fuzzy -hide-scrollbar
