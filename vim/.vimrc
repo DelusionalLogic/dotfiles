@@ -2,7 +2,7 @@ let mapleader=","       " leader is comma
 let maplocalleader=",," " localleader is comma
 
 if &compatible
-  set nocompatible               " Be iMproved
+	set nocompatible               " Be iMproved
 endif
 
 call plug#begin('~/.vim/plugged')
@@ -96,26 +96,24 @@ augroup FileSpecific
 
 	" Fugitive
 	autocmd User fugitive
-				\ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
-				\   nnoremap <buffer> .. :edit %:h<CR> |
-				\ endif
+			\ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
+			\   nnoremap <buffer> .. :edit %:h<CR> |
+			\ endif
 	autocmd BufReadPost fugitive://* set bufhidden=delete
 
-	" Racket
 	function StartRacket()
-		VimShellCreate -buffer-name=repl
-		VimShellSendBuffer repl
-		VimShellSendString /bin/racket -il xrepl -e "(enter! \"main.rkt\")"
+		VimShellCreate -buffer-name=repl -split -split-command=split
+		resize 10
+		VimShellSendString /bin/racket -i -e "(enter! \"main.rkt\")"
 	endfunction
 
 	function ReloadRacket()
-		VimShellClose repl
+		VimShellClose
 		call StartRacket()
 	endfunction
 
-
-	autocmd FileType racket call StartRacket()
 	autocmd BufWritePost *.rkt call ReloadRacket()
+	autocmd BufReadPost *.rkt call StartRacket()
 augroup END
 
 set formatoptions=qrn1j
@@ -142,9 +140,9 @@ set synmaxcol=800
 
 "Trailing whitespace
 augroup trailing
-    au!
-    au InsertEnter * :set listchars-=trail:⌴
-    au InsertLeave * :set listchars+=trail:⌴
+	au!
+	au InsertEnter * :set listchars-=trail:⌴
+	au InsertLeave * :set listchars+=trail:⌴
 augroup END
 
 set modeline
@@ -182,13 +180,13 @@ nnoremap <leader><space> :nohlsearch<CR>
 
 " print highlight group
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+			\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+			\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 set foldenable "enable folding
 set foldlevelstart=10 "unfold must stuff
 set foldnestmax=10 "no folds over 10
- "open/close folder
+"open/close folder
 nnoremap <space> za
 
 set foldmethod=marker "Fold based on indentation
@@ -248,11 +246,11 @@ inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
 " Make sure Vim returns to the same line when you reopen a file.
 " Thanks, Amit
 augroup line_return
-    au!
-    au BufReadPost *
-        \ if line("'\"") > 0 && line("'\"") <= line("$") |
-        \     execute 'normal! g`"zvzz' |
-        \ endif
+	au!
+	au BufReadPost *
+				\ if line("'\"") > 0 && line("'\"") <= line("$") |
+				\     execute 'normal! g`"zvzz' |
+				\ endif
 augroup END
 
 " toggle between number and relativenumber
@@ -271,8 +269,8 @@ nnoremap <leader>ll :call ToggleNumber()<CR>
 " file it was loaded from, thus the changes you made.
 " Only define it when not defined already.
 if !exists(":DiffOrig")
-  command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-			\ | wincmd p | diffthis
+	command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+				\ | wincmd p | diffthis
 endif
 
 highlight VertSplit ctermfg=244 ctermbg=NONE cterm=bold
@@ -358,7 +356,7 @@ endif
 if !exists('g:deoplete#omni#functions')
 	let g:deoplete#omni#functions = {}
 endif
-let g:deoplete#omni#input_patterns.tex = 
+let g:deoplete#omni#input_patterns.tex =
 			\   '\\(?:'
 			\  .   '\w*cite\w*(?:\s*\[[^]]*\]){0,2}\s*{[^}]*'
 			\  .  '|\w*ref(?:\s*\{[^}]*|range\s*\{[^,}]*(?:}{)?)'
@@ -417,12 +415,12 @@ nmap K  <Plug>RacerShowDocumentation
 let g:UltiSnipsExpandTrigger = "<nop>"
 let g:ulti_expand_or_jump_res = 0
 function! ExpandSnippetOrCarriageReturn()
-    let snippet = UltiSnips#ExpandSnippetOrJump()
-    if g:ulti_expand_or_jump_res > 0
-        return snippet
-    else
-        return "\<CR>"
-    endif
+	let snippet = UltiSnips#ExpandSnippetOrJump()
+	if g:ulti_expand_or_jump_res > 0
+		return snippet
+	else
+		return "\<CR>"
+	endif
 endfunction
 inoremap <expr> <CR> pumvisible() ? "\<C-R>=ExpandSnippetOrCarriageReturn()\<CR>" : "\<CR>"
 
@@ -451,7 +449,10 @@ let g:syntastic_check_on_wq = 0
 " }}}
 
 " Racket {{{
+"
 let g:syntastic_enable_racket_racket_checker = 1
+let g:vimshell_enable_start_insert = 0
+
 " }}}
 
 " Unite.vim {{{
@@ -488,7 +489,7 @@ function! s:unite_settings()
 	else
 		nnoremap <silent><buffer><expr> r     unite#do_action('rename')
 	endif
-	
+
 	if unite.buffer_name ==# 'Buffers'
 		nnoremap <silent><buffer><expr> dd    unite#do_action('wipeout')
 	endif
