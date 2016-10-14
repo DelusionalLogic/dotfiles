@@ -37,6 +37,12 @@ Plug 'xolox/vim-misc' | Plug 'xolox/vim-lua-ftplugin'
 
 "C and C++
 Plug 'zchee/deoplete-clang'
+
+"Racket/Scheme
+Plug 'MicahElliott/vrod'
+Plug 'wlangstroth/vim-racket'
+Plug 'Shougo/vimshell'
+
 " Snippets
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
@@ -94,6 +100,22 @@ augroup FileSpecific
 				\   nnoremap <buffer> .. :edit %:h<CR> |
 				\ endif
 	autocmd BufReadPost fugitive://* set bufhidden=delete
+
+	" Racket
+	function StartRacket()
+		VimShellCreate -buffer-name=repl
+		VimShellSendBuffer repl
+		VimShellSendString /bin/racket -il xrepl -e "(enter! \"main.rkt\")"
+	endfunction
+
+	function ReloadRacket()
+		VimShellClose repl
+		call StartRacket()
+	endfunction
+
+
+	autocmd FileType racket call StartRacket()
+	autocmd BufWritePost *.rkt call ReloadRacket()
 augroup END
 
 set formatoptions=qrn1j
@@ -157,6 +179,11 @@ set magic
 
 " turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
+
+" print highlight group
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 set foldenable "enable folding
 set foldlevelstart=10 "unfold must stuff
@@ -421,6 +448,10 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
+" }}}
+
+" Racket {{{
+let g:syntastic_enable_racket_racket_checker = 1
 " }}}
 
 " Unite.vim {{{
