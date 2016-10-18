@@ -1,6 +1,6 @@
 [options]
-font = Unifont 8
-font = Terminus 8
+font = Unifont 8.5
+font = Hack 8.5
 
 [colors]
 

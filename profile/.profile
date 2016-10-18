@@ -18,8 +18,9 @@ export PATH="$(luarocks path --lr-bin):$PATH"
 export PATH="$(luarocks-5.1 path --lr-bin):$PATH"
 export PATH="$HOME/.localbin:$HOME/.local/bin:${PATH}"
 
-export LUA_PATH="$(luarocks path --lr-path);$(luarocks-5.1 path --lr-path);$LUA_PATH"
-export LUA_CPATH="$(luarocks path --lr-cpath);$(luarocks-5.1 path --lr-cpath);$LUA_CPATH"
+export LUA_INIT="@$HOME/scripts/luainit.lua"
+# export LUA_PATH="$(luarocks path --lr-path);$(luarocks-5.1 path --lr-path);$LUA_PATH"
+# export LUA_CPATH="$(luarocks path --lr-cpath);$(luarocks-5.1 path --lr-cpath);$LUA_CPATH"
 
 export M2_HOME="/opt/maven"
 

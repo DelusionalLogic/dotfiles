@@ -40,7 +40,7 @@ Plug 'zchee/deoplete-clang'
 
 "Racket/Scheme
 Plug 'MicahElliott/vrod'
-Plug 'wlangstroth/vim-racket'
+" Plug 'wlangstroth/vim-racket'
 Plug 'Shougo/vimshell'
 
 " Snippets
@@ -101,6 +101,7 @@ augroup FileSpecific
 			\ endif
 	autocmd BufReadPost fugitive://* set bufhidden=delete
 
+	" Racket/Scheme
 	function StartRacket()
 		VimShellCreate -buffer-name=repl -split -split-command=split
 		resize 10
@@ -280,6 +281,10 @@ set nu
 
 let g:airline_powerline_fonts=1
 let g:airline_theme='base16'
+let g:airline_right_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_left_sep = ''
 set noshowmode
 set laststatus=2 "Always display the statusline
 
