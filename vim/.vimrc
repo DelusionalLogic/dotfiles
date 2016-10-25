@@ -11,6 +11,9 @@ call plug#begin('~/.vim/plugged')
 Plug 'flazz/vim-colorschemes'
 Plug 'chriskempson/base16-vim'
 
+" Notes
+Plug 'xolox/vim-notes'
+
 " Syntax
 "Plug 'Valloric/YouCompleteMe', { 'do': 'python2.7 ./install.py --all' }
 Plug 'Shougo/deoplete.nvim'
@@ -517,4 +520,8 @@ inoremap <F9> :Unite -auto-resize -buffer-name=Unite_Menu menu<CR>
 nnoremap <C-L> :Unite -no-split -auto-resize -buffer-name=Lines line<CR>
 inoremap <C-L> :Unite -no-split -auto-resize -buffer-name=Lines line<CR>
 
+" }}}
+
+" Vim-Notes {{{
+ let g:notes_directories = ['~/BitTorrent Sync/notes', '~/Documents/Notes']
 " }}}
