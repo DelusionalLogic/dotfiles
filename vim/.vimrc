@@ -76,6 +76,9 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-dispatch'
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
+" Vimperator
+Plug 'vimperator/vimperator.vim'
+
 " Required:
 call plug#end()
 
@@ -115,9 +118,6 @@ augroup FileSpecific
 		VimShellClose
 		call StartRacket()
 	endfunction
-
-	autocmd BufWritePost *.rkt call ReloadRacket()
-	autocmd BufReadPost *.rkt call StartRacket()
 augroup END
 
 set formatoptions=qrn1j

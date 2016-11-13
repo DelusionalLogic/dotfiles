@@ -1,0 +1,13 @@
+#!/bin/bash
+
+PIDFILE=/tmp/aau-vpn
+
+SERVER=aau-vpn
+LOCAL_USERNAME=delusional
+REMOTE_USERNAME="$(lpass show ${SERVER} | grep Username | cut -d " " -f 2-)"
+REMOTE_PASSWORD=$(lpass show ${SERVER} | grep Password | cut -d " " -f 2-)
+REMOTE_URL=$(lpass show ${SERVER} | grep URL | cut -d " " -f 2-)
+
+echo "${REMOTE_USERNAME}:${REMOTE_PASSWORD}@${REMOTE_URL}"
+
+echo ${REMOTE_PASSWORD} | sudo /usr/bin/openconnect --pid-file=${PIDFILE} --user=${REMOTE_USERNAME} --passwd-on-stdin ${REMOTE_URL}
