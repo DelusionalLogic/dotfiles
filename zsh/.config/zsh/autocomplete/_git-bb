@@ -1,0 +1,8 @@
+#compdef git-bb
+#description I'm testing
+
+function _git-bb(){
+	_arguments \
+		'1:upstream branch:__git_branch_names'\
+		'2:new branch:'
+}

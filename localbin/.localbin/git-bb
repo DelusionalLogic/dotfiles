@@ -1,0 +1,43 @@
+#!/bin/zsh
+
+autoload -U colors
+colors
+
+base=$1
+
+new=$2
+
+if [[ -z "$base" || -z "$new" ]]; then
+	echo "$fg[red]You must specify a base and a new name"
+	exit 1
+fi
+
+tput setaf 2
+cat << "EOF"
+                  .---.         ,,
+       ,,        /     \       ;,,'
+      ;, ;      (  o  o )      ; ;
+        ;,';,,,  \   ~ /      ,; ;
+     ,,,  ;,,,,;;,`   '-,;'''',,,'
+    ;,, ;,, ,,,,   ,;  ,,,'';;,,;''';
+EOF
+echo "$(tput setaf 4)=======$(tput setaf 2);,,,;$(tput setaf 4)====$(tput setaf 2)~~'$(tput setaf 4)==$(tput setaf 2)'';,,''',,;''''$(tput setaf 4)====="
+echo "                  $(tput setaf 1)GIT$(tput setaf 2)     '''            "
+echo "$(tput setaf 4)========================================="
+tput sgr0
+echo "Making a new branch $fg[green]$new$fg[default] based on $fg[red]$base$fg[default]"
+echo "Fetching remote info"
+git fetch
+echo "Switching to $fg[red]$base$fg[default]"
+git checkout "origin/$base"
+echo "Creating new branch $fg[green]$new$fg[default]"
+git checkout -b "$new"
+git status -s
+echo "$(tput setaf 4)========================================="
+tput sgr0
+
+_git_COMMAND_NAME ()
+{
+  # you can return anything here for the autocompletion for example all the branches
+  __gitcomp_nl "$(__git_refs)"
+}
