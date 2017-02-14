@@ -32,7 +32,7 @@ zplug "zsh-users/zsh-autosuggestions"
 #Arcanist
 #zplug "/usr/share/php/arcanist/resources/shell", use:"bash-completion", from:local
 
-# zplug "djui/alias-tips"
+zplug "djui/alias-tips"
 zplug "arzzen/calc.plugin.zsh"
 zplug "Seinh/git-prune"
 zplug "RobSis/zsh-completion-generator"

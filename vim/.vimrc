@@ -27,7 +27,9 @@ Plug 'neomake/neomake'
 Plug 'm2mdas/phpcomplete-extended', {'for': 'php'}
 
 "LaTeX
-Plug 'lervag/vimtex', {'for': 'tex'}
+"Plug 'lervag/vimtex', {'for': 'tex'}
+Plug 'delusionallogic/vimtex', {'for': 'tex'}
+
 "Rust
 Plug 'rust-lang/rust.vim'
 Plug 'racer-rust/vim-racer'
@@ -82,6 +84,9 @@ Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 " Vimperator
 Plug 'vimperator/vimperator.vim'
 
+"Code review (diffscuss)
+Plug 'hut8labs/diffscuss', {'rtp': 'diffscuss.vim/'}
+
 " Required:
 call plug#end()
 
@@ -111,7 +116,6 @@ augroup FileSpecific
 	autocmd BufReadPost fugitive://* set bufhidden=delete
 
 	autocmd FileType tex setlocal spell textwidth=72
-
 augroup END
 
 set formatoptions=qrn1jt
