@@ -9,15 +9,27 @@ precmd() {
 function zle-line-init {
 	vcs_info
 	setprompt
-    zle .reset-prompt
+	zle .reset-prompt
 }
 zle -N zle-line-init
 
 function zle-keymap-select {
 	setprompt
-    zle .reset-prompt
+	zle .reset-prompt
 }
 zle -N zle-keymap-select
+
+function ranger-cd {
+	tempfile="$(mktemp -t tmp.XXXXXX)"
+	/usr/bin/ranger --choosedir="$tempfile" "${@:-$(pwd)}"
+	test -f "$tempfile" &&
+		if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
+			cd -- "$(cat "$tempfile")"
+		fi
+	rm -f -- "$tempfile"
+}
+bindkey -s '^O' 'ranger-cd\n'
+
 
 preexec() {
 	case $TERM in
@@ -34,23 +46,23 @@ chpwd() {
 #   - Bypass fuzzy finder if there's only one match (--select-1)
 #   - Exit if there's no match (--exit-0)
 fe() {
-  local files
-  IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
-  [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+	local files
+	IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
+	[[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
 }
 
 # fd - cd to selected directory
 fd() {
-  local dir
-  dir=$(find ${1:-.} -path '*/\.*' -prune \
-                  -o -type d -print 2> /dev/null | fzf +m) &&
-  cd "$dir"
+	local dir
+	dir=$(find ${1:-.} -path '*/\.*' -prune \
+		-o -type d -print 2> /dev/null | fzf +m) &&
+		cd "$dir"
 }
 
 # fda - including hidden directories
 fda() {
-  local dir
-  dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"
+	local dir
+	dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"
 }
 
 # {{{ Archiving - Compress/decompress various archive types with a single command

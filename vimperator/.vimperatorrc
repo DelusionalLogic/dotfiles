@@ -15,4 +15,6 @@ set showstatuslinks=2
 
 source! /home/delusional/.vimperatorrc.local
 
+set! browser.tabs.closeWindowWithLastTab=false
+
 " vim: set ft=vimperator:

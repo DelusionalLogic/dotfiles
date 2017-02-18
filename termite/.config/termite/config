@@ -1,6 +1,6 @@
 [options]
-font = Unifont 8.5
-font = Hack 8.5
+font = Unifont 9
+font = Hack 9
 
 [colors]
 

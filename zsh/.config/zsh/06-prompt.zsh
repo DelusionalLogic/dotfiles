@@ -1,9 +1,9 @@
 local IT="${terminfo[sitm]}${terminfo[bold]}"
 local ST="${terminfo[sgr0]}${terminfo[ritm]}"
 
-local FMT_BRANCH="%F{2}(%s:%F{7}%{$IT%}%r%{$ST%}%F{2}) %F{11}%B%b %K{0}%{$IT%}%u%c%{$ST%}%k"
-local FMT_ACTION="(%F{3}%a%f)"
-local FMT_PATH="%F{1}%R%F{2}/%S%f"
+export FMT_BRANCH="%F{2}(%s:%F{7}%{$IT%}%r%{$ST%}%F{2}) %F{11}%B%b %K{0}%{$IT%}%u%c%{$ST%}%k"
+export FMT_ACTION="(%F{3}%a%f)"
+export FMT_PATH="%F{1}%R%F{2}/%S%f"
 
 function setprompt() {
 	local MODE="${${KEYMAP/vicmd/"%F{2}normal%f"}/(main|viins)/"%F{4}insert%f"}"

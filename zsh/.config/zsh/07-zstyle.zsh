@@ -16,13 +16,13 @@ zstyle ':completion:*:kill:*'             force-list always
 zstyle ':completion:*:*:kill:*:processes' list-colors "=(#b) #([0-9]#)*=36=31"
 
 # Highlight the first ambiguous letter
-zstyle ':completion:*'                    show-ambiguity true
+zstyle ':completion:*'                    show-ambiguity "$color[fg-green]"
 
 ## VCS
 # vcs_info
 zstyle ':vcs_info:*'                      enable git hg svn
 # check-for-changes can be really slow.
-# you should disable it, if you work with large repositories   
+# you should disable it, if you work with large repositories
 zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' unstagedstr '%F{1}D%F{15}IRTY%f'  # display ¹ if there are unstaged changes
 zstyle ':vcs_info:*' stagedstr '%F{2}S%F{15}TAGED'    # display ² if there are staged changes

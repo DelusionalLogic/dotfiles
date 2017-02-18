@@ -20,6 +20,9 @@ Plug 'Shougo/deoplete.nvim'
 Plug 'Shougo/neoinclude.vim'
 Plug 'scrooloose/syntastic'
 
+" Make
+Plug 'neomake/neomake'
+
 "PHP
 Plug 'm2mdas/phpcomplete-extended', {'for': 'php'}
 
@@ -91,7 +94,7 @@ augroup FileSpecific
 	autocmd!
 	"Markdown
 	autocmd BufRead,BufNewFile *.md set filetype=markdown
-	autocmd FileType markdown setlocal spell textwidth=80
+	autocmd FileType markdown setlocal spell textwidth=72
 
 	"Git commits
 	autocmd FileType gitcommit setlocal textwidth=72
@@ -107,20 +110,11 @@ augroup FileSpecific
 			\ endif
 	autocmd BufReadPost fugitive://* set bufhidden=delete
 
-	" Racket/Scheme
-	function StartRacket()
-		VimShellCreate -buffer-name=repl -split -split-command=split
-		resize 10
-		VimShellSendString /bin/racket -i -e "(enter! \"main.rkt\")"
-	endfunction
+	autocmd FileType tex setlocal spell textwidth=72
 
-	function ReloadRacket()
-		VimShellClose
-		call StartRacket()
-	endfunction
 augroup END
 
-set formatoptions=qrn1j
+set formatoptions=qrn1jt
 
 let g:tex_flavor='latex' "Default to latex filetype
 let g:vimtex_latexmk_progname = 'nvr'
@@ -349,6 +343,7 @@ inoremap <silent><expr> <Tab>
 if !exists('g:deoplete#omni_patterns')
 	let g:deoplete#omni_patterns = {}
 endif
+
 " let g:deoplete#omni_patterns.tex =
 " 			\ '\v\\%('
 " 			\ . '\a*cite\a*%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
@@ -411,11 +406,7 @@ let g:deoplete#omni#input_patterns.php = '[^. \t]->|[a-zA-Z_]\w*::|(?:new|use|ex
 let g:racer_cmd = "/usr/bin/racer"
 let $RUST_SRC_PATH="/usr/src/rust/src/"
 
-let g:racer_no_default_keymappings=1
-
-nmap gd <Plug>RacerGoToDefinition
-nmap gD <Plug>RacerGoToDefinitionSplit
-nmap K  <Plug>RacerShowDocumentation
+let g:racer_experimental_completer = 1
 
 " }}}
 
@@ -453,6 +444,27 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+" }}}
+
+" Neomake {{{
+let g:neomake_error_sign = {
+			\ 'text': '>>',
+			\ 'texthl': 'ErrorMsg',
+			\ }
+hi MyWarningMsg ctermbg=3 ctermfg=0
+let g:neomake_warning_sign = {
+			\ 'text': '>>',
+			\ 'texthl': 'MyWarningMsg',
+			\ }
+
+let g:neomake_rust_enabled_makers = ['cargo']
+
+augroup my_neomake_cmds
+  autocmd!
+  " Have neomake run cargo when Rust files are saved.
+  autocmd BufWritePost *.rs Neomake! cargo
+augroup END
 
 " }}}
 

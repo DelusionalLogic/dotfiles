@@ -1,7 +1,7 @@
 fpath=(~/.config/zsh/autocomplete $fpath)
 
 autoload -U colors && colors
-autoload -U vcs_info && vcs_info
+autoload -Uz vcs_info
 
 zmodload zsh/complist
 zmodload zsh/terminfo
@@ -12,6 +12,7 @@ setopt \
   extendedglob \
   prompt_subst \
   inc_append_history
+setopt promptsubst
 
 # Completion for alias
 setopt completealiases
@@ -37,12 +38,17 @@ zplug "arzzen/calc.plugin.zsh"
 zplug "Seinh/git-prune"
 zplug "RobSis/zsh-completion-generator"
 
+zplug "junegunn/fzf-bin", \
+    from:gh-r, \
+    as:command, \
+    rename-to:fzf, \
+
 . /usr/share/fzf/key-bindings.zsh
 
 #Make sure this is last!
-zplug "zsh-users/zsh-syntax-highlighting", nice:10
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
-zplug "~/.config/zsh", from:local, nice:11
+zplug "~/.config/zsh", from:local, defer:3
 
 zplug load
 
@@ -52,3 +58,6 @@ export LS_COLORS
 GPG_TTY=$(tty)
 export GPG_TTY
 
+
+# added by travis gem
+[ -f /home/delusional/.travis/travis.sh ] && source /home/delusional/.travis/travis.sh
