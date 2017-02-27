@@ -1,0 +1,3 @@
+[submodule "Xorg/.config/xcolors/nord-xresources"]
+	path = Xorg/.config/xcolors/nord-xresources
+	url = https://github.com/arcticicestudio/nord-xresources

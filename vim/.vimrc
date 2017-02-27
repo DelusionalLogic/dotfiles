@@ -1,5 +1,5 @@
 let mapleader=","       " leader is comma
-let maplocalleader=",," " localleader is comma
+let maplocalleader=",," " localleader is comma comma
 
 if &compatible
 	set nocompatible               " Be iMproved
@@ -10,12 +10,12 @@ call plug#begin('~/.vim/plugged')
 " Colors
 Plug 'flazz/vim-colorschemes'
 Plug 'chriskempson/base16-vim'
+Plug 'arcticicestudio/nord-vim'
 
 " Notes
 Plug 'xolox/vim-notes'
 
 " Syntax
-"Plug 'Valloric/YouCompleteMe', { 'do': 'python2.7 ./install.py --all' }
 Plug 'Shougo/deoplete.nvim'
 Plug 'Shougo/neoinclude.vim'
 Plug 'scrooloose/syntastic'
@@ -28,6 +28,7 @@ Plug 'm2mdas/phpcomplete-extended', {'for': 'php'}
 
 "LaTeX
 Plug 'lervag/vimtex', {'for': 'tex'}
+
 "Rust
 Plug 'rust-lang/rust.vim'
 Plug 'racer-rust/vim-racer'
@@ -81,6 +82,9 @@ Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
 " Vimperator
 Plug 'vimperator/vimperator.vim'
+
+" Fun icons
+Plug 'ryanoasis/vim-devicons'
 
 " Required:
 call plug#end()
@@ -277,7 +281,7 @@ set numberwidth=5
 set nu
 
 let g:airline_powerline_fonts=1
-let g:airline_theme='base16'
+" let g:airline_theme='base16'
 let g:airline_right_alt_sep = ''
 let g:airline_right_sep = ''
 let g:airline_left_alt_sep = ''
@@ -311,7 +315,7 @@ endfunction
 command! -complete=shellcmd -nargs=+ Shell call s:ExecuteInShell(<q-args>)
 
 set background=dark
-colorscheme base16-flat-mod
+colorscheme nord
 
 " EasyMotion {{{
 map  / <Plug>(easymotion-sn)
@@ -461,9 +465,9 @@ let g:neomake_warning_sign = {
 let g:neomake_rust_enabled_makers = ['cargo']
 
 augroup my_neomake_cmds
-  autocmd!
-  " Have neomake run cargo when Rust files are saved.
-  autocmd BufWritePost *.rs Neomake! cargo
+	autocmd!
+	" Have neomake run cargo when Rust files are saved.
+	autocmd BufWritePost *.rs Neomake! cargo
 augroup END
 
 " }}}
@@ -535,5 +539,5 @@ inoremap <C-L> :Unite -no-split -auto-resize -buffer-name=Lines line<CR>
 " }}}
 
 " Vim-Notes {{{
- let g:notes_directories = ['~/BitTorrent Sync/notes', '~/Documents/Notes']
+let g:notes_directories = ['~/BitTorrent Sync/notes', '~/Documents/Notes']
 " }}}
