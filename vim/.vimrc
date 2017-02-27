@@ -87,6 +87,9 @@ Plug 'vimperator/vimperator.vim'
 "Code review (diffscuss)
 Plug 'hut8labs/diffscuss', {'rtp': 'diffscuss.vim/'}
 
+Plug 'junegunn/vim-emoji'
+Plug 'rhysd/unite-emoji.vim'
+
 " Required:
 call plug#end()
 
@@ -537,6 +540,8 @@ nnoremap <C-L> :Unite -no-split -auto-resize -buffer-name=Lines line<CR>
 inoremap <C-L> :Unite -no-split -auto-resize -buffer-name=Lines line<CR>
 
 " }}}
+
+nnoremap <C-e> :Unite -auto-resize -start-insert -buffer-name=Emoji emoji<CR>
 
 " Vim-Notes {{{
  let g:notes_directories = ['~/BitTorrent Sync/notes', '~/Documents/Notes']

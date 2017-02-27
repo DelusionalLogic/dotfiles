@@ -1,5 +1,7 @@
 fpath=(~/.config/zsh/autocomplete $fpath)
 
+stty -ixon
+
 autoload -U colors && colors
 autoload -Uz vcs_info
 
@@ -17,6 +19,8 @@ setopt promptsubst
 # Completion for alias
 setopt completealiases
 
+unset ZPLUG_CACHE_FILE
+unset ZPLUG_CLONE_DEPTH
 #zplug plugin manager
 source ~/.zplug/init.zsh
 
@@ -32,15 +36,12 @@ zplug "zsh-users/zsh-autosuggestions"
 #Arcanist
 #zplug "/usr/share/php/arcanist/resources/shell", use:"bash-completion", from:local
 
+zplug "b4b4r07/emoji-cli"
+
 zplug "djui/alias-tips"
 zplug "arzzen/calc.plugin.zsh"
 zplug "Seinh/git-prune"
 zplug "RobSis/zsh-completion-generator"
-
-zplug "junegunn/fzf-bin", \
-    from:gh-r, \
-    as:command, \
-    rename-to:fzf, \
 
 zplug "/usr/share/fzf", use:"key-bindings.zsh", from:local
 
@@ -48,6 +49,8 @@ zplug "/usr/share/fzf", use:"key-bindings.zsh", from:local
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
 zplug "~/.config/zsh", from:local, defer:3
+
+zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
 zplug load
 

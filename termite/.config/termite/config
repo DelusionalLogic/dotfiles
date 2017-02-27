@@ -1,6 +1,6 @@
 [options]
 font = Unifont 8.5
-font = Hack 8.5
+font = Knack Nerd Font 8.5
 scrollback_lines=15000
 
 [colors]
