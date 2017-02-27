@@ -21,17 +21,16 @@ setopt completealiases
 source ~/.zplug/init.zsh
 
 #Autojump hook
-zplug "/etc/profile.d/autojump.zsh", from:local
+zplug "/etc/profile.d", use:"autojump.zsh", from:local
 
 #Command not found hook
-zplug "/usr/share/doc/pkgfile/command-not-found.zsh", from:local
+zplug "/usr/share/doc/pkgfile", use:"command-not-found.zsh", from:local
 
 #Autocompletion
 zplug "zsh-users/zsh-autosuggestions"
-#source ~/.config/zsh/autosuggestions/zsh-autosuggestions.zsh
 
 #Arcanist
-# zplug "/usr/share/php/arcanist/resources/shell/bash-completion", from:local
+#zplug "/usr/share/php/arcanist/resources/shell", use:"bash-completion", from:local
 
 # zplug "djui/alias-tips"
 zplug "arzzen/calc.plugin.zsh"
@@ -43,7 +42,7 @@ zplug "junegunn/fzf-bin", \
     as:command, \
     rename-to:fzf, \
 
-. /usr/share/fzf/key-bindings.zsh
+zplug "/usr/share/fzf", use:"key-bindings.zsh", from:local
 
 #Make sure this is last!
 zplug "zsh-users/zsh-syntax-highlighting", defer:2

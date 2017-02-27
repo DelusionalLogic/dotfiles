@@ -50,7 +50,7 @@ xsetroot -cursor_name left_ptr &
 ~/bard/build/src/bard -c ~/.config/bard 1>&2 2>/tmp/bard &
 #/home/delusional/bard/build/src/bard -c /home/delusional/.config/bard &
 
-xflux -l 57.0137 -g 9.9832 &
+#xflux -l 57.0137 -g 9.9832 &
 
 compton -CG --config ~/.config/compton.conf &
 
