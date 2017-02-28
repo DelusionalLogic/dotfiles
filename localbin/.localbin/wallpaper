@@ -43,7 +43,7 @@ case "$1" in
 		if [[ -z $URL ]]; then
 			URL="$(readlink "$wallDir/active")"
 		fi
-		rm "$wallDir/$URL"
+		rm "$URL"
 		;;
 	*)
 

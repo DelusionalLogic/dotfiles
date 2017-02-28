@@ -1,0 +1,6 @@
+#!/bin/bash
+
+count=$1
+name="*.color${count}:"
+
+xrdb -query | awk '$1 == c {print $2}' c=$name
