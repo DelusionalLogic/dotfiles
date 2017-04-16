@@ -2,12 +2,12 @@
 
 rofi.color-enabled: true
 ! State:           'bg',     'fg',     'bgalt',  'hlbg',   'hlfg'
-rofi.color-normal: base00,  base05,  base00,  base0D,  base00
-rofi.color-urgent: base09,  base00,  base09,  base09,  base00
-rofi.color-active: base0E,  base00,  base0E,  base0B,  base00
+rofi.color-normal: nord0,  nord5,  nord0,  nord13,  nord0
+rofi.color-urgent: nord9,  nord0,  nord9,  nord9,  nord0
+rofi.color-active: nord14,  nord0,  nord14,  nord11,  nord0
 
 !                  'background', 'border'
-rofi.color-window: base00,      base0D
+rofi.color-window: nord0,      nord13
 
 
 !Font
