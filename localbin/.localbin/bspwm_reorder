@@ -78,7 +78,7 @@ done
 
 for mon in "${removed[@]}"; do
 	echo "Deleting $mon"
-	bspc monitor $mon -d $mon
+	bspc monitor $mon -r
 	# bspc wm -r $mon
 done
 

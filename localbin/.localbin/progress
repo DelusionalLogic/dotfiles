@@ -1,0 +1,23 @@
+#!/bin/bash
+
+max=$2
+cur=$1
+beforeCol=$3
+afterCol=$4
+sepCol=$5
+
+scale=$(bc -l <<< "10/$max")
+maxScaled=$(bc <<< "scale=0; ($max*$scale)/1")
+curScaled=$(bc <<< "scale=0; ($cur*$scale)/1")
+restScaled=$((maxScaled-curScaled-1))
+
+printf "%s" "$beforeCol"
+for (( i=0; i<$curScaled; i++ )); do
+	printf "%s" "-"
+done
+# printf "%s" "$sepCol"
+#printf "%s" "-"
+printf "%s" "$afterCol"
+for (( i=0; i<=$restScaled; i++ )); do
+	printf "%s" "-"
+done
