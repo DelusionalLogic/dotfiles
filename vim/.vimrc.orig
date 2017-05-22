@@ -1,5 +1,5 @@
 let mapleader=","       " leader is comma
-let maplocalleader=",," " localleader is comma comma
+let maplocalleader=",," " localleader is comma
 
 if &compatible
 	set nocompatible               " Be iMproved
@@ -10,12 +10,12 @@ call plug#begin('~/.vim/plugged')
 " Colors
 Plug 'flazz/vim-colorschemes'
 Plug 'chriskempson/base16-vim'
-Plug 'arcticicestudio/nord-vim'
 
 " Notes
 Plug 'xolox/vim-notes'
 
 " Syntax
+"Plug 'Valloric/YouCompleteMe', { 'do': 'python2.7 ./install.py --all' }
 Plug 'Shougo/deoplete.nvim'
 Plug 'Shougo/neoinclude.vim'
 Plug 'scrooloose/syntastic'
@@ -27,7 +27,8 @@ Plug 'neomake/neomake'
 Plug 'm2mdas/phpcomplete-extended', {'for': 'php'}
 
 "LaTeX
-Plug 'lervag/vimtex', {'for': 'tex'}
+"Plug 'lervag/vimtex', {'for': 'tex'}
+Plug 'delusionallogic/vimtex', {'for': 'tex'}
 
 "Rust
 Plug 'rust-lang/rust.vim'
@@ -83,8 +84,8 @@ Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 " Vimperator
 Plug 'vimperator/vimperator.vim'
 
-" Fun icons
-Plug 'ryanoasis/vim-devicons'
+"Code review (diffscuss)
+Plug 'hut8labs/diffscuss', {'rtp': 'diffscuss.vim/'}
 
 " Required:
 call plug#end()
@@ -114,14 +115,29 @@ augroup FileSpecific
 			\ endif
 	autocmd BufReadPost fugitive://* set bufhidden=delete
 
+<<<<<<< HEAD
 	autocmd FileType tex setlocal spell textwidth=72
 
+||||||| merged common ancestors
+	" Racket/Scheme
+	function StartRacket()
+		VimShellCreate -buffer-name=repl -split -split-command=split
+		resize 10
+		VimShellSendString /bin/racket -i -e "(enter! \"main.rkt\")"
+	endfunction
+
+	function ReloadRacket()
+		VimShellClose
+		call StartRacket()
+	endfunction
+=======
+>>>>>>> Minor edits
 augroup END
 
 set formatoptions=qrn1jt
 
 let g:tex_flavor='latex' "Default to latex filetype
-let g:vimtex_compiler_progname = 'nvr'
+let g:vimtex_latexmk_progname = 'nvr'
 let g:vimtex_view_method = 'zathura'
 
 set gdefault "Default to global substitution on line
@@ -281,7 +297,7 @@ set numberwidth=5
 set nu
 
 let g:airline_powerline_fonts=1
-" let g:airline_theme='base16'
+let g:airline_theme='base16'
 let g:airline_right_alt_sep = ''
 let g:airline_right_sep = ''
 let g:airline_left_alt_sep = ''
@@ -315,7 +331,7 @@ endfunction
 command! -complete=shellcmd -nargs=+ Shell call s:ExecuteInShell(<q-args>)
 
 set background=dark
-colorscheme nord
+colorscheme base16-flat-mod
 
 " EasyMotion {{{
 map  / <Plug>(easymotion-sn)
@@ -465,9 +481,9 @@ let g:neomake_warning_sign = {
 let g:neomake_rust_enabled_makers = ['cargo']
 
 augroup my_neomake_cmds
-	autocmd!
-	" Have neomake run cargo when Rust files are saved.
-	autocmd BufWritePost *.rs Neomake! cargo
+  autocmd!
+  " Have neomake run cargo when Rust files are saved.
+  autocmd BufWritePost *.rs Neomake! cargo
 augroup END
 
 " }}}
@@ -539,5 +555,5 @@ inoremap <C-L> :Unite -no-split -auto-resize -buffer-name=Lines line<CR>
 " }}}
 
 " Vim-Notes {{{
-let g:notes_directories = ['~/BitTorrent Sync/notes', '~/Documents/Notes']
+ let g:notes_directories = ['~/BitTorrent Sync/notes', '~/Documents/Notes']
 " }}}
