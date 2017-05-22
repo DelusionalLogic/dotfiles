@@ -1,6 +1,8 @@
 if [[ "$status" = "on" ]]; then
-	echo -en "%{F$normal_col}%{T$icon}\uE050%{F-} $volume"
+	volumeSlide=$(progress $volume 100 "%{F$normal_col}" "%{F-}" "%{F$slider_col}")
+	echo -en "%{F$normal_col}%{T$icon}\uE050%{F-} $volumeSlide"
 else
-	echo -en "%{F$muted_col}%{T$icon}%{F-} $volume"
+	volumeSlide=$(progress $volume 100 "%{F$muted_col}" "%{F-}" "%{F$slider_col}")
+	echo -en "%{F$muted_col}%{T$icon}%{F-} $volumeSlide"
 fi
 echo ""
