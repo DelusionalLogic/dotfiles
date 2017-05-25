@@ -1,0 +1,44 @@
+#!/bin/zsh
+
+autoload -U colors
+colors
+
+tput setaf 2
+cat << "EOF"
+                  .---.         ,,
+       ,,        /     \       ;,,'
+      ;, ;      (  o  o )      ; ;
+        ;,';,,,  \   ~ /      ,; ;
+     ,,,  ;,,,,;;,`   '-,;'''',,,'
+    ;,, ;,, ,,,,   ,;  ,,,'';;,,;''';
+EOF
+echo "$(tput setaf 4)=======$(tput setaf 2);,,,;$(tput setaf 4)====$(tput setaf 2)~~'$(tput setaf 4)==$(tput setaf 2)'';,,''',,;''''$(tput setaf 4)====="
+echo "                  $(tput setaf 1)GIT$(tput setaf 2)     '''            "
+echo "$(tput setaf 4)========================================="
+tput sgr0
+
+if [ -z $1 ]; then
+	THIS_BRANCH=$(git symbolic-ref HEAD)
+else
+	THIS_BRANCH="$1"
+fi
+
+echo "Checking $fg[cyan]decendants$fg[default]:"
+while read HEAD; do
+	if git merge-base --is-ancestor "$THIS_BRANCH" "$HEAD"; then
+		echo "\t$fg[green]✔ $HEAD$fg[default]"
+	else
+		#Maybe don't have this print
+		echo "\t$fg[red]✘ $HEAD$fg[default]"
+	fi
+done < <(git for-each-ref --format='%(refname:short)' refs/ --no-merged="$THIS_BRANCH")
+
+echo "$(tput setaf 4)========================================="
+tput sgr0
+
+_git_COMMAND_NAME ()
+{
+  # you can return anything here for the autocompletion for example all the branches
+  __gitcomp_nl "$(__git_refs)"
+}
+

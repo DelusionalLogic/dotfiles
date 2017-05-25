@@ -1,0 +1,62 @@
+#!/bin/zsh
+
+autoload -U colors
+colors
+
+tput setaf 2
+cat << "EOF"
+                  .---.         ,,
+       ,,        /     \       ;,,'
+      ;, ;      (  o  o )      ; ;
+        ;,';,,,  \   ~ /      ,; ;
+     ,,,  ;,,,,;;,`   '-,;'''',,,'
+    ;,, ;,, ,,,,   ,;  ,,,'';;,,;''';
+EOF
+echo "$(tput setaf 4)=======$(tput setaf 2);,,,;$(tput setaf 4)====$(tput setaf 2)~~'$(tput setaf 4)==$(tput setaf 2)'';,,''',,;''''$(tput setaf 4)====="
+echo "                  $(tput setaf 1)GIT$(tput setaf 2)     '''            "
+echo "$(tput setaf 4)========================================="
+tput sgr0
+
+THIS_BRANCH=$(git symbolic-ref HEAD)
+TRAC_BRANCH=$(git for-each-ref --format="%(upstream:short)" "$THIS_BRANCH")
+echo "I'm on $fg[yellow]$THIS_BRANCH$fg[default] which is tracking $fg[blue]$TRAC_BRANCH$fg[default]"
+
+echo "Fetching remotes"
+git fetch
+
+if ! git merge-base --is-ancestor "$THIS_BRANCH" "$TRAC_BRANCH"; then
+	echo "$fg[yellow]$THIS_BRANCH$fg[default] can't be fastforwarded to $fg[blue]$TRAC_BRANCH$fg[default]"
+	echo "It might have been $fg[red]rebased$fg[default]"
+
+	ANCESTOR=$(git merge-base "$THIS_BRANCH" "$TRAC_BRANCH")
+	echo "The closest common ancestor $fg[magenta]$ANCESTOR$fg[default]"
+	AFTER=$(git rev-list $ANCESTOR..$THIS_BRANCH)
+	echo "The first diverging commit in my direction $fg[magenta]$AFTER$fg[default]"
+
+	echo "Checking $fg[cyan]decendants$fg[default]:"
+	dependant=false
+	while read HEAD; do
+		if git merge-base --is-ancestor "$THIS_BRANCH" "$HEAD"; then
+			echo "\t$fg[green]✔ $HEAD$fg[default]"
+			dependant=true
+		else
+			#Maybe don't have this print
+			echo "\t$fg[red]✘ $HEAD$fg[default]"
+		fi
+	done < <(git for-each-ref --format='%(refname:short)' refs/ --no-merged="$THIS_BRANCH")
+	echo ""
+
+	if [ "$dependant" = true ]; then
+		echo "There were branches based on $fg[yellow]$THIS_BRANCH$fg[default]"
+	fi
+fi
+
+echo "$(tput setaf 4)========================================="
+tput sgr0
+
+_git_COMMAND_NAME ()
+{
+  # you can return anything here for the autocompletion for example all the branches
+  __gitcomp_nl "$(__git_refs)"
+}
+
