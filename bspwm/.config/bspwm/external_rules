@@ -1,0 +1,19 @@
+#!/bin/zsh
+
+wid="$1"
+class="$2"
+instance="$3"
+monitor="$4"
+desktop="$5"
+node="$6"
+
+#Float any window supposed to be above
+stateProp=$(xprop _NET_WM_STATE -id "$wid")
+re='^_NET_WM_STATE\(ATOM\) = ([A-Z_]+)$'
+if [[ "$stateProp" =~ $re ]]; then
+	state="${match[1]}"
+	echo $state
+	case $state in
+		_NET_WM_STATE_ABOVE) echo "state=floating";;
+	esac
+fi
