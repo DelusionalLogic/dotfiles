@@ -32,7 +32,7 @@ bindkey '\e[A' history-beginning-search-backward
 bindkey '\e[B' history-beginning-search-forward
 
 # ctrl-r starts searching history backward
-bindkey '^R' history-incremental-search-backward
+#bindkey '^R' history-incremental-search-backward
 
 bindkey '^F' vi-forward-word
 

@@ -15,6 +15,7 @@ bspc config top_padding          17
 
 bspc config external_rules_command $HOME/.config/bspwm/external_rules
 
+bspc rule -a "*:jit"         state=floating
 bspc rule -a Steam           state=floating desktop=5               follow=on
 bspc rule -a steam           state=floating desktop=5               follow=off
 bspc rule -a feh             state=floating

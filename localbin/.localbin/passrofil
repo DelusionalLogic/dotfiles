@@ -25,8 +25,8 @@ else
 fi
 
 # Show results if multiple matches found
-if [[ "$(lpass show -G $action | head -n 1)" == *"Multiple matches found"* ]]; then
-    matches=( $(lpass show -G $action | tail -n +2 | sed -e 's/.*\[id: \(.*\)\].*/\1/') )
+if [[ "$(lpass show -G "$action" | head -n 1)" == *"Multiple matches found"* ]]; then
+    matches=( $(lpass show -G "$action" | tail -n +2 | sed -e 's/.*\[id: \(.*\)\].*/\1/') )
     declare -A names
     for ((i=0;i<${#matches[@]};i++)); do
         names["$(lpass show --username ${matches[i]})"]=${matches[i]}
@@ -37,4 +37,4 @@ if [[ "$(lpass show -G $action | head -n 1)" == *"Multiple matches found"* ]]; t
     action=${names[$getid]}
 fi
 
-lpass show --password -c $action
+lpass show --password -c "$action"

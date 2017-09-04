@@ -12,7 +12,7 @@ curScaled=$(bc <<< "scale=0; ($cur*$scale)/1")
 restScaled=$((maxScaled-curScaled-1))
 
 printf "%s" "$beforeCol"
-for (( i=0; i<$curScaled; i++ )); do
+for (( i=0; i < $curScaled; i++ )); do
 	printf "%s" "-"
 done
 # printf "%s" "$sepCol"

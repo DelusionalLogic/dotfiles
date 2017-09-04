@@ -31,7 +31,7 @@ Plug 'lervag/vimtex', {'for': 'tex'}
 
 "Rust
 Plug 'rust-lang/rust.vim'
-Plug 'racer-rust/vim-racer'
+Plug 'sebastianmarkow/deoplete-rust'
 
 "Love2D
 Plug 'alols/vim-love-efm'
@@ -184,6 +184,8 @@ nnoremap <leader><space> :nohlsearch<CR>
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 			\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 			\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+noremap <F12> :syntax sync fromstart<CR>
+
 
 set foldenable "enable folding
 set foldlevelstart=10 "unfold must stuff
@@ -407,10 +409,8 @@ let g:deoplete#omni#input_patterns.php = '[^. \t]->|[a-zA-Z_]\w*::|(?:new|use|ex
 
 "Vim-Racer {{{
 
-let g:racer_cmd = "/usr/bin/racer"
-let $RUST_SRC_PATH="/usr/src/rust/src/"
-
-let g:racer_experimental_completer = 1
+let g:deoplete#sources#rust#racer_binary='/usr/bin/racer'
+let g:deoplete#sources#rust#rust_source_path='/usr/src/rust/src/'
 
 " }}}
 
@@ -449,6 +449,12 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
+let g:syntastic_c_checkers = ["clang_check"]
+let g:syntastic_c_clang_check_post_args = ""
+
+let g:syntastic_cpp_clang_check_post_args = ""
+let g:syntastic_cpp_checkers = ["clang_check"]
+
 " }}}
 
 " Neomake {{{
@@ -467,7 +473,7 @@ let g:neomake_rust_enabled_makers = ['cargo']
 augroup my_neomake_cmds
 	autocmd!
 	" Have neomake run cargo when Rust files are saved.
-	autocmd BufWritePost *.rs Neomake! cargo
+	autocmd BufWritePost *.rs Neomake cargo
 augroup END
 
 " }}}

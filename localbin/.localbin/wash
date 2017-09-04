@@ -55,53 +55,52 @@ local body, code = http.request(url)
 local root = gumbo.parse(body)
 local tbl = root:getElementsByTagName("table")[3]
 
-washer = {}
-for i, row in slicepairs(tbl:getElementsByTagName("tr"), 2, 6) do
+function parse_timeleft(text)
+	return tonumber(string.match(text, "Resttid: (.+) min%."))
+end
+
+function parse_row(row)
+	state, reserved = string.match(row.children[10].attributes.title.value, "(Ledig) indtil kl. (.*) %- ")
 	local this = {
 		id = tonumber(row.children[2].textContent),
-		state = string.match(row.children[10].textContent, ".*Ledig.*") ~= nil,
+		state = state,
+		reserved = reserved,
 	}
 
 	if not this.state then
-		this.timeleft = string.match(row.children[10].attributes.title.value, "Resttid: (.+)%.")
+		this.timeleft = parse_timeleft(row.children[10].attributes.title.value)
 	end
-	table.insert(washer, this)
+	return this
+end
+
+washer = {}
+for i, row in slicepairs(tbl:getElementsByTagName("tr"), 2, 6) do
+	table.insert(washer, parse_row(row))
 end
 
 dryer = {}
 for i, row in slicepairs(tbl:getElementsByTagName("tr"), 7, 8) do
-	local this = {
-		id = tonumber(row.children[2].textContent),
-		state = string.match(row.children[10].textContent, ".*Ledig.*") ~= nil,
-	}
+	table.insert(dryer, parse_row(row))
+end
 
-	if not this.state then
-		this.timeleft = string.match(row.children[10].attributes.title.value, "Resttid: (.+)%.")
-	end
-	table.insert(dryer, this)
+function print_machine(machine)
+	io.write("Machine ")
+	io.write(tostring(machine.id))
+	io.write(" .......... ")
+
+	local thisState = machine.state and string.format("Free (%s)", machine.reserved) or string.format("In Use (%s min)", machine.timeleft)
+	local thisColor = machine.state and "green" or "red"
+	io.write(colors(string.format("%%{%s}%s", thisColor, thisState)))
+	io.write("\n")
 end
 
 print(colors("%{blue}Washers"))
 for k, v in ipairs(washer) do
-	io.write("Machine ")
-	io.write(tostring(v.id))
-	io.write(" .......... ")
-
-	local thisState = v.state and "Free" or string.format("In Use (%s)", v.timeleft)
-	local thisColor = v.state and "green" or "red"
-	io.write(colors(string.format("%%{%s}%s", thisColor, thisState)))
-	io.write("\n")
+	print_machine(v)
 end
 
 print()
 print(colors("%{blue}Dryers"))
 for k, v in ipairs(dryer) do
-	io.write("Machine ")
-	io.write(tostring(v.id))
-	io.write(" .......... ")
-
-	local thisState = v.state and "Free" or string.format("In Use (%s)", v.timeleft)
-	local thisColor = v.state and "green" or "red"
-	io.write(colors(string.format("%%{%s}%s", thisColor, thisState)))
-	io.write("\n")
+	print_machine(v)
 end
