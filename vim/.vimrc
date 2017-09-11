@@ -38,6 +38,7 @@ Plug 'alols/vim-love-efm'
 
 "Python
 Plug 'zchee/deoplete-jedi'
+Plug 'vimjas/vim-python-pep8-indent'
 
 "Lua
 Plug 'xolox/vim-misc' | Plug 'xolox/vim-lua-ftplugin'
