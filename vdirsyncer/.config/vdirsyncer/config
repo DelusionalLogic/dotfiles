@@ -1,0 +1,72 @@
+# An example configuration for vdirsyncer.
+#
+# Move it to ~/.vdirsyncer/config or ~/.config/vdirsyncer/config and edit it.
+# Run `vdirsyncer --help` for CLI usage.
+#
+# Optional parameters are commented out.
+# This file doesn't document all available parameters, see
+# http://vdirsyncer.pimutils.org/ for the rest of them.
+
+[general]
+# A folder where vdirsyncer can store some metadata about each pair.
+status_path = "~/.vdirsyncer/status/"
+
+# CARDDAV
+[pair personal_contacts]
+# A `[pair <name>]` block defines two storages `a` and `b` that should be
+# synchronized. The definition of these storages follows in `[storage <name>]`
+# blocks. This is similar to accounts in OfflineIMAP.
+a = "personal_contacts_local"
+b = "personal_contacts_remote"
+
+# Synchronize all collections that can be found.
+# You need to run `vdirsyncer discover` if new calendars/addressbooks are added
+# on the server.
+
+collections = ["from a", "from b"]
+
+# Synchronize the "display name" property into a local file (~/.contacts/displayname).
+metadata = ["displayname"]
+
+# To resolve a conflict the following values are possible:
+#   `null` - abort when collisions occur (default)
+#   `"a wins"` - assume a's items to be more up-to-date
+#   `"b wins"` - assume b's items to be more up-to-date
+#conflict_resolution = null
+
+[storage personal_contacts_local]
+# A storage references actual data on a remote server or on the local disk.
+# Similar to repositories in OfflineIMAP.
+type = "filesystem"
+path = "~/.contacts/"
+fileext = ".vcf"
+
+[storage personal_contacts_remote]
+type = "carddav"
+url = "http://ical.slashwin.dk/caldav.php/delusional/"
+username = "delusional"
+# The password can also be fetched from the system password storage, netrc or a
+# custom command. See http://vdirsyncer.pimutils.org/en/stable/keyring.html
+password.fetch = ["command", "cat", "/home/delusional/.config/vdirsyncer/passwd"]
+
+# CALDAV
+[pair personal_calendar]
+a = "personal_calendar_local"
+b = "personal_calendar_remote"
+collections = ["from a", "from b"]
+
+# Calendars also have a color property
+metadata = ["displayname", "color"]
+
+[storage personal_calendar_local]
+type = "filesystem"
+path = "~/.calendars/"
+fileext = ".ics"
+
+[storage personal_calendar_remote]
+type = "caldav"
+url = "http://ical.slashwin.dk/caldav.php/delusional/"
+username = "delusional"
+# The password can also be fetched from the system password storage, netrc or a
+# custom command. See http://vdirsyncer.pimutils.org/en/stable/keyring.html
+password.fetch = ["command", "cat", "/home/delusional/.config/vdirsyncer/passwd"]
