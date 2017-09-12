@@ -167,6 +167,10 @@ bind index,pager R      group-reply
 bind compose p          pgp-menu
 bind attach <return>    view-mailcap
 
+bind editor <Tab>       complete-query
+bind editor ^T          complete
+
+
 bind index CP sidebar-prev
 bind index CN sidebar-next
 bind index CO sidebar-open
@@ -199,9 +203,13 @@ macro index,pager \Cu "<enter-command> set my_pdsave=\$pipe_decode<enter>\
     <enter-command> set pipe_decode=\$my_pdsave<enter>" "get URLs"
 
 # Address book ----------------------------------------------------------------------------------------
-set query_command = "lbdbq %s 2>/dev/null"
-# sync abook and alias
-macro index A      "!~/Scripts/abook-autoexport\n:source ~/.mutt/alias\n"          "Start abook"
+set query_command = "khard email --parsable %s"
+
+# Add mail to khard
+macro index,pager A \
+    "<pipe-message>khard add-email<return>" \
+    "add the sender email address to khard"
+
 macro index \Ca    "|~/Scripts/abook-autoexport --add-email-quiet\n:source ~/.mutt/alias\n" "Create new alias from the actual message"
 
 # quick-sync ~/Mail immediately with offlineimap
