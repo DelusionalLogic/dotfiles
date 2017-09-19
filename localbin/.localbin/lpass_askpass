@@ -1,7 +1,9 @@
 #!/bin/zsh
 
 if [[ -f "$HOME/.config/passrofil/passwd" ]]; then
-	gpg --decrypt "$HOME/.config/passrofil/passwd" 2>/dev/null
-else
-	gksudo -p -g -m "Password for the Lastpass Keyring"
+	if gpg --decrypt "$HOME/.config/passrofil/passwd" 2>/dev/null; then
+		exit 0
+	fi
 fi
+
+gksudo -p -g -m "Password for the Lastpass Keyring"
