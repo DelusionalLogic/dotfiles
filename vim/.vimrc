@@ -78,6 +78,7 @@ Plug 'godlygeek/tabular'
 " Integration
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-dispatch'
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
@@ -86,6 +87,9 @@ Plug 'vimperator/vimperator.vim'
 
 " Fun icons
 Plug 'ryanoasis/vim-devicons'
+
+" Ledger
+Plug 'ledger/vim-ledger'
 
 " Required:
 call plug#end()
@@ -351,6 +355,10 @@ if !exists('g:deoplete#omni_patterns')
 	let g:deoplete#omni_patterns = {}
 endif
 
+let g:deoplete#enable_profile = 1
+call deoplete#enable_logging('DEBUG', 'deoplete.log')
+call deoplete#custom#source('github', 'debug_enabled', 1)
+
 " let g:deoplete#omni_patterns.tex =
 " 			\ '\v\\%('
 " 			\ . '\a*cite\a*%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
@@ -366,6 +374,9 @@ endif
 if !exists('g:deoplete#omni#functions')
 	let g:deoplete#omni#functions = {}
 endif
+
+let g:deoplete#sources = {}
+let g:deoplete#sources.python = ['github']
 let g:deoplete#omni#input_patterns.tex =
 			\   '\\(?:'
 			\  .   '\w*cite\w*(?:\s*\[[^]]*\]){0,2}\s*{[^}]*'
@@ -416,17 +427,8 @@ let g:deoplete#sources#rust#rust_source_path='/usr/src/rust/src/'
 " }}}
 
 " Ultisnips {{{
-let g:UltiSnipsExpandTrigger = "<nop>"
+let g:UltiSnipsExpandTrigger = "<leader>e"
 let g:ulti_expand_or_jump_res = 0
-function! ExpandSnippetOrCarriageReturn()
-	let snippet = UltiSnips#ExpandSnippetOrJump()
-	if g:ulti_expand_or_jump_res > 0
-		return snippet
-	else
-		return "\<CR>"
-	endif
-endfunction
-inoremap <expr> <CR> pumvisible() ? "\<C-R>=ExpandSnippetOrCarriageReturn()\<CR>" : "\<CR>"
 
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-l>"
@@ -434,9 +436,14 @@ let g:UltiSnipsJumpBackwardTrigger="<c-l>"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 
+
+let g:UltiSnipsUsePythonVersion = 3
+
 "let g:UltiSnipsSnippetsDir="~/.config/nvim/ultisnips"
 
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "ultisnips"]
+
+call deoplete#custom#set('ultisnips', 'matchers', ['matcher_fuzzy'])
 
 " }}}
 
