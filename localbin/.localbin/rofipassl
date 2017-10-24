@@ -24,6 +24,9 @@ else
     action="$@"
 fi
 
+# Remove the leading (none)/ since apparently lpass doesn't like that
+action=$(echo "$action" | sed "s/(none)\///")
+
 # Show results if multiple matches found
 if [[ "$(lpass show -G $action | head -n 1)" == *"Multiple matches found"* ]]; then
     matches=( $(lpass show -G $action | tail -n +2 | sed -e 's/.*\[id: \(.*\)\].*/\1/') )
