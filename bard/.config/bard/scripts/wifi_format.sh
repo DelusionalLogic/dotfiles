@@ -4,12 +4,12 @@ fi
 
 echo -n "%{T$icon}"
 if [[ quality -gt 60 ]]; then
-	echo -en "%{F$good_col}\uE222"
+	echo -en "%{B$good_col} \uE222 "
 elif [[ quality -gt 40 ]]; then
-	echo -en "%{F$mid_col}\uE221"
+	echo -en "%{B$mid_col} \uE221 "
 elif [[ quality -gt 20 ]]; then
-	echo -en "%{F$low_col}\uE220"
+	echo -en "%{B$low_col} \uE220 "
 else
-	echo -en "%{F$low_col}\uE21F"
+	echo -en "%{B$low_col} \uE21F "
 fi
-echo " %{T-}%{F-}$essid"
+echo "%{T-}%{F-}$essid "
