@@ -62,11 +62,11 @@ for monitor in "${order[@]}"; do
 		this_desktops=$(($this_desktops + 1))
 	fi
 
-	desks="$(seq -s " " 1 $this_desktops)"
+	desks=$(seq -s " " 1 $this_desktops)
 	for desk in $desks; do
 		deskname="$(bspc query -D -m $monitor | awk NR==$desk)"
-		thisd=$(bspc query -D -d "$desk_cnt")
-		if [[ $deskname -ne $thisd ]]; then
+		thisd=$(bspc query -D -d $desk_cnt)
+		if [[ "$deskname" -ne "$thisd" ]]; then
 			echo "Swap $deskname and $thisd"
 			bspc desktop $deskname -s $desk_cnt
 		fi

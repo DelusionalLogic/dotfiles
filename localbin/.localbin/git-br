@@ -48,9 +48,11 @@ if ! git merge-base --is-ancestor "$THIS_BRANCH" "$TRAC_BRANCH"; then
 
 	if [ "$dependant" = true ]; then
 		echo "There were branches based on $fg[yellow]$THIS_BRANCH$fg[default]"
+		exit 1
 	fi
 fi
 
+echo "$fg[green]Safe$fg[default] to pull"
 echo "$(tput setaf 4)========================================="
 tput sgr0
 
