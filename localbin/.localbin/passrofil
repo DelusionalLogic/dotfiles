@@ -18,7 +18,7 @@ if [[ -z "$@" ]]; then
     list=$(lpass ls --sync auto --color never | sed -e 's/ \[id.*//' | sort -u | tail -n +2)
 
     # Do the thing
-    action=$(printf "$list" | $menu -i -p "lpass: ")
+    action=$(printf "$list" | $menu -i -p "lpass: " | sed -e 's/^(none)\///')
     [[ ! -z "$action" ]] || exit
 else
     action="$@"
