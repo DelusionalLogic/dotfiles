@@ -6,7 +6,7 @@ export FMT_ACTION="(%F{3}%a%f)"
 export FMT_PATH="%F{1}%R%F{2}/%S%f"
 
 function setprompt() {
-	local MODE="${${KEYMAP/vicmd/"%F{2}normal%f"}/(main|viins)/"%F{4}insert%f"}"
+	local MODE="${${KEYMAP/vicmd/"%F{2}n%f"}/(main|viins)/"%F{4}i%f"}"
 	local HOST="%F{1}$HOST%f"
 	local USER="%(#.%F{1}.%F{3})%n%f"
 	local PWD="%F{7}$($XDG_CONFIG_HOME/zsh/rzsh_path)%f"

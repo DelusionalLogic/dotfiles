@@ -7,6 +7,6 @@
 
 ENV["PWD"].gsub(/home\/[a-zA-Z0-9]*/, "~").split("/").each { |d|
 	print "%F{#{@i}} \u00BB " unless @i < 2
-	print "%F{15}#{d}"
+	print "%F{8}#{d}"
 	@i += 1
 }

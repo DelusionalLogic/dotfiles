@@ -57,4 +57,4 @@ bindkey -M vicmd "^D" list-choices
 bindkey -M vicmd  ":"  _complete_help 
 bindkey -M vicmd   ";" _read_comp
 
-bindkey -M viins "^U" all-matches
+bindkey -M viins "^U" kill-line

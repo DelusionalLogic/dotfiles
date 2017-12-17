@@ -24,7 +24,7 @@ source ~/.zplug/init.zsh
 zplug "/etc/profile.d", use:"autojump.zsh", from:local
 
 #Command not found hook
-zplug "/usr/share/doc/pkgfile", use:"command-not-found.zsh", from:local
+# zplug "/usr/share/doc/pkgfile", use:"command-not-found.zsh", from:local
 
 #Autocompletion
 zplug "zsh-users/zsh-autosuggestions"
