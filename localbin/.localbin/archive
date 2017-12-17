@@ -9,6 +9,16 @@ server="delusional@home.slashwin.dk"
 remotePath="/home/delusional/archive"
 remote="$server:$remotePath"
 
+tput setaf 4
+cat << "EOF"
+ ---.____    ,/\
+  ___,---'  /   \,__,-----.___
+         ,-' ,    \-----.__---`
+     _.-/   '  /\, \/\,
+  --"  ,    ,-' ^\   ^ \
+EOF
+tput sgr0
+
 new() {
 	local name="$1"
 	shift
