@@ -29,10 +29,12 @@ zplug "/etc/profile.d", use:"autojump.zsh", from:local
 #Autocompletion
 zplug "zsh-users/zsh-autosuggestions"
 
+zplug "supercrabtree/k"
+
 #Arcanist
 #zplug "/usr/share/php/arcanist/resources/shell", use:"bash-completion", from:local
 
-# zplug "djui/alias-tips"
+zplug "djui/alias-tips"
 zplug "arzzen/calc.plugin.zsh"
 zplug "Seinh/git-prune"
 zplug "RobSis/zsh-completion-generator"
@@ -50,13 +52,9 @@ zplug "zsh-users/zsh-syntax-highlighting", defer:2
 eval $( dircolors -b $XDG_CONFIG_HOME/zsh/LS_COLORS/LS_COLORS )
 export LS_COLORS
 
-zplug "~/.config/zsh", from:local, defer:3
+zplug "~/.config/zsh", from:local, defer:2
 
 zplug load
 
 GPG_TTY=$(tty)
 export GPG_TTY
-
-
-# added by travis gem
-[ -f /home/delusional/.travis/travis.sh ] && source /home/delusional/.travis/travis.sh
