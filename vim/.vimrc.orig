@@ -78,7 +78,13 @@ Plug 'godlygeek/tabular'
 " Integration
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
+<<<<<<< HEAD
 Plug 'tpope/vim-rhubarb'
+||||||| merged common ancestors
+=======
+Plug 'SevereOverfl0w/deoplete-github'
+Plug 'tpope/vim-rhubarb'
+>>>>>>> Update plug
 Plug 'tpope/vim-dispatch'
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
@@ -88,11 +94,15 @@ Plug 'vimperator/vimperator.vim'
 " Fun icons
 Plug 'ryanoasis/vim-devicons'
 
-Plug 'ron89/thesaurus_query.vim'
-
+<<<<<<< HEAD
 " Ledger
 Plug 'ledger/vim-ledger'
 
+||||||| merged common ancestors
+=======
+Plug 'ron89/thesaurus_query.vim'
+
+>>>>>>> Update plug
 " Required:
 call plug#end()
 
@@ -248,11 +258,12 @@ set complete+=kspell
 set completeopt=longest,preview,menuone,noselect
 
 "Map tab to down and up when in omnicomplete
-function! TryExpand()
-	call UltiSnips#ExpandSnippetOrJump()
-	return g:ulti_expand_or_jump_res
-endfunction
-inoremap <expr> <CR> pumvisible() ? "\<C-R>=TryExpand() ? \"\" : \"\<C-y>\"\<CR>" : "\<C-g>u\<CR>"
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
+			\ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
+inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
+			\ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
 
 " Make sure Vim returns to the same line when you reopen a file.
 " Thanks, Amit
@@ -364,10 +375,34 @@ endif
 if !exists('g:deoplete#omni_patterns')
 	let g:deoplete#omni_patterns = {}
 endif
-" let g:deoplete#enable_profile = 1
-" call deoplete#enable_logging('DEBUG', 'deoplete.log')
+<<<<<<< HEAD
+
+let g:deoplete#enable_profile = 1
+call deoplete#enable_logging('DEBUG', 'deoplete.log')
 call deoplete#custom#source('github', 'debug_enabled', 1)
 
+" let g:deoplete#omni_patterns.tex =
+" 			\ '\v\\%('
+" 			\ . '\a*cite\a*%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+" 			\ . '|\a*ref%(\s*\{[^}]*|range\s*\{[^,}]*%(}\{)?)'
+" 			\ . '|hyperref\s*\[[^]]*'
+" 			\ . '|includegraphics\*?%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+" 			\ . '|%(include%(only)?|input)\s*\{[^}]*'
+" 			\ . ')\m'
+
+||||||| merged common ancestors
+
+" let g:deoplete#omni_patterns.tex =
+" 			\ '\v\\%('
+" 			\ . '\a*cite\a*%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+" 			\ . '|\a*ref%(\s*\{[^}]*|range\s*\{[^,}]*%(}\{)?)'
+" 			\ . '|hyperref\s*\[[^]]*'
+" 			\ . '|includegraphics\*?%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+" 			\ . '|%(include%(only)?|input)\s*\{[^}]*'
+" 			\ . ')\m'
+
+=======
+>>>>>>> Update plug
 if !exists('g:deoplete#omni#input_patterns')
 	let g:deoplete#omni#input_patterns = {}
 endif
@@ -376,9 +411,7 @@ if !exists('g:deoplete#omni#functions')
 endif
 
 let g:deoplete#sources = {}
-let g:deoplete#sources._ = ['buffer', 'file', 'ultisnips']
 let g:deoplete#sources.python = ['github']
-
 let g:deoplete#omni#input_patterns.tex =
 			\   '\\(?:'
 			\  .   '\w*cite\w*(?:\s*\[[^]]*\]){0,2}\s*{[^}]*'
@@ -435,6 +468,7 @@ let g:deoplete#sources#rust#rust_source_path='/usr/src/rust/src/'
 
 " Ultisnips {{{
 let g:UltiSnipsExpandTrigger = "<leader>e"
+let g:ulti_expand_or_jump_res = 0
 
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-l>"
@@ -443,13 +477,13 @@ let g:UltiSnipsJumpBackwardTrigger="<c-l>"
 let g:UltiSnipsEditSplit="vertical"
 
 
-" let g:UltiSnipsUsePythonVersion = 3
+let g:UltiSnipsUsePythonVersion = 3
 
 "let g:UltiSnipsSnippetsDir="~/.config/nvim/ultisnips"
 
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "ultisnips"]
 
-" call deoplete#custom#set('ultisnips', 'matchers', ['matcher_fuzzy'])
+call deoplete#custom#set('ultisnips', 'matchers', ['matcher_fuzzy'])
 
 " }}}
 
