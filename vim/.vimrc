@@ -30,15 +30,15 @@ Plug 'm2mdas/phpcomplete-extended', {'for': 'php'}
 Plug 'lervag/vimtex', {'for': 'tex'}
 
 "Rust
-Plug 'rust-lang/rust.vim'
-Plug 'sebastianmarkow/deoplete-rust'
+Plug 'rust-lang/rust.vim', {'for': 'rust'}
+Plug 'sebastianmarkow/deoplete-rust', {'for': 'rust'}
 
 "Love2D
 Plug 'alols/vim-love-efm'
 
 "Python
-Plug 'zchee/deoplete-jedi'
-Plug 'vimjas/vim-python-pep8-indent'
+Plug 'zchee/deoplete-jedi', {'for': 'python'}
+Plug 'vimjas/vim-python-pep8-indent', {'for': 'python'}
 
 "Lua
 Plug 'xolox/vim-misc' | Plug 'xolox/vim-lua-ftplugin'
@@ -88,6 +88,8 @@ Plug 'vimperator/vimperator.vim'
 " Fun icons
 Plug 'ryanoasis/vim-devicons'
 
+Plug 'ron89/thesaurus_query.vim'
+
 " Ledger
 Plug 'ledger/vim-ledger'
 
@@ -108,6 +110,7 @@ augroup FileSpecific
 	"Git commits
 	autocmd FileType gitcommit setlocal textwidth=72
 	autocmd FileType gitcommit setlocal spell
+	autocmd FileType gitcommit set completeopt+=preview
 
 	"CSS
 	autocmd FileType css,scss,sass setlocal iskeyword+=-
@@ -242,7 +245,7 @@ set noswapfile
 
 "Omnicomplete settings
 set complete+=kspell
-set completeopt=longest,menuone,noselect,preview
+set completeopt=longest,preview,menuone,noselect
 
 "Map tab to down and up when in omnicomplete
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -347,26 +350,24 @@ let g:EasyMotion_smartcase = 1 " US layout
 "Deoplete {{{
 
 let g:deoplete#enable_at_startup=1
+
 inoremap <silent><expr> <Tab>
 		\ pumvisible() ? "\<C-n>" :
 		\ "\<Tab>"
 
+
+if !exists('g:deoplete#sources')
+	let g:deoplete#sources = {}
+endif
+if !exists('g:deoplete#keyword_patterns')
+	let g:deoplete#keyword_patterns = {}
+endif
 if !exists('g:deoplete#omni_patterns')
 	let g:deoplete#omni_patterns = {}
 endif
-
 let g:deoplete#enable_profile = 1
 call deoplete#enable_logging('DEBUG', 'deoplete.log')
 call deoplete#custom#source('github', 'debug_enabled', 1)
-
-" let g:deoplete#omni_patterns.tex =
-" 			\ '\v\\%('
-" 			\ . '\a*cite\a*%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
-" 			\ . '|\a*ref%(\s*\{[^}]*|range\s*\{[^,}]*%(}\{)?)'
-" 			\ . '|hyperref\s*\[[^]]*'
-" 			\ . '|includegraphics\*?%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
-" 			\ . '|%(include%(only)?|input)\s*\{[^}]*'
-" 			\ . ')\m'
 
 if !exists('g:deoplete#omni#input_patterns')
 	let g:deoplete#omni#input_patterns = {}
@@ -385,6 +386,11 @@ let g:deoplete#omni#input_patterns.tex =
 			\  .  '|includegraphics\*?(?:\s*\[[^]]*\]){0,2}\s*\{[^}]*'
 			\  .  '|(?:include(?:only)?|input)\s*\{[^}]*'
 			\  .')'
+
+" Deoplete-github {{{
+let g:deoplete#sources.gitcommit=['github']
+let g:deoplete#keyword_patterns.gitcommit = '#.*'
+" }}}
 
 " }}}
 
@@ -543,13 +549,11 @@ endfunction
 
 let g:unite_source_history_yank_enable = 1
 nnoremap <LocalLeader>y :Unite -no-split -start-insert -auto-resize -buffer-name=Yank_History history/yank<CR>
+nnoremap ff :Unite grep:. -no-split -start-insert -auto-resize -wrap <CR>
 
-nnoremap <F9> :Unite -auto-resize -buffer-name=Unite_Menu menu<CR>
-inoremap <F9> :Unite -auto-resize -buffer-name=Unite_Menu menu<CR>
-
-nnoremap <C-L> :Unite -no-split -auto-resize -buffer-name=Lines line<CR>
-inoremap <C-L> :Unite -no-split -auto-resize -buffer-name=Lines line<CR>
-
+let g:unite_source_grep_command = 'rg'
+let g:unite_source_grep_default_opt = '--hidden --no-heading --vimgrep -S'
+let g:unite_source_grep_recursive_opt = ''
 " }}}
 
 " Vim-Notes {{{
