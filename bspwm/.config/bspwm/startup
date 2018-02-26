@@ -1,0 +1,26 @@
+#!/bin/bash 
+
+# # Terminal on desktop  1
+# bspc desktop -f ^1
+
+# bspc node @/ -i
+
+# bspc rule -a Termite:termite -o node=@/1
+# termite &
+
+# # Firefox on desktop 7
+# bspc desktop -f ^7
+
+# bspc node @/ -i
+
+# bpsc rule -a Firefox:Navigator -o node=@/1
+# firefox &
+
+
+# #Livestreams on desktop 6
+# bspc desktop -f ^6
+
+# bspc node @/ -i
+
+# bspc rule -a streamlink-twitch-gui -o node=@/1
+# streamlink-twitch-gui &
