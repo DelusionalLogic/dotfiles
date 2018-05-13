@@ -1,0 +1,26 @@
+@-moz-document domain("youtube.com") {
+	html[dark]:not([style-scope]):not(.style-scope),
+	[dark]:not([style-scope]):not(.style-scope) {
+		--yt-main-app-background: hsl(222, 16%, 28%);
+		--yt-channel-header-background: hsl(221, 17%, 22%) !important;
+		--yt-main-app-background-tmp: hsl(222, 16%, 28%);
+		--yt-swatch-primary: rgb(59, 66, 82) !important;
+		--yt-guide-background: hsl(221, 17%, 22%) !important;
+		--yt-brand-paper-button-color: hsl(354, 42%, 56%) !important;
+		--yt-searchbox-background: rgb(51, 57, 71) !important;
+	}
+
+	paper-button[subscribed].ytd-subscribe-button-renderer {
+		background-color: hsl(92, 28%, 65%) !important;
+	}
+
+	.ytp-swatch-background-color,
+	#progress.ytd-thumbnail-overlay-resume-playback-renderer,
+	ytd-subscribe-button-renderer:not([button-style]) paper-button:not([subscribed]) {
+		background-color: hsl(354, 42%, 56%) !important;
+	}
+
+	ytd-topbar-logo-renderer.style-scope > a:nth-child(1) > div:nth-child(1) > svg:nth-child(1) > g:nth-child(1) > g:nth-child(1) > path:nth-child(1) {
+		fill: hsl(354, 42%, 56%);
+	}
+}
