@@ -23,11 +23,17 @@ Plug 'scrooloose/syntastic'
 " Make
 Plug 'neomake/neomake'
 
+" XML
+Plug 'othree/xml.vim'
+
 "PHP
 Plug 'm2mdas/phpcomplete-extended', {'for': 'php'}
 
 "LaTeX
 Plug 'lervag/vimtex', {'for': 'tex'}
+
+" GLSL
+Plug 'tikhomirov/vim-glsl'
 
 "Rust
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
@@ -88,6 +94,7 @@ Plug 'vimperator/vimperator.vim'
 " Fun icons
 Plug 'ryanoasis/vim-devicons'
 
+let tq_enabled_backends=["datamuse_com"]
 Plug 'ron89/thesaurus_query.vim'
 
 " Ledger
@@ -354,30 +361,32 @@ inoremap <silent><expr> <Tab>
 		\ pumvisible() ? "\<C-n>" :
 		\ "\<Tab>"
 
-
 if !exists('g:deoplete#sources')
 	let g:deoplete#sources = {}
 endif
+
 if !exists('g:deoplete#keyword_patterns')
 	let g:deoplete#keyword_patterns = {}
 endif
+
 if !exists('g:deoplete#omni_patterns')
 	let g:deoplete#omni_patterns = {}
 endif
-" let g:deoplete#enable_profile = 1
-" call deoplete#enable_logging('DEBUG', 'deoplete.log')
-call deoplete#custom#source('github', 'debug_enabled', 1)
 
-if !exists('g:deoplete#omni#input_patterns')
-	let g:deoplete#omni#input_patterns = {}
-endif
 if !exists('g:deoplete#omni#functions')
 	let g:deoplete#omni#functions = {}
 endif
 
-let g:deoplete#sources = {}
-let g:deoplete#sources._ = ['buffer', 'file', 'ultisnips']
-let g:deoplete#sources.python = ['github']
+if !exists('g:deoplete#omni#input_patterns')
+	let g:deoplete#omni#input_patterns = {}
+endif
+
+if !exists('g:deoplete#omni#functions')
+	let g:deoplete#omni#functions = {}
+endif
+
+"let g:deoplete#enable_profile = 1
+"call deoplete#enable_logging('DEBUG', 'deoplete.log')
 
 let g:deoplete#omni#input_patterns.tex =
 			\   '\\(?:'
@@ -420,7 +429,7 @@ let g:deoplete#sources#clang#flags = [
 " }}}
 
 "PHPcompleter-extended {{{
-"
+
 let g:phpcomplete_index_composer_command = 'composer'
 let g:deoplete#omni#input_patterns.php = '[^. \t]->|[a-zA-Z_]\w*::|(?:new|use|extends|implements)\s|(?:\$)'
 

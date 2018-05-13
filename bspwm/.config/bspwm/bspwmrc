@@ -27,6 +27,7 @@ bspc rule -a "*:pavucontrol" state=floating
 bspc rule -a Kupfer.py       state=floating
 bspc rule -a Screenkey       manage=off
 bspc rule -a "Google Play Music Desktop Player" desktop=10 follow=off
+bspc rule -a "Zathura"       state=tiled 
 
 if [ -e "$BSPWM_STATE" ] ; then
 	bspc wm -l "$BSPWM_STATE"

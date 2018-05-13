@@ -52,7 +52,7 @@ zplug "zsh-users/zsh-syntax-highlighting", defer:2
 eval $( dircolors -b $XDG_CONFIG_HOME/zsh/LS_COLORS/LS_COLORS )
 export LS_COLORS
 
-zplug "~/.config/zsh", from:local, defer:2
+zplug "~/.config/zsh", from:local, defer:3
 
 zplug load
 

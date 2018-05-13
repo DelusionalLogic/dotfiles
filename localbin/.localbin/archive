@@ -28,27 +28,26 @@ new() {
 
 	echo "Creating new archive $name"
 	mkdir -p "$archDir" || exit 1
+	mkdir -p "$archDir/files" || exit 1
+
 	echo "Compressing files"
-	tar -czvf "$archDir/files.tar.gz" "${files[@]}" || exit 1
+	cp -R "${files[@]}" "$archDir/files" || exit 1
+
 	echo "Creating description"
 	cp "$templates/desc" "$archDir/desc"
 	vim "$archDir/desc" || exit 1
 	echo "Sending files to remote server"
-	rsync --progress -Rr "$archDir" "$remote" || exit 1
+
+	pushd "$archDir"
+	borg create "archive:.::$name" "." || exit 1
+	popd
+	
 	echo "removing $archDir"
-	rm  -r "$archDir"
+	rm  -rf "$archDir"
 }
 
 list() {
-	cat "$cache"
-}
-
-update() {
-	echo "Listing archives on the remote server"
-	local archives=$(ssh "$server" "cd $remotePath; find -type f -name files.tar.gz | cut -d / -f 2- | xargs dirname")
-	echo "Writing archives to cache"
-	echo "$archives" > "$cache"
-	echo "Archives written to cache"
+	borg list "archive:." || exit 1
 }
 
 get() {
@@ -69,7 +68,6 @@ get() {
 help() {
 	echo "Commands: "
 	echo "new [name] [folder...] - Archive folders"
-	echo "list - List archives"
 	echo "update - Update the archive list"
 	echo "get [name] - Get archive"
 }
