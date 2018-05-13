@@ -1,0 +1,43 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); /* set default namespace to XUL */
+
+/*
+#nav-bar {
+	z-index: 0;
+	margin-top: -38px;
+	visibility: hidden;
+	transition: all .1s ease-in-out .5s;
+}
+#TabsToolbar:hover ~ #nav-bar,
+#nav-bar:hover,
+#nav-bar:active{
+	margin-top: 0px;
+	visibility: visible;
+	transition: all .1s ease-in-out 1s;
+}
+#TabsToolbar {
+	position:relative;
+	z-index: 3;
+}
+*/
+:root {
+	--chrome-background-color: rgb(59, 66, 82) !important;
+	--chrome-secondary-background-color: rgb(59, 66, 82) !important;
+	--url-and-searchbar-background-color: rgb(51, 57, 71) !important;
+	--tab-line-color: hsl(179, 25%, 65%) !important;
+}
+#identity-icon{
+	opacity: 0;
+	margin-right: -20px;
+}
+
+.panel-arrowcontent {
+	box-shadow: none !important;
+}
+
+.tabs-newtab-button {
+}
+
+#TabsToolbar tab:first-child:nth-last-child(1),
+#TabsToolbar tab:first-child:nth-last-child(1) ~ .tabs-newtab-button {
+	display: none;
+}
