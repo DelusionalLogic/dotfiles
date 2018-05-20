@@ -1,2 +1,27 @@
 set guioptions ""
-set default-bg "#3B4252"
+set recolor-lightcolor "#2E3440"
+set recolor-darkcolor "#FFFFFF"
+
+set default-bg "#2E3440"
+
+set inputbar-fg "#FFFFFF"
+set inputbar-bg "#2E3440"
+
+set notification-fg "#FFFFFF"
+set notification-bg "#2E3440"
+
+set tabbar-fg "#FFFFFF"
+set tabbar-bg "#2E3440"
+set tabbar-focus-bg "#A3BE8C"
+
+set index-fg "#FFFFFF"
+set index-bg "#2E3440"
+set index-active-bg "#A3BE8C"
+
+set highlight-color "#E9C98A"
+set highlight-active-color "#E67E22"
+set highlight-transparency 0.1
+
+set page-padding 0
+set scroll-step 120
+set smooth-scroll
