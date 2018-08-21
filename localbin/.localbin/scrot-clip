@@ -1,3 +1,9 @@
 #!/bin/bash
 
-import png:- "$@" | xclip -selection clipboard -t image/png
+if [[ $1 == "-a" ]]; then
+	active=$(xdotool getmouselocation)
+	arg="-window ${active//*window:/}"
+	shift
+fi
+
+import $arg "$@" png:- | xclip -selection clipboard -t image/png
