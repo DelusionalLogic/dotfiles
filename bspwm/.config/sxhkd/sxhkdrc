@@ -120,6 +120,9 @@ super + p
 Caps_Lock
 	~/scripts/capsinform
 
+Print; w
+	$HOME/.localbin/scrot-clip -a
+
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd

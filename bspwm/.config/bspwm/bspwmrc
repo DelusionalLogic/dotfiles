@@ -1,6 +1,6 @@
 #! /bin/bash
-bspc config border_width         0
-bspc config window_gap           5
+bspc config border_width         1
+bspc config window_gap           40
 
 bspc config split_ratio          0.50
 bspc config borderless_monocle   false
@@ -8,16 +8,15 @@ bspc config gapless_monocle      false
 bspc config focus_by_distance    true
 bspc config click_to_focus       any
 bspc config pointer_modifier     mod4
-bspc config focused_border_color $(colorget 4)
-bspc config normal_border_color  $(colorget 3)
+bspc config focused_border_color $(colorget 2)
+bspc config normal_border_color  $(colorget 5)
 bspc config urgent_border_color  $(colorget 1)
 bspc config top_padding          17
 
 bspc config external_rules_command $HOME/.config/bspwm/external_rules
 
 bspc rule -a "*:jit"         state=floating
-bspc rule -a Steam           state=floating desktop=5               follow=on
-bspc rule -a steam           state=floating desktop=5               follow=off
+bspc rule -a Steam           state=floating desktop=5  follow=on
 bspc rule -a feh             state=floating
 bspc rule -a mplayer2        state=floating
 bspc rule -a mpv             state=floating
@@ -27,12 +26,8 @@ bspc rule -a "*:pavucontrol" state=floating
 bspc rule -a Kupfer.py       state=floating
 bspc rule -a Screenkey       manage=off
 bspc rule -a "Google Play Music Desktop Player" desktop=10 follow=off
-bspc rule -a "Zathura"       state=tiled 
-
-if [ -e "$BSPWM_STATE" ] ; then
-	bspc wm -l "$BSPWM_STATE"
-	rm "$BSPWM_STATE"
-fi
+bspc rule -a "streamlink-twitch-gui"            desktop=6 border=on follow=off
+bspc rule -a "Zathura"       state=tiled
 
 # polkit
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
@@ -46,13 +41,7 @@ xbindkeys &
 
 xsetroot -cursor_name left_ptr &
 
-#Kill panel and restart
-#if [ $(pgrep 'bard') ]; then
-#		pgrep 'bard' | xargs kill -s 9
-#fi
-#~/.config/bar/panel.sh 2>/dev/null &
 ~/bard/build/bard_src/bard -c ~/.config/bard 1>&2 2>/tmp/bard &
-#/home/delusional/bard/build/src/bard -c /home/delusional/.config/bard &
 
 #xflux -l 57.0137 -g 9.9832 &
 
@@ -61,5 +50,4 @@ compton -CG --config ~/.config/compton.conf &
 wmname LG3D
 
 source ~/.config/bspwm/device
-
 source ~/.config/bspwm/startup

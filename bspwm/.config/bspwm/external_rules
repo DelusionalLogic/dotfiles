@@ -7,7 +7,7 @@ monitor="$4"
 desktop="$5"
 node="$6"
 
-#Float any window supposed to be above
+# Float any window supposed to be above
 stateProp=$(xprop _NET_WM_STATE -id "$wid")
 re='^_NET_WM_STATE\(ATOM\) = ([A-Z_]+)$'
 if [[ "$stateProp" =~ $re ]]; then
@@ -17,3 +17,18 @@ if [[ "$stateProp" =~ $re ]]; then
 		_NET_WM_STATE_ABOVE) echo "state=floating";;
 	esac
 fi
+
+
+# Split on largest side
+# fwid=$(bspc query -N -n focused.automatic)
+# if [ -n "$fwid" ] ; then
+# 	wattr wh $fwid | {
+# 		read width height
+# 		if [ $width -gt $height ] ; then
+# 			echo "split_dir=west"
+# 		else
+# 			echo "split_dir=south"
+# 		fi
+# 		echo "split_ratio=0.5"
+# 	}
+# fi
