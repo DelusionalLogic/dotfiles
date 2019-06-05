@@ -7,7 +7,7 @@ color indicator  brightwhite  black
 color index      brightblue   default    "~f nobody@archlinux.org"
 color index      green        default    "~f webmaster@archlinux.org"
 
-set from      = "jesper@slashwin.com"
+set from      = "jesper@slashwin.dk"
 set sendmail  = "msmtp -a personal"
 set mbox      = "+personal/archive"
 set record    = "+personal/INBOX.Sent"

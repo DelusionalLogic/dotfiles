@@ -1,0 +1,15 @@
+#######################
+# jwr specific options
+#######################
+
+color status     yellow   brightblack
+color indicator  yellow   brightblack
+
+set from      = "jesper@jnsn.dev"
+#set sendmail  = "muttdown -a uni"
+set sendmail  = "msmtp -a new"
+set mbox      = "+new/archive"
+set record    = "+new/INBOX.Sent"
+set postponed = "+uni/INBOX.Draft"
+
+macro index S "<save-message>+new/INBOX.Spam<enter>"               "mark message as spam"

@@ -109,7 +109,7 @@ source ~/.mutt/mailboxes
 # always sourced
 source $alias_file                                               # required for functionality
 source ~/.mutt/colors.muttrc                                     # source colors file
-source ~/.mutt/personal.muttrc                                     # source as default
+source ~/.mutt/personal.muttrc                                   # source as default
 source ~/.mutt/gpg.rc                                            # use GPG
 
 # account specific sources
@@ -119,26 +119,14 @@ macro index gh       "<change-folder> =personal/INBOX<enter>"  "go to Inbox"
 folder-hook gmail/* source ~/.mutt/gmail.muttrc 
 macro index gl       "<change-folder> =gmail/INBOX<enter>"     "go to Gmail inbox"
 
-folder-hook uni/* source ~/.mutt/uni.muttrc 
-macro index gj       "<change-folder> =uni/INBOX<enter>"       "go to Uni Inbox"
-macro index gf       "<change-folder> =uni/FIT<enter>"         "go to Uni FIT"
+folder-hook new/* source ~/.mutt/new.muttrc 
+macro index gj       "<change-folder> =new/INBOX<enter>"       "go to New (jnsn.dev) Inbox"
 
 
 
 # Mailing lists
-lists arch-announce@archlinux.org                                # Arch announcements
-subscribe arch-announce@archlinux.org
-
-lists arch-general@archlinux.org                                 # Arch general list
-subscribe arch-general@archlinux.org
-
-lists aur-general@archlinux.org                                  # AUR general list
-subscribe aur-general@archlinux.org
-
-subscribe fit@lists.fklub.dk
-subscribe fit@fklub.dk
-subscribe fembers@lists.fklub.dk
-subscribe fembers@fklub.dk
+subscribe arch-.*@archlinux.org
+subscribe .*@lists.x.org
 
 # these just give me headaches
 bind index,pager \#     noop
