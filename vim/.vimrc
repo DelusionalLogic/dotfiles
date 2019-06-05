@@ -18,7 +18,7 @@ Plug 'xolox/vim-notes'
 " Syntax
 Plug 'Shougo/deoplete.nvim'
 Plug 'Shougo/neoinclude.vim'
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
 
 " Make
 Plug 'neomake/neomake'
@@ -311,6 +311,7 @@ highlight GitGutterChange ctermbg=NONE ctermfg=Yellow
 highlight GitGutterAdd ctermbg=NONE ctermfg=DarkGreen
 highlight GitGutterDelete ctermbg=NONE ctermfg=Red
 highlight GitGutterChangeDelete ctermbg=NONE ctermfg=Blue
+let g:gitgutter_max_signs = 1000
 
 " }}}
 
@@ -472,7 +473,7 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-let g:syntastic_c_checkers = ["clang_check"]
+let g:syntastic_c_checkers = ["gcc"]
 let g:syntastic_c_clang_check_post_args = ""
 
 let g:syntastic_cpp_clang_check_post_args = ""
