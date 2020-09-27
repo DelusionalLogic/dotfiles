@@ -17,6 +17,12 @@ versions = {
 		package.path = np .. ";" .. package.path
 		package.cpath = ncp .. ";" .. package.cpath
 	end,
+	["Lua 5.4"] = function()
+		local np = io.popen("LUA_INIT=\"\" luarocks path --lr-path", "r"):read("*all")
+		local ncp = io.popen("LUA_INIT=\"\" luarocks path --lr-cpath", "r"):read("*all")
+		package.path = np .. ";" .. package.path
+		package.cpath = ncp .. ";" .. package.cpath
+	end,
 }
 
 versions[_VERSION]()

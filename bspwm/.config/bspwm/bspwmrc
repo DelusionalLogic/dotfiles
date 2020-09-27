@@ -1,6 +1,6 @@
 #! /bin/bash
 bspc config border_width         1
-bspc config window_gap           40
+bspc config window_gap           10
 
 bspc config split_ratio          0.50
 bspc config borderless_monocle   false
@@ -41,13 +41,16 @@ xbindkeys &
 
 xsetroot -cursor_name left_ptr &
 
-~/bard/build/bard_src/bard -c ~/.config/bard 1>&2 2>/tmp/bard &
-
 #xflux -l 57.0137 -g 9.9832 &
 
-compton -CG --config ~/.config/compton.conf &
+neocomp --config ~/.config/neocomp.conf &
 
 wmname LG3D
+
+{
+	sleep 1.5
+	~/bard/build/bard_src/bard -c ~/.config/bard 1>&2 2>/tmp/bard
+} &
 
 source ~/.config/bspwm/device
 source ~/.config/bspwm/startup

@@ -38,10 +38,6 @@
 #keystate_scrolllock= enable
 
 # Examples of commands:
-
-"xdotool key ctrl+z"
-  m:0x0 + b:9   (mouse)
-
 "/sbin/amixer -D pulse sset Master 10%-"
     m:0x10 + c:122
     XF86AudioLowerVolume

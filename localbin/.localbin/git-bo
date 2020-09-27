@@ -36,9 +36,9 @@ done < <(git for-each-ref --format='%(refname:short)' refs/ --no-merged="$THIS_B
 echo "$(tput setaf 4)========================================="
 tput sgr0
 
-_git_COMMAND_NAME ()
+_git_bo ()
 {
   # you can return anything here for the autocompletion for example all the branches
-  __gitcomp_nl "$(__git_refs)"
+  __gitcomp "$(__git_complete_refs --track)"
 }
 

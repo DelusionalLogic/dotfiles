@@ -16,18 +16,16 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'xolox/vim-notes'
 
 " Syntax
-Plug 'Shougo/deoplete.nvim'
-Plug 'Shougo/neoinclude.vim'
+Plug 'neoclide/coc.nvim', {'do': './install.sh nightly'}
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" Plug 'Shougo/neoinclude.vim'
 " Plug 'scrooloose/syntastic'
 
 " Make
-Plug 'neomake/neomake'
+" Plug 'neomake/neomake'
 
 " XML
 Plug 'othree/xml.vim'
-
-"PHP
-Plug 'm2mdas/phpcomplete-extended', {'for': 'php'}
 
 "LaTeX
 Plug 'lervag/vimtex', {'for': 'tex'}
@@ -37,20 +35,15 @@ Plug 'tikhomirov/vim-glsl'
 
 "Rust
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
-Plug 'sebastianmarkow/deoplete-rust', {'for': 'rust'}
 
 "Love2D
 Plug 'alols/vim-love-efm'
 
 "Python
-Plug 'zchee/deoplete-jedi', {'for': 'python'}
 Plug 'vimjas/vim-python-pep8-indent', {'for': 'python'}
 
 "Lua
 Plug 'xolox/vim-misc' | Plug 'xolox/vim-lua-ftplugin'
-
-"C and C++
-Plug 'zchee/deoplete-clang'
 
 "Racket/Scheme
 Plug 'MicahElliott/vrod'
@@ -354,92 +347,73 @@ let g:EasyMotion_smartcase = 1 " US layout
 
 " }}}
 
-"Deoplete {{{
+" Vim-Go {{{
+" disable coc.nvim feature
 
-let g:deoplete#enable_at_startup=1
-
-inoremap <silent><expr> <Tab>
-		\ pumvisible() ? "\<C-n>" :
-		\ "\<Tab>"
-
-if !exists('g:deoplete#sources')
-	let g:deoplete#sources = {}
-endif
-
-if !exists('g:deoplete#keyword_patterns')
-	let g:deoplete#keyword_patterns = {}
-endif
-
-if !exists('g:deoplete#omni_patterns')
-	let g:deoplete#omni_patterns = {}
-endif
-
-if !exists('g:deoplete#omni#functions')
-	let g:deoplete#omni#functions = {}
-endif
-
-if !exists('g:deoplete#omni#input_patterns')
-	let g:deoplete#omni#input_patterns = {}
-endif
-
-if !exists('g:deoplete#omni#functions')
-	let g:deoplete#omni#functions = {}
-endif
-
-"let g:deoplete#enable_profile = 1
-"call deoplete#enable_logging('DEBUG', 'deoplete.log')
-
-let g:deoplete#omni#input_patterns.tex =
-			\   '\\(?:'
-			\  .   '\w*cite\w*(?:\s*\[[^]]*\]){0,2}\s*{[^}]*'
-			\  .  '|\w*ref(?:\s*\{[^}]*|range\s*\{[^,}]*(?:}{)?)'
-			\  .  '|hyperref\s*\[[^]]*'
-			\  .  '|includegraphics\*?(?:\s*\[[^]]*\]){0,2}\s*\{[^}]*'
-			\  .  '|(?:include(?:only)?|input)\s*\{[^}]*'
-			\  .')'
-
-" Deoplete-github {{{
-let g:deoplete#sources.gitcommit=['github']
-let g:deoplete#keyword_patterns.gitcommit = '#.*'
-" }}}
+" this is handled by LanguageClient [LC]
+let g:go_def_mapping_enabled = 0
 
 " }}}
 
-" Lua {{{
-	let g:lua_check_syntax = 0
-	let g:lua_complete_omni = 1
-	let g:lua_complete_dynamic = 0
-	let g:lua_define_completion_mappings = 0
+" coc.nvim {{{
 
-	" let g:deoplete#omni#functions.lua = 'xolox#lua#omnifunc'
-	let g:deoplete#omni#functions.lua = 'xolox#lua#completefunc'
-" }}}
+set updatetime=300
 
-"Deoplete-clang {{{
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 
-let g:deoplete#sources#clang#libclang_path = '/usr/lib/libclang.so'
-let g:deoplete#sources#clang#clang_header = '/usr/lib/clang'
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
 
-let g:deoplete#sources#clang#flags = [
-	\ "-I", "/usr/include/gio-unix-2.0/",
-	\ "-I", "/usr/include/glib-2.0/",
-	\ "-I", "/usr/include/glib-2.0/include",
-	\]
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
-	" \ system("pkg-config --cflags gio-unix-2.0"),
-" }}}
+" Remap for format selected region
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
-"PHPcompleter-extended {{{
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
 
-let g:phpcomplete_index_composer_command = 'composer'
-let g:deoplete#omni#input_patterns.php = '[^. \t]->|[a-zA-Z_]\w*::|(?:new|use|extends|implements)\s|(?:\$)'
+" Use U to show documentation in preview window
+nnoremap <silent> U :call <SID>show_documentation()<CR>
 
-"}}}
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
 
-"Vim-Racer {{{
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
-let g:deoplete#sources#rust#racer_binary='/usr/bin/racer'
-let g:deoplete#sources#rust#rust_source_path='/usr/src/rust/src/'
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " }}}
 
@@ -459,26 +433,6 @@ let g:UltiSnipsEditSplit="vertical"
 
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "ultisnips"]
 
-" call deoplete#custom#set('ultisnips', 'matchers', ['matcher_fuzzy'])
-
-" }}}
-
-" Syntastic {{{
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
-let g:syntastic_c_checkers = ["gcc"]
-let g:syntastic_c_clang_check_post_args = ""
-
-let g:syntastic_cpp_clang_check_post_args = ""
-let g:syntastic_cpp_checkers = ["clang_check"]
-
 " }}}
 
 " Neomake {{{
@@ -497,14 +451,13 @@ let g:neomake_rust_enabled_makers = ['cargo']
 augroup my_neomake_cmds
 	autocmd!
 	" Have neomake run cargo when Rust files are saved.
-	autocmd BufWritePost *.rs Neomake cargo
+	" autocmd BufWritePost *.rs Neomake cargo
 augroup END
 
 " }}}
 
 " Racket {{{
 "
-let g:syntastic_enable_racket_racket_checker = 1
 let g:vimshell_enable_start_insert = 0
 
 " }}}
@@ -568,4 +521,28 @@ let g:unite_source_grep_recursive_opt = ''
 
 " Vim-Notes {{{
 let g:notes_directories = ['~/BitTorrent Sync/notes', '~/Documents/Notes']
+" }}}
+
+" Java {{{
+" Create class
+
+function! g:JavaSourcePackage() abort
+    let path = expand("%:.:h")
+    let package_path = substitute(path, ".*java/", "", "")
+
+    return substitute(package_path, "/", ".", "g")
+endfunction
+
+function! g:ClassFromNone() abort
+    let package = JavaSourcePackage()
+
+    let package = input("New Class: ", package)
+endfunction
+
+function! g:ClassFromName(name) abort
+    let package = JavaSourcePackage() . "." . a:name
+
+    let package = input("New Class: ", package)
+endfunction
+
 " }}}

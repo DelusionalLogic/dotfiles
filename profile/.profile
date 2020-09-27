@@ -12,9 +12,9 @@ export XDG_CACHE_HOME="$HOME/.cache"
 
 export GOPATH=~/go
 
-export PATH="$PATH:$GOPATH/bin"
-export PATH="$(luarocks path --lr-bin):$PATH"
-export PATH="$(luarocks-5.1 path --lr-bin):$PATH"
+export PATH="${PATH}:$GOPATH/bin"
+# export PATH="$(luarocks path --lr-bin):$PATH"
+# export PATH="$(luarocks-5.1 path --lr-bin):$PATH"
 export PATH="$HOME/.localbin:$HOME/.local/bin:${PATH}"
 
 export PKG_CONFIG_PATH="$HOME/.local/share/pkgconfig:${PKG_CONFIG_PATH}"

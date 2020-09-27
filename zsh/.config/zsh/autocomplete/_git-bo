@@ -1,8 +1,6 @@
 #compdef git-bo
-#description I'm testing
+#description Is commit downstream
 
 function _git-bo(){
-	_alternative \
-		'localb::__git_branch_names' \
-		'remoteb::__git_remote_branch_names'
+	__git_commits
 }

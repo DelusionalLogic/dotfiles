@@ -36,7 +36,6 @@ zplug "supercrabtree/k"
 
 zplug "djui/alias-tips"
 zplug "arzzen/calc.plugin.zsh"
-zplug "Seinh/git-prune"
 zplug "RobSis/zsh-completion-generator"
 
 zplug "junegunn/fzf-bin", \

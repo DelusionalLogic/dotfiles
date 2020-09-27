@@ -105,18 +105,6 @@ ark() {
 	esac
 } # }}}
 
-# {{{ Setup empty github repo
-mkgit() {
-	mkdir $1
-	cd $1
-	git init
-	touch README.markdown
-	git add README.markdown
-	git commit -m 'inital setup - automated'
-	git remote add origin git@github.com:crshd/$1.git
-	git push origin master
-} # }}}
-
 slideshow() {
 	feh -FrzZD $1 $2
 }
