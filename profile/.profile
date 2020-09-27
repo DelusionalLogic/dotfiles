@@ -47,8 +47,10 @@ gpg-connect-agent /bye
 export SSH_AUTH_SOCK=/run/user/1000/gnupg/S.gpg-agent.ssh
 
 #systemd
-systemctl --user import-environment PATH
-systemctl --user import-environment HOME
-systemctl --user import-environment XDG_CONFIG_HOME
-systemctl --user import-environment XDG_DATA_HOME
-systemctl --user import-environment XDG_CACHE_HOME
+if systemd --user is-system-running; then
+	systemctl --user import-environment PATH
+	systemctl --user import-environment HOME
+	systemctl --user import-environment XDG_CONFIG_HOME
+	systemctl --user import-environment XDG_DATA_HOME
+	systemctl --user import-environment XDG_CACHE_HOME
+fi
