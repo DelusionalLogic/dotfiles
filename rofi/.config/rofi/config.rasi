@@ -6,11 +6,11 @@ configuration {
 	font: "Iosevka Term Medium 20";
 	bw: 2;
 	location: 0;
-	padding: 8;
+	padding: 20;
 	yoffset: 0;
 	xoffset: 0;
 	fixed-num-lines: true;
-/*	show-icons: false;*/
+	show-icons: false;
 	terminal: "termite";
 /*	ssh-client: "ssh";*/
 /*	ssh-command: "{terminal} -e {ssh-client} {host} [-p {port}]";*/
@@ -40,7 +40,7 @@ configuration {
 /*	matching: "normal";*/
 /*	tokenize: true;*/
 /*	m: "-5";*/
-	line-margin: 2;
+	line-margin: 0;
 /*	line-padding: 1;*/
 /*	filter: ;*/
 	separator-style: "none";
@@ -56,10 +56,13 @@ configuration {
 /*	click-to-exit: true;*/
 /*	show-match: true;*/
 /*	theme: ;*/
-	color-normal: "#2E3440 , #E5E9F0 , #2E3440 , #2E3440 , #81A1C1";
-	color-urgent: "#81A1C1 , #2E3440 , #81A1C1 , #81A1C1 , #2E3440";
-	color-active: "#2E3440 , #2E3440 , #2E3440 , #2E3440 , #81A1C1";
-	color-window: "#2E3440 , #81A1C1 , #8FBCBB";
+/*                 BG        , FG        , BGalt     , HLbg      , HLfg      */
+	color-normal: "#002E3440 , #FFE5E9F0 , #002E3440 , #0AFFFFFF , #FF81A1C1";
+	color-urgent: "#0081A1C1 , #FF2E3440 , #0081A1C1 , #A081A1C1 , #FF2E3440";
+	color-active: "#002E3440 , #FF2E3440 , #002E3440 , #A02E3440 , #FF81A1C1";
+
+/*                 BG        , BORDER    , SEP       */
+	color-window: "#A02E3440 , #FF81A1C1 , #FF8FBCBB";
 /*	max-history-size: 25;*/
 /*	combi-hide-mode-prefix: false;*/
 /*	matching-negate-char: '-' /* unsupported */;*/
