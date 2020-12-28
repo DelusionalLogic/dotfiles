@@ -15,7 +15,7 @@ fi
 # Get list of sites
 if [[ -z "$@" ]]; then
 # -e 's/^[^\/]*\///' 
-    list=$(lpass ls --sync auto --color never | sed -e 's/ \[id.*//' | sort -u | tail -n +2)
+    list=$(lpass ls --sync auto --color never | sed -e 's/ \[id.*//' | sort -u)
 
     # Do the thing
     action=$(printf "$list" | $menu -i -p "lpass: " | sed -e 's/^(none)\///')
