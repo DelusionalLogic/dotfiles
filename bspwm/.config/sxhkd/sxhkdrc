@@ -123,6 +123,15 @@ Caps_Lock
 Print; w
 	$HOME/.localbin/scrot-clip -a
 
+XF86AudioLowerVolume
+	/sbin/amixer -D pulse sset Master 10%-
+
+XF86AudioRaiseVolume
+	/sbin/amixer -D pulse sset Master 10%+
+
+XF86AudioMute
+	/sbin/amixer -D pulse sset Master toggle
+
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd
