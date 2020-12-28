@@ -1,41 +1,5 @@
 #include "/home/delusional/.config/xcolors/active"
 
-! rofi
-rofi.font:              Iosevka Term Medium 20
-rofi.modi:              window,run,ssh,drun
-rofi.width:             48
-rofi.lines:             12
-rofi.columns:           1
-! "border width"
-rofi.bw:                2
-rofi.location:          0
-rofi.padding:           8
-rofi.yoffset:           0
-rofi.xoffset:           0
-rofi.fixed-num-lines:   true
-rofi.terminal:          termite
-! "margin between rows"
-rofi.line-margin:       2
-! "separator style (none, dash, solid)"
-rofi.separator-style:   none
-rofi.hide-scrollbar:    true
-rofi.fullscreen:        false
-rofi.fake-transparency: false
-! "scrolling method. (0: Page, 1: Centered)"
-rofi.scroll-method:     1
-
-!                  BG    , FG    , BGalt , HLbg  , HLfg
-rofi.color-normal: nord0 , nord5 , nord0 , nord0 , nord9
-rofi.color-urgent: nord9 , nord0 , nord9 , nord9 , nord0
-rofi.color-active: nord0 , nord0 , nord0 , nord0 , nord9
-
-!                  BG      , BORDER  , SEP
-rofi.color-window: nord0 , nord9 , nord7
-
-rofi.display-drun: 
-rofi.display-run: 
-
-
 !Font
 urxvt*font: xft:Terminus:pixelsize=12,\
 			xft:unifont:pixelsize=12,\

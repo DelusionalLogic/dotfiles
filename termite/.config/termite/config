@@ -1,8 +1,10 @@
 [options]
+
 font = Hack Nerd Font 9
 
 [colors]
 foreground = #D8DEE9
+# background = rgba(0, 0, 0, 1)
 background = rgba(46, 52, 64, .6)
 foreground_bold = #D8DEE9
 cursor = #D8DEE9
