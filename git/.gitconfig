@@ -1,0 +1,24 @@
+[user]
+	email = jesper@slashwin.dk
+	name = Jesper Jensen
+	signingkey = F1FBF142B8152A85
+[push]
+	default = current
+[credential]
+	helper = cache
+[status]
+	short = false
+[color]
+	ui = auto
+[merge]
+	tool = kdiff3
+[mergetool]
+	path = nvim
+[alias]
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	unstage = reset HEAD --
+	last = log -1 HEAD
+[branch]
+	autosetuprebase = always
+[pull]
+	rebase = true
