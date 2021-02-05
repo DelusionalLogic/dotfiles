@@ -55,32 +55,53 @@ local body, code = http.request(url)
 local root = gumbo.parse(body)
 local tbl = root:getElementsByTagName("table")[3]
 
+WASHER = "washer"
+DRYER = "dryer"
+function parse_type(mtype)
+	if mtype == "PW 6080" or mtype == "PW 6065 Vario" then
+		return WASHER
+	elseif mtype == "PT 8203 SL WP" then
+		return DRYER
+	end
+end
+
 function parse_timeleft(text)
 	return tonumber(string.match(text, "Resttid: (.+) min%."))
 end
 
 function parse_row(row)
-	state, reserved = string.match(row.children[10].attributes.title.value, "(Ledig) indtil kl. (.*) %- ")
+	kind = parse_type(row.children[7].textContent)
 	local this = {
 		id = tonumber(row.children[2].textContent),
-		state = state,
-		reserved = reserved,
+		state = "",
+		reserved = "",
+		kind = kind,
 	}
 
+	local stitle = row.children[10].attributes.title
+	if not (stitle == nil) then
+		local state, reserved = string.match(stitle.value, "(Ledig) indtil kl. (.*) %- ")
+		this.state = state
+		this.reserved = reserved
+	end
+
 	if not this.state then
-		this.timeleft = parse_timeleft(row.children[10].attributes.title.value)
+		this.timeleft = parse_timeleft(stitle.value)
 	end
 	return this
 end
 
 washer = {}
-for i, row in slicepairs(tbl:getElementsByTagName("tr"), 2, 6) do
-	table.insert(washer, parse_row(row))
-end
-
 dryer = {}
-for i, row in slicepairs(tbl:getElementsByTagName("tr"), 7, 8) do
-	table.insert(dryer, parse_row(row))
+for i, row in ipairs(tbl:getElementsByTagName("tr")) do
+	machine = parse_row(row)
+	if not (machine == nil) then
+		if machine.kind == WASHER then
+			table.insert(washer, machine)
+		elseif machine.kind == DRYER then
+			table.insert(dryer, machine)
+		end
+	end
 end
 
 function print_machine(machine)
@@ -94,6 +115,17 @@ function print_machine(machine)
 	io.write("\n")
 end
 
+function print_washer(machine)
+	io.write("Machine ")
+	io.write(tostring(machine.id))
+	io.write(" .......... ")
+
+	local thisState = machine.state and string.format("Free (%s)", machine.reserved) or "In Use"
+	local thisColor = machine.state and "green" or "red"
+	io.write(colors(string.format("%%{%s}%s", thisColor, thisState)))
+	io.write("\n")
+end
+
 print(colors("%{blue}Washers"))
 for k, v in ipairs(washer) do
 	print_machine(v)
@@ -102,5 +134,5 @@ end
 print()
 print(colors("%{blue}Dryers"))
 for k, v in ipairs(dryer) do
-	print_machine(v)
+	print_washer(v)
 end
