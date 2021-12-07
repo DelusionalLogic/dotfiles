@@ -1,4 +1,4 @@
-#!/bin/env lua
+#!/bin/env lua5.3
 local colors = require "ansicolors"
 
 io.write(colors([[%{bright}%{cyan}
