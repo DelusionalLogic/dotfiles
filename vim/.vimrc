@@ -111,15 +111,11 @@ augroup END
 
 set formatoptions=qrn1jt
 
-let g:tex_flavor='latex' "Default to latex filetype
-let g:vimtex_compiler_progname = 'nvr'
-let g:vimtex_view_method = 'zathura'
-
 set gdefault "Default to global substitution on line
-
 set showcmd "Show partially typed command
 
 syntax enable "enable syntax highlighting!
+set synmaxcol=3000
 
 if !has('nvim')
 	set ttyfast "I'm on a modern computer damn it. My tty is fast
@@ -128,8 +124,6 @@ endif
 "Pretty stuff
 set list
 set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
-
-set synmaxcol=800
 
 "Trailing whitespace
 augroup trailing
@@ -181,8 +175,6 @@ noremap <F12> :syntax sync fromstart<CR>
 set foldenable "enable folding
 set foldlevelstart=10 "unfold must stuff
 set foldnestmax=10 "no folds over 10
-"open/close folder
-nnoremap <space> za
 
 set foldmethod=marker "Fold based on indentation
 
@@ -195,11 +187,6 @@ nnoremap <C-H> <C-W><C-H>
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
-
-nnoremap <CR><CR> i<CR><ESC>
-
-" toggle gundo
-nnoremap <leader>u :GundoToggle<CR>
 
 " Copy/paste to system clipboard
 vmap <Leader>y "+y
@@ -215,11 +202,6 @@ cnoremap w!! w !sudo tee %
 
 "Lets use ranger to browse all the files why dont we
 nnoremap - :call OpenRanger()<CR>
-
-" CtrlP settings
-let g:ctrlp_match_window = 'bottom,order:ttb'
-let g:ctrlp_switch_buffer = 0
-let g:ctrlp_working_path_mode = 0
 
 "Stop creating all those stupid files vim
 set nobackup
@@ -319,68 +301,6 @@ map s <Plug>(easymotion-overwin-f2)
 
 let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 let g:EasyMotion_smartcase = 1 " US layout
-
-" }}}
-
-" coc.nvim {{{
-
-set updatetime=300
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use `[c` and `]c` to navigate diagnostics
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
-
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Remap for format selected region
-vmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-" Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-" Show commands
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
-
-" Remap for rename current word
-nmap <leader>rn <Plug>(coc-rename)
-
-" Use U to show documentation in preview window
-nnoremap <silent> U :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" autocmd CursorHold * silent call CocActionAsync('highlight')
-
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " }}}
 
