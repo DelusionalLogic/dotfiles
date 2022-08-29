@@ -1,5 +1,5 @@
 [user]
-	email = jesper@slashwin.dk
+	email = jesper@jnsn.dev
 	name = Jesper Jensen
 	signingkey = F1FBF142B8152A85
 [push]
@@ -10,8 +10,6 @@
 	short = false
 [color]
 	ui = auto
-[merge]
-	tool = kdiff3
 [mergetool]
 	path = nvim
 [alias]
@@ -22,3 +20,7 @@
 	autosetuprebase = always
 [pull]
 	rebase = true
+[submodule]
+	recurse = true
+[merge]
+	tool = nvimdiff
