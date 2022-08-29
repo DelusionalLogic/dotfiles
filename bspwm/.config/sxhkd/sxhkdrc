@@ -95,7 +95,7 @@ super + {ae, oslash}
 #
 
 super + Return
-	termite
+	alacritty
 
 super + alt + Return
 	rofi -show window -fuzzy -hide-scrollbar
@@ -115,7 +115,7 @@ super + q
 	~/scripts/lock.sh
 
 super + p
-	passrofil
+	rofi -modi 1pass:rofi-1pass -show 1pass
 
 Caps_Lock
 	~/scripts/capsinform
@@ -124,10 +124,10 @@ Print; w
 	$HOME/.localbin/scrot-clip -a
 
 XF86AudioLowerVolume
-	/sbin/amixer -D pulse sset Master 10%-
+	/sbin/amixer -D pulse sset Master 5%-
 
 XF86AudioRaiseVolume
-	/sbin/amixer -D pulse sset Master 10%+
+	/sbin/amixer -D pulse sset Master 5%+
 
 XF86AudioMute
 	/sbin/amixer -D pulse sset Master toggle
