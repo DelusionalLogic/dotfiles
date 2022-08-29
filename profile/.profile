@@ -1,10 +1,11 @@
+export LANG="en_US.UTF-8"
+
 export EDITOR=nvim
+export TERMINAL=alacritty
 
 export PAGER=less
 export BROWSER=firefox
 #export MOZ_USE_OMTC=1
-
-export LANG="en_US.UTF-8"
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
@@ -20,8 +21,6 @@ export PATH="$HOME/.localbin:$HOME/.local/bin:${PATH}"
 export PKG_CONFIG_PATH="$HOME/.local/share/pkgconfig:${PKG_CONFIG_PATH}"
 
 export LUA_INIT="@$HOME/.localbin/luainit.lua"
-# export LUA_PATH="$(luarocks path --lr-path);$(luarocks-5.1 path --lr-path);$LUA_PATH"
-# export LUA_CPATH="$(luarocks path --lr-cpath);$(luarocks-5.1 path --lr-cpath);$LUA_CPATH"
 
 export M2_HOME="/opt/maven"
 
@@ -30,8 +29,6 @@ export BSPWM_STATE="$XDG_DATA_HOME/bspwm.state"
 export SXHKD_SHELL=/bin/bash
 
 export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
-
-export QEMU_AUDIO_DRV=pa
 
 export GEM_HOME=$HOME/.gem
 
@@ -43,14 +40,16 @@ PERL_MM_OPT="INSTALL_BASE=/home/delusional/perl5"; export PERL_MM_OPT;
 
 ##SSH agent
 # eval $(keychain --eval --agents ssh -Q --quiet id_ecdsa)
-gpg-connect-agent /bye
-export SSH_AUTH_SOCK=/run/user/1000/gnupg/S.gpg-agent.ssh
+# gpg-connect-agent /bye
+# export SSH_AUTH_SOCK=/run/user/1000/gnupg/S.gpg-agent.ssh
 
 #systemd
-if systemd --user is-system-running; then
+if systemctl --user is-system-running; then
 	systemctl --user import-environment PATH
 	systemctl --user import-environment HOME
 	systemctl --user import-environment XDG_CONFIG_HOME
 	systemctl --user import-environment XDG_DATA_HOME
 	systemctl --user import-environment XDG_CACHE_HOME
 fi
+
+eval $(ssh-agent)
