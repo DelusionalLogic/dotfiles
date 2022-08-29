@@ -57,6 +57,3 @@ zplug load
 
 GPG_TTY=$(tty)
 export GPG_TTY
-
-# added by travis gem
-[ -f /home/delusional/.travis/travis.sh ] && source /home/delusional/.travis/travis.sh
