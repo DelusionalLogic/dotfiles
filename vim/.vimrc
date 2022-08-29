@@ -8,27 +8,22 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " Colors
-Plug 'flazz/vim-colorschemes'
-Plug 'chriskempson/base16-vim'
 Plug 'arcticicestudio/nord-vim'
 
-" Notes
-Plug 'xolox/vim-notes'
-
 " Syntax
-Plug 'neoclide/coc.nvim', {'do': './install.sh nightly'}
+" Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+" Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-" Plug 'Shougo/neoinclude.vim'
-" Plug 'scrooloose/syntastic'
+Plug 'neovim/nvim-lspconfig'
 
-" Make
-" Plug 'neomake/neomake'
+" Snippets (required for nvim-cmp)
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'L3MON4D3/LuaSnip'
 
 " XML
 Plug 'othree/xml.vim'
-
-"LaTeX
-Plug 'lervag/vimtex', {'for': 'tex'}
 
 " GLSL
 Plug 'tikhomirov/vim-glsl'
@@ -38,6 +33,7 @@ Plug 'rust-lang/rust.vim', {'for': 'rust'}
 
 "Love2D
 Plug 'alols/vim-love-efm'
+Plug 'davisdude/vim-love-docs'
 
 "Python
 Plug 'vimjas/vim-python-pep8-indent', {'for': 'python'}
@@ -45,21 +41,11 @@ Plug 'vimjas/vim-python-pep8-indent', {'for': 'python'}
 "Lua
 Plug 'xolox/vim-misc' | Plug 'xolox/vim-lua-ftplugin'
 
-"Racket/Scheme
-Plug 'MicahElliott/vrod'
-" Plug 'wlangstroth/vim-racket'
-Plug 'Shougo/vimshell'
-
-" Snippets
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-
 " Interface
 Plug 'francoiscabrol/ranger.vim'
 Plug 'rbgrouleff/bclose.vim'
 
 Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-" Plug 'ctrlpvim/ctrlp.vim'
 Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
 Plug 'tpope/vim-commentary'
 Plug 'dhruvasagar/vim-table-mode'
@@ -89,9 +75,6 @@ Plug 'ryanoasis/vim-devicons'
 
 let tq_enabled_backends=["datamuse_com"]
 Plug 'ron89/thesaurus_query.vim'
-
-" Ledger
-Plug 'ledger/vim-ledger'
 
 " Required:
 call plug#end()
@@ -247,13 +230,6 @@ set noswapfile
 set complete+=kspell
 set completeopt=longest,preview,menuone,noselect
 
-"Map tab to down and up when in omnicomplete
-function! TryExpand()
-	call UltiSnips#ExpandSnippetOrJump()
-	return g:ulti_expand_or_jump_res
-endfunction
-inoremap <expr> <CR> pumvisible() ? "\<C-R>=TryExpand() ? \"\" : \"\<C-y>\"\<CR>" : "\<C-g>u\<CR>"
-
 " Make sure Vim returns to the same line when you reopen a file.
 " Thanks, Amit
 augroup line_return
@@ -290,7 +266,6 @@ set numberwidth=5
 set nu
 
 let g:airline_powerline_fonts=1
-" let g:airline_theme='base16'
 let g:airline_right_alt_sep = ''
 let g:airline_right_sep = ''
 let g:airline_left_alt_sep = ''
@@ -322,8 +297,9 @@ function! s:ExecuteInShell(command)
 	silent! execute 'nnoremap <silent> <buffer> <LocalLeader>r :call <SID>ExecuteInShell(''' . command . ''')<CR>'
 	echo 'Shell command ' . command . ' executed.'
 endfunction
-command! -complete=shellcmd -nargs=+ Shell call s:ExecuteInShell(<q-args>)
+command! -nargs=+ -complete=shellcmd Shell call s:ExecuteInShell(<q-args>)
 
+let g:nord_uniform_status_lines = 0
 set background=dark
 colorscheme nord
 
@@ -331,9 +307,8 @@ colorscheme nord
 map  / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
 
-" These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
-" Without these mappings, `n` & `N` works fine. (These mappings just provide
-" different highlight method and have some other features )
+" Without these mappings, `n` & `N` work fine. (These mappings just provide
+" different highlight method and have some other features)
 map  n <Plug>(easymotion-next)
 map  N <Plug>(easymotion-prev)
 map <Leader>l <Plug>(easymotion-lineforward)
@@ -344,14 +319,6 @@ map s <Plug>(easymotion-overwin-f2)
 
 let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 let g:EasyMotion_smartcase = 1 " US layout
-
-" }}}
-
-" Vim-Go {{{
-" disable coc.nvim feature
-
-" this is handled by LanguageClient [LC]
-let g:go_def_mapping_enabled = 0
 
 " }}}
 
@@ -408,57 +375,12 @@ function! s:show_documentation()
   endif
 endfunction
 
-autocmd CursorHold * silent call CocActionAsync('highlight')
+" autocmd CursorHold * silent call CocActionAsync('highlight')
 
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-" }}}
-
-" Ultisnips {{{
-let g:UltiSnipsExpandTrigger = "<leader>e"
-
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-l>"
-
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
-
-
-" let g:UltiSnipsUsePythonVersion = 3
-
-"let g:UltiSnipsSnippetsDir="~/.config/nvim/ultisnips"
-
-let g:UltiSnipsSnippetDirectories=["UltiSnips", "ultisnips"]
-
-" }}}
-
-" Neomake {{{
-let g:neomake_error_sign = {
-			\ 'text': '>>',
-			\ 'texthl': 'ErrorMsg',
-			\ }
-hi MyWarningMsg ctermbg=3 ctermfg=0
-let g:neomake_warning_sign = {
-			\ 'text': '>>',
-			\ 'texthl': 'MyWarningMsg',
-			\ }
-
-let g:neomake_rust_enabled_makers = ['cargo']
-
-augroup my_neomake_cmds
-	autocmd!
-	" Have neomake run cargo when Rust files are saved.
-	" autocmd BufWritePost *.rs Neomake cargo
-augroup END
-
-" }}}
-
-" Racket {{{
-"
-let g:vimshell_enable_start_insert = 0
 
 " }}}
 
@@ -519,10 +441,6 @@ let g:unite_source_grep_default_opt = '--hidden --no-heading --vimgrep -S'
 let g:unite_source_grep_recursive_opt = ''
 " }}}
 
-" Vim-Notes {{{
-let g:notes_directories = ['~/BitTorrent Sync/notes', '~/Documents/Notes']
-" }}}
-
 " Java {{{
 " Create class
 
@@ -545,4 +463,85 @@ function! g:ClassFromName(name) abort
     let package = input("New Class: ", package)
 endfunction
 
+" }}}
+
+" LSP common {{{
+lua << LEND
+capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+on_attach = function(client, bufnr)
+	vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+	
+	-- Mappings.
+	-- See `:help vim.lsp.*` for documentation on any of the below functions
+	local bufopts = { noremap=true, silent=true, buffer=bufnr }
+	vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+	vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+	vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+	vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+	vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+	vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+	vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+	vim.keymap.set('n', '<leader>wl', function()
+		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+	end, bufopts)
+	vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
+	vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
+	vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
+	vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+	vim.keymap.set('n', '<leader>f', vim.lsp.buf.formatting, bufopts)
+end
+LEND
+" }}}
+
+" C {{{
+lua << LEND
+require'lspconfig'.clangd.setup{
+	on_attach = on_attach,
+	capabilities = capabilities,
+}
+LEND
+" }}}
+
+" nvim-cmp {{{
+lua << LEND
+local luasnip = require 'luasnip'
+local cmp = require 'cmp'
+cmp.setup {
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = false,
+    },
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+  }),
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  },
+}
+LEND
 " }}}
