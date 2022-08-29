@@ -1,6 +1,7 @@
 #!/bin/bash
 set -eo pipefail
 
+export OP_FORMAT=json
 
 : "${PINENTRY_PROGRAM:=pinentry-gnome3}"
 
@@ -29,7 +30,7 @@ EOS
 login() {
     source ~/.config/op/session
 	# Check if the session is valid
-    if ! op list vaults > /dev/null; then
+    if ! op vault list > /dev/null; then
 		# Create a new one if it isn't
 		create_session
 	fi
@@ -38,7 +39,7 @@ login() {
 
 print-account-list() {
     set +e
-    op list items | jq -r '.[] | " - \(.overview.title) (\(.overview.ainfo)) [\(.uuid)]"'
+    op item list | jq -r '.[] | " - \(.title) [\(.id)]"'
     LOGGED_IN=${PIPESTATUS[0]}
     set -e
 
@@ -54,7 +55,7 @@ print-account-list() {
 }
 
 open-account-url() {
-    local url=$(op get item "$1" | jq -r '.overview.url')
+    local url=$(op item get "$1" | jq -r '.urls[0].href')
     if [[ -n $url ]]; then
         xdg-open "$url" >/dev/null 2>/dev/null
     else
@@ -73,16 +74,16 @@ is-actual-url() {
 
 show-account-options() {
     local id="$1"
-    local entry=$(op get item "$id")
+    local entry=$(op item get "$id")
 
     echo ">> Copy password [$id]"
     echo ">> Copy username [$id]"
 
-    if [[ -n $(echo $entry | jq -r '.details.sections[].fields[].v | select(contains("otpauth://"))') ]]; then
+    if [[ -n $(echo $entry | jq -r '.fields[] | select(.type == "OTP")') ]]; then
         echo ">> Copy OTP [$id]"
     fi
 
-    url=$(echo $entry | jq -r '.overview.url')
+    url=$(echo $entry | jq -r '.urls[0].href')
     if is-actual-url "$url"; then
         echo ">> Open $url [$id]"
         echo ">> Copy URL [$id]"
@@ -108,19 +109,19 @@ if [[ -n "$1" ]]; then
     if [[ -n $id ]]; then
         case "$selected" in
             '>> Copy password'*)
-                op get item "$id" | jq -j '.details.fields[] | select(.designation == "password") | .value' | clipboard
+                op item get "$id" | jq -j '.fields[] | select(.purpose == "PASSWORD") | .value' | clipboard
                 ;;
             '>> Copy username'*)
-                op get item "$id" | jq -j '.details.fields[] | select(.designation == "username") | .value' | clipboard
+                op item get "$id" | jq -j '.fields[] | select(.purpose == "USERNAME") | .value' | clipboard
                 ;;
             '>> Copy OTP'*)
-                op get totp "$id" | clipboard
+                op item get "$id" | jq -j '.fields[] | select(.type == "OTP") | .totp' | clipboard
                 ;;
             '>> Copy URL'*)
-                op get item "$id" | jq -j '.overview.url' | clipboard
+                op item get "$id" | jq -j '.urls[0].href' | clipboard
                 ;;
             '>> Copy ID'*)
-                op get item "$id" | jq -j '.uuid' | clipboard
+                op item get "$id" | jq -j '.id' | clipboard
                 ;;
             '>> Open'*)
                 open-account-url "$id"
