@@ -7,7 +7,7 @@ abbreviations=(
 	"Im"    "| more"
 	"Ia"    "| awk"
 	"Ig"    "| grep"
-	"Ieg"   "| egrep"
+	"Ieg"   "| grep -E"
 	"Iag"   "| agrep"
 	"Igr"   "| groff -s -p -t -e -Tlatin1 -mandoc"
 	"Ip"    "| $PAGER"
