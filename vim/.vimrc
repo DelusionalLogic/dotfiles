@@ -10,13 +10,14 @@ call plug#begin('~/.vim/plugged')
 " Colors
 Plug 'arcticicestudio/nord-vim'
 
-" Syntax
-" Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-" Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'neovim/nvim-lspconfig'
+
+" Debugger stuff
+Plug 'mfussenegger/nvim-dap'
+Plug 'rcarriga/cmp-dap'
 
 " Snippets (required for nvim-cmp)
 Plug 'saadparwaiz1/cmp_luasnip'
@@ -461,6 +462,50 @@ cmp.setup {
   sources = {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
+  },
+}
+
+-- Cmp debugger integration
+require("cmp").setup({
+  enabled = function()
+    return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
+        or require("cmp_dap").is_dap_buffer()
+  end
+})
+
+require("cmp").setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+  sources = {
+    { name = "dap" },
+  },
+})
+LEND
+" }}}
+
+" Nvim-Dap configuration for lua {{{
+lua << LEND
+local dap = require('dap')
+dap.adapters.lldebugger = {
+  type = 'executable',
+  command = '/usr/bin/local-lua-dbg',
+  name = 'lldebugger'
+}
+
+dap.configurations.lua = {
+  {
+    type = 'lldebugger',
+    request = 'launch',
+    name = 'Launch Love2D',
+    program = {
+        command = "love",
+    },
+    args = {
+        "."
+    },
+    scriptRoots = {
+        "."
+    },
+    cwd = ".",
+    workspacePath = ".",
   },
 }
 LEND
