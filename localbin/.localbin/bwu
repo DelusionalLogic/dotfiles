@@ -1,0 +1,48 @@
+#!/bin/sh
+timeout=43200
+
+GOOD="$(tput setaf 2)"
+BAD="$(tput setaf 1)"
+RESET="$(tput sgr0)"
+
+function create_session() {
+	# attempt to unlock, if succssful store session value
+	if s="$(FORCE_COLOR=3 bw unlock --raw)"; then
+		if [[ -z "$s" ]];  then
+			printf "\n%sNo session key created%s\n" "$BAD" "$RESET" >&2
+			exit 1
+		fi
+		k=$(keyctl add user bw:session "$s" @u)
+		keyctl timeout "$k" "$timeout"		#set timout
+		timeoutHrs=$((timeout/3600))
+		printf "Session key saved for %s%0.1f%s hours\n" "$GOOD" "$timeoutHrs" "$RESET" >&2
+		printf "%s" "$k"
+		return 0
+	fi
+	exit 1
+}
+
+if [[ $1 == "lock" ]]; then
+	k=$(keyctl request user bw:session 2>/dev/null) && keyctl unlink "$k" 1>/dev/null
+	bw lock
+	printf "Session %scleared%s\n" "$GOOD" "$RESET" >&2
+	exit 0
+elif [[ $1 == "unlock" ]]; then
+	if create_session >/dev/null; then
+		exit 0
+	fi
+	exit 1
+fi
+
+
+if ! k="$(keyctl request user bw:session 2>/dev/null)"; then
+	# Session ID is not available
+	k="$(create_session)"
+fi
+
+if ! s=$(keyctl pipe "$k"); then
+	printf "%sReading the session payload failed%s" "$RED" "$RESET"
+	exit 1
+fi
+
+BW_SESSION=$s exec bw "$@"

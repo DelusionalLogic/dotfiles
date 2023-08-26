@@ -1,0 +1,113 @@
+#!/bin/bash
+set -eo pipefail
+
+export OP_FORMAT=json
+
+: "${PINENTRY_PROGRAM:=pinentry-gnome3}"
+
+debug() {
+    echo "$@" > /dev/stderr
+}
+
+print-account-list() {
+    set +e
+    bwu list items  | jq -r '.[] | " - \(.name) [\(.id)]"'
+    LOGGED_IN=${PIPESTATUS[0]}
+    set -e
+
+    if [ $LOGGED_IN -eq 127 ]; then
+        echo "bitwarden CLI tool 'bw' not found"
+        exit 2
+    fi
+
+    if [ ! $LOGGED_IN -eq 0 ]; then
+        echo "Listing failed"
+        exit 1
+    fi
+}
+
+open-account-url() {
+    local url=$(bwu item get "$1" | jq -r '.login.uris[0].uri')
+    if [[ -n $url ]]; then
+        xdg-open "$url" >/dev/null 2>/dev/null
+    else
+        exit 2
+    fi
+}
+
+is-actual-url() {
+    local url="$1"
+    if [[ -n $url && "$url" != "null" && "$url" != " " && "$url" != "http://" && "$url" != "https://" ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+show-account-options() {
+    local id="$1"
+    local entry=$(bwu get item "$id")
+
+    echo "Account options for $id" >&2
+
+    echo ">> Copy password [$id]"
+    echo ">> Copy username [$id]"
+
+    if [[ -n $(echo $entry | jq -r '.login.totp') ]]; then
+        echo ">> Copy OTP [$id]"
+    fi
+
+    url=$(echo $entry | jq -r '.login.uris[0].uri')
+    if is-actual-url "$url"; then
+        echo ">> Open $url [$id]"
+        echo ">> Copy URL [$id]"
+    fi
+
+    echo ">> Copy ID [$id]"
+}
+
+id-in-selection() {
+    echo "$1" | grep -oE '\[[-a-z0-9]+\]$' | tr -d '[]'
+}
+
+clipboard() {
+    xclip -selection c >/dev/null 2>/dev/null
+}
+
+if [[ -z "$1" ]]; then
+    print-account-list
+    exit
+fi
+
+selected="$1"
+id="$(id-in-selection "$selected")"
+echo "Selected $id" >&2
+
+if [[ -n $id ]]; then
+    case "$selected" in
+        '>> Copy password'*)
+            bwu get password "$id" | clipboard
+            ;;
+        '>> Copy username'*)
+            bwu get username "$id" | clipboard
+            ;;
+        '>> Copy OTP'*)
+            bwu get totp "$id" | clipboard
+            ;;
+        '>> Copy URL'*)
+            bwu get uri "$id" | clipboard
+            ;;
+        '>> Copy ID'*)
+            clipboard <<<"$id"
+            ;;
+        '>> Open'*)
+            open-account-url "$id"
+            ;;
+        *)
+            show-account-options "$id"
+            ;;
+    esac
+else
+    echo "Could not detect the entry ID of \"${selected}\""
+    exit 1
+fi
