@@ -1,0 +1,53 @@
+# Sample minimal config file.  Copy this to ~/.offlineimaprc and edit to
+# get started fast.
+
+[general]
+accounts = new, spamhunter
+pythonfile = ~/.config/offlineimap/config.py
+
+[mbnames]
+enabled = yes
+filename = ~/.mutt/mailboxes
+header = "mailboxes "
+peritem = "+%(accountname)s/%(foldername)s"
+sep = " "
+footer = "\n"
+
+[Account new]
+localrepository = Local-New
+remoterepository = Remote-New
+quick = 10
+postsynchook = notmuch new
+
+[Repository Local-New]
+type = Maildir
+localfolders = ~/.mail/new
+
+[Repository Remote-New]
+type = IMAP
+remotehost = mail.jnsn.dev
+remoteusereval = get_user("b5e081e3-f854-47ad-98a3-28b9db164b27")
+remotepasseval = get_pass("b5e081e3-f854-47ad-98a3-28b9db164b27")
+remoteport = 993
+keepalive = 60
+holdconnectionopen = yes
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+[Account spamhunter]
+localrepository = Local-SpamHunter
+remoterepository = Remote-SpamHunter
+quick = 10
+
+[Repository Local-SpamHunter]
+type = Maildir
+localfolders = ~/.mail/sh
+
+[Repository Remote-SpamHunter]
+type = IMAP
+remotehost = mail.jnsn.dev
+remoteusereval = get_user("6c2c831e-a04c-43d4-8a8d-c8d637d9b9ca")
+remotepasseval = get_pass("6c2c831e-a04c-43d4-8a8d-c8d637d9b9ca")
+remoteport = 993
+keepalive = 60
+holdconnectionopen = yes
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt

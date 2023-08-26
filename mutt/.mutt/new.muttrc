@@ -11,4 +11,5 @@ set mbox      = "+new/archive"
 set record    = "+new/INBOX.Sent"
 set postponed = "+new/INBOX.Draft"
 
-macro index S "<save-message>+new/INBOX.Spam<enter>"               "mark message as spam"
+macro index fj "<save-message>+new/Junk<enter>"               "mark message as spam"
+macro index fr "<save-message>+new/Receipt<enter>"            "File as receipt"
