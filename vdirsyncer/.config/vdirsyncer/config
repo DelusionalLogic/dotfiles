@@ -43,11 +43,9 @@ fileext = ".vcf"
 
 [storage personal_contacts_remote]
 type = "carddav"
-url = "http://ical.slashwin.dk/caldav.php/delusional/"
-username = "delusional"
-# The password can also be fetched from the system password storage, netrc or a
-# custom command. See http://vdirsyncer.pimutils.org/en/stable/keyring.html
-password.fetch = ["command", "cat", "/home/delusional/.config/vdirsyncer/passwd"]
+url = "https://dav.jnsn.dev/dav.php"
+password.fetch = ["command", "bwu", "get", "password", "0a430993-a3df-42f1-a613-0cf11312d9b0"]
+username.fetch = ["command", "bwu", "get", "username", "0a430993-a3df-42f1-a613-0cf11312d9b0"]
 
 # CALDAV
 [pair personal_calendar]
@@ -65,8 +63,6 @@ fileext = ".ics"
 
 [storage personal_calendar_remote]
 type = "caldav"
-url = "http://ical.slashwin.dk/caldav.php/delusional/"
-username = "delusional"
-# The password can also be fetched from the system password storage, netrc or a
-# custom command. See http://vdirsyncer.pimutils.org/en/stable/keyring.html
-password.fetch = ["command", "cat", "/home/delusional/.config/vdirsyncer/passwd"]
+url = "https://dav.jnsn.dev/dav.php"
+password.fetch = ["command", "bwu", "get", "password", "0a430993-a3df-42f1-a613-0cf11312d9b0"]
+username.fetch = ["command", "bwu", "get", "username", "0a430993-a3df-42f1-a613-0cf11312d9b0"]
