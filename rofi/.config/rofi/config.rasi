@@ -1,9 +1,9 @@
 configuration {
 	modi: "window,run,ssh,drun";
 	width: 48;
-	lines: 12;
+	lines: 24;
 	columns: 1;
-	font: "Iosevka Term Medium 20";
+	font: "Quicksand 20";
 	bw: 2;
 	location: 0;
 	padding: 20;
@@ -55,7 +55,6 @@ configuration {
 /*	window-format: "{w}    {c}   {t}";*/
 /*	click-to-exit: true;*/
 /*	show-match: true;*/
-/*	theme: ;*/
 /*                 BG        , FG        , BGalt     , HLbg      , HLfg      */
 	color-normal: "#002E3440 , #FFE5E9F0 , #002E3440 , #0AFFFFFF , #FF81A1C1";
 	color-urgent: "#0081A1C1 , #FF2E3440 , #0081A1C1 , #A081A1C1 , #FF2E3440";
@@ -151,3 +150,5 @@ configuration {
 /*	me-accept-entry: "MouseDPrimary";*/
 /*	me-accept-custom: "Control+MouseDPrimary";*/
 }
+
+@theme "theme"
