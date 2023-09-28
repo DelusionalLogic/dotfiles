@@ -16,6 +16,7 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'neovim/nvim-lspconfig'
 
 " Debugger stuff
+Plug 'mfussenegger/nvim-jdtls'
 Plug 'mfussenegger/nvim-dap'
 Plug 'rcarriga/cmp-dap'
 
@@ -73,6 +74,9 @@ Plug 'vimperator/vimperator.vim'
 
 " Fun icons
 Plug 'ryanoasis/vim-devicons'
+
+" Latex support
+Plug 'lervag/vimtex'
 
 let tq_enabled_backends=["datamuse_com"]
 Plug 'ron89/thesaurus_query.vim'
@@ -508,6 +512,15 @@ dap.configurations.lua = {
     workspacePath = ".",
   },
 }
+dap.configurations.java = {
+  {
+    type = 'java';
+    request = 'attach';
+    name = "Debug (Attach) - Remote";
+    hostName = "127.0.0.1";
+    port = 5005;
+  },
+}
 LEND
 " }}}
 
@@ -523,3 +536,15 @@ require('lspconfig')['rust_analyzer'].setup{
 }
 LEND
 " }}}
+" Latex {{{
+let g:vimtex_view_method = "zathura"
+" }}}
+
+" Python {{{
+lua << LEND
+require('lspconfig')['pyright'].setup{
+    on_attach = on_attach,
+	capabilities = capabilities,
+}
+LEND
+" }}}n
