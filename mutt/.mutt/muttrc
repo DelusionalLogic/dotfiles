@@ -113,6 +113,7 @@ source ~/.mutt/personal.muttrc                                   # source as def
 source ~/.mutt/gpg.rc                                            # use GPG
 
 # account specific sources
+bind index g noop
 folder-hook personal/* source ~/.mutt/personal.muttrc
 macro index gh       "<change-folder> =personal/INBOX<enter>"  "go to Inbox"
 
@@ -139,6 +140,7 @@ bind pager <up>         previous-line
 bind pager <down>       next-line
 bind pager k            previous-line
 bind pager j            next-line
+bind pager g            noop
 bind pager gg           top
 bind pager G            bottom
 bind index gg           first-entry
@@ -159,9 +161,11 @@ bind editor <Tab>       complete-query
 bind editor ^T          complete
 
 
+bind index C  noop
 bind index CP sidebar-prev
 bind index CN sidebar-next
 bind index CO sidebar-open
+bind pager C  noop
 bind pager CP sidebar-prev
 bind pager CN sidebar-next
 bind pager CO sidebar-open

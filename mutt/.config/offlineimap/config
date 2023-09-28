@@ -2,7 +2,7 @@
 # get started fast.
 
 [general]
-accounts = new, spamhunter
+accounts = new, sh
 pythonfile = ~/.config/offlineimap/config.py
 
 [mbnames]
@@ -33,7 +33,7 @@ keepalive = 60
 holdconnectionopen = yes
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 
-[Account spamhunter]
+[Account sh]
 localrepository = Local-SpamHunter
 remoterepository = Remote-SpamHunter
 quick = 10
