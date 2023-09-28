@@ -3,8 +3,6 @@ set -eo pipefail
 
 export OP_FORMAT=json
 
-: "${PINENTRY_PROGRAM:=pinentry-gnome3}"
-
 debug() {
     echo "$@" > /dev/stderr
 }
