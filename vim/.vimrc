@@ -7,14 +7,15 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-" Colors
+"Colors
 Plug 'arcticicestudio/nord-vim'
 
+"Language server support
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'neovim/nvim-lspconfig'
 
-" Debugger stuff
+"Debugger
 Plug 'mfussenegger/nvim-jdtls'
 Plug 'mfussenegger/nvim-dap'
 Plug 'rcarriga/cmp-dap'
@@ -25,30 +26,30 @@ Plug 'rust-lang/rust.vim', {'for': 'rust'}
 "Python
 Plug 'vimjas/vim-python-pep8-indent', {'for': 'python'}
 
-" Interface
+"Interface
 Plug 'francoiscabrol/ranger.vim'
 
 Plug 'vim-airline/vim-airline'
 Plug 'tpope/vim-commentary'
 
-" Unite
+"Unite
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/neoyank.vim'
 
-" Speed
-Plug 'easymotion/vim-easymotion'
+"Speed
+Plug 'ggandor/leap.nvim'
 Plug 'tpope/vim-surround'
 
-" Integration
+"Integration
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-dispatch'
 
-" Fun icons
+"Fun icons
 Plug 'ryanoasis/vim-devicons'
 
-" Latex support
+"Latex support
 Plug 'lervag/vimtex'
 
 " Required:
@@ -510,4 +511,6 @@ require('lspconfig')['pyright'].setup{
 	capabilities = capabilities,
 }
 LEND
-" }}}n
+" }}}
+
+lua require('leap').add_default_mappings(true)
