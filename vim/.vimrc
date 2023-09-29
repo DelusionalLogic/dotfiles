@@ -12,7 +12,6 @@ Plug 'arcticicestudio/nord-vim'
 
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'neovim/nvim-lspconfig'
 
 " Debugger stuff
@@ -20,37 +19,17 @@ Plug 'mfussenegger/nvim-jdtls'
 Plug 'mfussenegger/nvim-dap'
 Plug 'rcarriga/cmp-dap'
 
-" Snippets (required for nvim-cmp)
-Plug 'saadparwaiz1/cmp_luasnip'
-Plug 'L3MON4D3/LuaSnip'
-
-" XML
-Plug 'othree/xml.vim'
-
-" GLSL
-Plug 'tikhomirov/vim-glsl'
-
 "Rust
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
-
-"Love2D
-Plug 'alols/vim-love-efm'
-Plug 'davisdude/vim-love-docs'
 
 "Python
 Plug 'vimjas/vim-python-pep8-indent', {'for': 'python'}
 
-"Lua
-Plug 'xolox/vim-misc' | Plug 'xolox/vim-lua-ftplugin'
-
 " Interface
 Plug 'francoiscabrol/ranger.vim'
-Plug 'rbgrouleff/bclose.vim'
 
 Plug 'vim-airline/vim-airline'
-Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
 Plug 'tpope/vim-commentary'
-Plug 'dhruvasagar/vim-table-mode'
 
 " Unite
 Plug 'Shougo/unite.vim'
@@ -60,26 +39,17 @@ Plug 'Shougo/neoyank.vim'
 " Speed
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-surround'
-Plug 'godlygeek/tabular'
 
 " Integration
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-dispatch'
-Plug 'Shougo/vimproc.vim', { 'do': 'make' }
-
-" Vimperator
-Plug 'vimperator/vimperator.vim'
 
 " Fun icons
 Plug 'ryanoasis/vim-devicons'
 
 " Latex support
 Plug 'lervag/vimtex'
-
-let tq_enabled_backends=["datamuse_com"]
-Plug 'ron89/thesaurus_query.vim'
 
 " Required:
 call plug#end()
@@ -431,12 +401,10 @@ LEND
 
 " nvim-cmp {{{
 lua << LEND
-local luasnip = require 'luasnip'
 local cmp = require 'cmp'
 cmp.setup {
   snippet = {
     expand = function(args)
-      luasnip.lsp_expand(args.body)
     end,
   },
   mapping = cmp.mapping.preset.insert({
@@ -447,8 +415,6 @@ cmp.setup {
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
       else
         fallback()
       end
@@ -456,8 +422,6 @@ cmp.setup {
     ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
       else
         fallback()
       end
@@ -465,7 +429,6 @@ cmp.setup {
   }),
   sources = {
     { name = 'nvim_lsp' },
-    { name = 'luasnip' },
   },
 }
 
