@@ -42,7 +42,7 @@ Plug 'ggandor/leap.nvim'
 Plug 'tpope/vim-surround'
 
 "Integration
-Plug 'airblade/vim-gitgutter'
+Plug 'lewis6991/gitsigns.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-dispatch'
 
@@ -241,6 +241,8 @@ let g:gitgutter_max_signs = 1000
 
 " }}}
 
+lua require('gitsigns').setup()
+
 "Shell command to open cmd output in scratch buffer
 function! s:ExecuteInShell(command)
 	let command = join(map(split(a:command), 'expand(v:val)'))
@@ -260,25 +262,6 @@ command! -nargs=+ -complete=shellcmd Shell call s:ExecuteInShell(<q-args>)
 let g:nord_uniform_status_lines = 0
 set background=dark
 colorscheme nord
-
-" EasyMotion {{{
-map  / <Plug>(easymotion-sn)
-omap / <Plug>(easymotion-tn)
-
-" Without these mappings, `n` & `N` work fine. (These mappings just provide
-" different highlight method and have some other features)
-map  n <Plug>(easymotion-next)
-map  N <Plug>(easymotion-prev)
-map <Leader>l <Plug>(easymotion-lineforward)
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
-map <Leader>h <Plug>(easymotion-linebackward)
-map s <Plug>(easymotion-overwin-f2)
-
-let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
-let g:EasyMotion_smartcase = 1 " US layout
-
-" }}}
 
 " Unite.vim {{{
 nnoremap <C-p> :Unite -auto-resize -start-insert -buffer-name=Files file<CR>
