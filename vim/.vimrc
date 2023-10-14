@@ -1,10 +1,9 @@
-let mapleader=","       " leader is comma
-let maplocalleader=",," " localleader is comma comma
+vim.g.mapleader = ","
+vim.g.maplocalleader = ",,"
 
-if &compatible
-	set nocompatible               " Be iMproved
-endif
+vim.opt.compatible = false
 
+vim.cmd([[
 call plug#begin('~/.vim/plugged')
 
 "Colors
@@ -37,6 +36,11 @@ Plug 'Shougo/unite.vim'
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/neoyank.vim'
 
+" Telescope
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.4' }
+
 "Speed
 Plug 'ggandor/leap.nvim'
 Plug 'tpope/vim-surround'
@@ -54,298 +58,91 @@ Plug 'lervag/vimtex'
 
 " Required:
 call plug#end()
-
-filetype plugin indent on
-
-" Vim man plugin
-"runtime! ftplugin/man.vim
-
-augroup FileSpecific
-	autocmd!
-	"Markdown
-	autocmd BufRead,BufNewFile *.md set filetype=markdown
-	autocmd FileType markdown setlocal spell textwidth=72
-
-	"Git commits
-	autocmd FileType gitcommit setlocal textwidth=72
-	autocmd FileType gitcommit setlocal spell
-	autocmd FileType gitcommit set completeopt+=preview
-
-	"CSS
-	autocmd FileType css,scss,sass setlocal iskeyword+=-
-
-	" Fugitive
-	autocmd User fugitive
-			\ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
-			\   nnoremap <buffer> .. :edit %:h<CR> |
-			\ endif
-	autocmd BufReadPost fugitive://* set bufhidden=delete
-
-	autocmd FileType tex setlocal spell textwidth=72
-
-augroup END
-
-set formatoptions=qrn1jt
-
-set gdefault "Default to global substitution on line
-set showcmd "Show partially typed command
-
-syntax enable "enable syntax highlighting!
-set synmaxcol=3000
-
-if !has('nvim')
-	set ttyfast "I'm on a modern computer damn it. My tty is fast
-endif
-
-"Pretty stuff
-set list
-set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
-
-"Trailing whitespace
-augroup trailing
-	au!
-	au InsertEnter * :set listchars-=trail:⌴
-	au InsertLeave * :set listchars+=trail:⌴
-augroup END
-
-set modeline
-
-set scrolloff=7 "7 Lines to the cursor
-
-set tabstop=4 "set tab size
-set softtabstop=4 "set spaces in tabs
-set shiftwidth=4 "once again tabstop
-
-set showtabline=1 "Show tab lines when it's at least two deep
-
-set smarttab "tab inserts indents instead of tab char
-set autoindent
-
-set hidden "Let you hide buffers with changes
-
-set number "show gutter with numbers
-set cursorline "highlight current line
-
-filetype indent on "file specific indentation rules
-
-set wildmenu "visual command menu
-
-set lazyredraw "only redraw when needed
-
-set ignorecase
-set smartcase
-set incsearch "search as you type
-set hlsearch "highlight matches
-set magic
-
-" turn off search highlight
-nnoremap <leader><space> :nohlsearch<CR>
-
-" print highlight group
-map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-			\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-			\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-noremap <F12> :syntax sync fromstart<CR>
-
-
-set foldenable "enable folding
-set foldlevelstart=10 "unfold must stuff
-set foldnestmax=10 "no folds over 10
-
-set foldmethod=marker "Fold based on indentation
-
-" move vertically by visual line
-nnoremap j gj
-nnoremap k gk
-
-" Better move between splits
-nnoremap <C-H> <C-W><C-H>
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-
-" Copy/paste to system clipboard
-vmap <Leader>y "+y
-vmap <Leader>d "+d
-nmap <Leader>yy "+yy
-nmap <Leader>p "+p
-nmap <Leader>P "+P
-vmap <Leader>p "+p
-vmap <Leader>P "+P
-
-"Save as root with w!!
-cnoremap w!! w !sudo tee %
-
-"Lets use ranger to browse all the files why dont we
-nnoremap - :call OpenRanger()<CR>
-
-"Stop creating all those stupid files vim
-set nobackup
-set nowritebackup
-set noswapfile
-
-"Omnicomplete settings
-set complete+=kspell
-set completeopt=longest,preview,menuone,noselect
-
-" Make sure Vim returns to the same line when you reopen a file.
-" Thanks, Amit
-augroup line_return
-	au!
-	au BufReadPost *
-				\ if line("'\"") > 0 && line("'\"") <= line("$") |
-				\     execute 'normal! g`"zvzz' |
-				\ endif
-augroup END
-
-" toggle between number and relativenumber
-function! ToggleNumber()
-	if(&relativenumber == 1)
-		set norelativenumber
-		set number
-	else
-		set relativenumber
-	endif
-endfunc
-
-nnoremap <leader>ll :call ToggleNumber()<CR>
-
-" Convenient ncommand to see the difference between the current buffer and the
-" file it was loaded from, thus the changes you made.
-" Only define it when not defined already.
-if !exists(":DiffOrig")
-	command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-				\ | wincmd p | diffthis
-endif
-
-highlight VertSplit ctermfg=244 ctermbg=NONE cterm=bold
-
-set numberwidth=5
-set nu
-
-let g:airline_powerline_fonts=1
-let g:airline_right_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_left_sep = ''
-set noshowmode
-set laststatus=2 "Always display the statusline
-
-"GitGutter colors {{{
-highlight clear SignColumn
-highlight GitGutterChange ctermbg=NONE ctermfg=Yellow
-highlight GitGutterAdd ctermbg=NONE ctermfg=DarkGreen
-highlight GitGutterDelete ctermbg=NONE ctermfg=Red
-highlight GitGutterChangeDelete ctermbg=NONE ctermfg=Blue
-let g:gitgutter_max_signs = 1000
-
-" }}}
-
-lua require('gitsigns').setup()
-
-"Shell command to open cmd output in scratch buffer
-function! s:ExecuteInShell(command)
-	let command = join(map(split(a:command), 'expand(v:val)'))
-	let winnr = bufwinnr('^' . command . '$')
-	silent! execute  winnr < 0 ? 'botright new ' . fnameescape(command) : winnr . 'wincmd w'
-	setlocal buftype=nowrite bufhidden=wipe nobuflisted noswapfile nowrap number
-	echo 'Execute ' . command . '...'
-	silent! execute 'silent %!'. command
-	silent! execute 'resize ' . line('$')
-	silent! redraw
-	silent! execute 'au BufUnload <buffer> execute bufwinnr(' . bufnr('#') . ') . ''wincmd w'''
-	silent! execute 'nnoremap <silent> <buffer> <LocalLeader>r :call <SID>ExecuteInShell(''' . command . ''')<CR>'
-	echo 'Shell command ' . command . ' executed.'
-endfunction
-command! -nargs=+ -complete=shellcmd Shell call s:ExecuteInShell(<q-args>)
-
-let g:nord_uniform_status_lines = 0
-set background=dark
-colorscheme nord
-
-" Unite.vim {{{
-nnoremap <C-p> :Unite -auto-resize -start-insert -buffer-name=Files file<CR>
-nnoremap <LocalLeader>b :Unite -auto-resize -buffer-name=Buffers buffer<CR>
-
-autocmd FileType unite call s:unite_settings()
-function! s:unite_settings()
-	" Overwrite settings.
-	nmap <buffer> <ESC> <Plug>(unite_exit)
-
-	imap <buffer> jj      <Plug>(unite_insert_leave)
-	"imap <buffer> <C-w>     <Plug>(unite_delete_backward_path)
-
-	imap <buffer><expr> j unite#smart_map('j', '')
-	imap <buffer> <TAB>   <Plug>(unite_select_next_line)
-	imap <buffer> <C-w>     <Plug>(unite_delete_backward_path)
-	imap <buffer> '     <Plug>(unite_quick_match_default_action)
-	nmap <buffer> '     <Plug>(unite_quick_match_default_action)
-	imap <buffer><expr> x
-				\ unite#smart_map('x', "\<Plug>(unite_quick_match_jump)")
-	nmap <buffer> x     <Plug>(unite_quick_match_jump)
-	nmap <buffer> <C-z>     <Plug>(unite_toggle_transpose_window)
-	imap <buffer> <C-z>     <Plug>(unite_toggle_transpose_window)
-	nmap <buffer> <C-j>     <Plug>(unite_toggle_auto_preview)
-	nmap <buffer> <C-r>     <Plug>(unite_narrowing_input_history)
-	imap <buffer> <C-r>     <Plug>(unite_narrowing_input_history)
-	nnoremap <silent><buffer><expr> l
-				\ unite#smart_map('l', unite#do_action('default'))
-
-	let unite = unite#get_current_unite()
-	if unite.profile_name ==# 'search'
-		nnoremap <silent><buffer><expr> r     unite#do_action('replace')
-	else
-		nnoremap <silent><buffer><expr> r     unite#do_action('rename')
-	endif
-
-	if unite.buffer_name ==# 'Buffers'
-		nnoremap <silent><buffer><expr> dd    unite#do_action('wipeout')
-	endif
-
-	nnoremap <silent><buffer><expr> cd     unite#do_action('lcd')
-	nnoremap <buffer><expr> S      unite#mappings#set_current_sorters(
-				\ empty(unite#mappings#get_current_sorters()) ?
-				\ ['sorter_reverse'] : [])
-
-	" Runs "split" action by <C-s>.
-	imap <silent><buffer><expr> <C-s>     unite#do_action('split')
-endfunction
-
-let g:unite_source_history_yank_enable = 1
-nnoremap <LocalLeader>y :Unite -no-split -start-insert -auto-resize -buffer-name=Yank_History history/yank<CR>
-nnoremap ff :Unite grep:. -no-split -start-insert -auto-resize -wrap <CR>
-
-let g:unite_source_grep_command = 'rg'
-let g:unite_source_grep_default_opt = '--hidden --no-heading --vimgrep -S'
-let g:unite_source_grep_recursive_opt = ''
-" }}}
-
-" Java {{{
-" Create class
-
-function! g:JavaSourcePackage() abort
-    let path = expand("%:.:h")
-    let package_path = substitute(path, ".*java/", "", "")
-
-    return substitute(package_path, "/", ".", "g")
-endfunction
-
-function! g:ClassFromNone() abort
-    let package = JavaSourcePackage()
-
-    let package = input("New Class: ", package)
-endfunction
-
-function! g:ClassFromName(name) abort
-    let package = JavaSourcePackage() . "." . a:name
-
-    let package = input("New Class: ", package)
-endfunction
-
-" }}}
-
-" LSP common {{{
-lua << LEND
+]])
+
+
+vim.opt.backup = false
+vim.opt.writebackup = false
+vim.opt.swapfile = false
+
+vim.opt.formatoptions = "trqn1j"
+vim.opt.gdefault = true
+vim.opt.showcmd = true
+vim.cmd("syntax enable")
+
+vim.opt.list=true
+vim.opt.listchars="tab:▸ ,eol:¬,extends:❯,precedes:❮"
+
+local trailing = vim.api.nvim_create_augroup("trailing", {clear = true})
+vim.api.nvim_create_autocmd({"InsertEnter"}, {
+	pattern = "*",
+	group = trailing,
+	callback = function(ev)
+		vim.opt.listchars:remove("trail:⌴")
+	end,
+})
+vim.api.nvim_create_autocmd({"InsertLeave"}, {
+	pattern = "*",
+	group = trailing,
+	callback = function(ev)
+		vim.opt.listchars:append("trail:⌴")
+	end,
+})
+
+vim.opt.modeline = true
+vim.opt.scrolloff = 7
+
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.showtabline = 1
+
+vim.opt.smarttab = true
+vim.opt.autoindent = true
+
+vim.opt.hidden = true
+
+vim.opt.numberwidth = 5
+vim.opt.number = true
+vim.opt.cursorline = true
+
+vim.cmd("filetype plugin indent on")
+
+vim.opt.laststatus = 2
+vim.opt.showmode = false
+vim.opt.wildmenu = true
+vim.opt.lazyredraw = true
+
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.incsearch = true
+vim.opt.hlsearch = true
+vim.opt.magic = true
+
+vim.opt.foldenable = true
+vim.opt.foldlevelstart = 10
+vim.opt.foldnestmax = 10
+vim.opt.foldmethod="marker"
+
+vim.opt.background = "dark"
+-- Magic colorscheme option
+vim.g.nord_uniform_status_lines = 0
+vim.cmd("colorscheme nord")
+
+vim.keymap.set("n", "<leader><space>", ":nohlsearch<CR>", {desc = "Remove highlights"})
+
+-- move vertically by visual line
+vim.keymap.set("n", "j", "gj", {desc = "Go down"})
+vim.keymap.set("n", "k", "gk", {desc = "Go up"})
+
+vim.keymap.set("c", "w!!", "w !sudo tee %", {desc = "Save as root"})
+
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', 'ff', builtin.live_grep, {})
+
+require('gitsigns').setup()
+
+-- Common LSP settings
 capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
@@ -371,129 +168,75 @@ on_attach = function(client, bufnr)
 	vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
 	vim.keymap.set('n', '<leader>f', vim.lsp.buf.format, bufopts)
 end
-LEND
-" }}}
 
-" C {{{
-lua << LEND
-require'lspconfig'.clangd.setup{
+-- LSP clangd settings
+require('lspconfig').clangd.setup {
 	on_attach = on_attach,
 	capabilities = capabilities,
 }
-LEND
-" }}}
 
-" nvim-cmp {{{
-lua << LEND
-local cmp = require 'cmp'
-cmp.setup {
-  snippet = {
-    expand = function(args)
-    end,
-  },
-  mapping = cmp.mapping.preset.insert({
-    ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = false,
-    },
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-  }),
-  sources = {
-    { name = 'nvim_lsp' },
-  },
-}
+-- nvim-cmp
+do
+	local cmp = require('cmp')
+	cmp.setup {
+		snippet = {
+			expand = function(args)
+			end,
+		},
+		mapping = cmp.mapping.preset.insert({
+			['<CR>'] = cmp.mapping.confirm {
+				behavior = cmp.ConfirmBehavior.Replace,
+				select = false,
+			},
+			['<Tab>'] = cmp.mapping(function(fallback)
+				if cmp.visible() then
+					cmp.select_next_item()
+				else
+					fallback()
+				end
+			end, { 'i', 's' }),
+			['<S-Tab>'] = cmp.mapping(function(fallback)
+				if cmp.visible() then
+					cmp.select_prev_item()
+				else
+					fallback()
+				end
+			end, { 'i', 's' }),
+		}),
+		sources = {
+			{ name = 'nvim_lsp' },
+		},
+		enabled = function()
+			return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" or require("cmp_dap").is_dap_buffer()
+		end
+	}
 
--- Cmp debugger integration
-require("cmp").setup({
-  enabled = function()
-    return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
-        or require("cmp_dap").is_dap_buffer()
-  end
-})
+	cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+		sources = {
+			{ name = "dap" },
+		},
+	})
+end
 
-require("cmp").setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
-  sources = {
-    { name = "dap" },
-  },
-})
-LEND
-" }}}
-
-" Nvim-Dap configuration for lua {{{
-lua << LEND
-local dap = require('dap')
-dap.adapters.lldebugger = {
-  type = 'executable',
-  command = '/usr/bin/local-lua-dbg',
-  name = 'lldebugger'
-}
-
-dap.configurations.lua = {
-  {
-    type = 'lldebugger',
-    request = 'launch',
-    name = 'Launch Love2D',
-    program = {
-        command = "love",
-    },
-    args = {
-        "."
-    },
-    scriptRoots = {
-        "."
-    },
-    cwd = ".",
-    workspacePath = ".",
-  },
-}
-dap.configurations.java = {
-  {
-    type = 'java';
-    request = 'attach';
-    name = "Debug (Attach) - Remote";
-    hostName = "127.0.0.1";
-    port = 5005;
-  },
-}
-LEND
-" }}}
-
-" Rust {{{
-lua << LEND
 require('lspconfig')['rust_analyzer'].setup{
 	cmd = {"rustup", "run", "stable", "rust-analyzer"},
-    on_attach = on_attach,
-    -- Server-specific settings...
-    settings = {
-      ["rust-analyzer"] = {}
-    }
+	on_attach = on_attach,
+	capabilities = capabilities,
+	settings = {
+		["rust-analyzer"] = {}
+	}
 }
-LEND
-" }}}
-" Latex {{{
-let g:vimtex_view_method = "zathura"
-" }}}
 
-" Python {{{
-lua << LEND
 require('lspconfig')['pyright'].setup{
     on_attach = on_attach,
 	capabilities = capabilities,
 }
-LEND
-" }}}
 
-lua require('leap').add_default_mappings(true)
+require('leap').add_default_mappings(true)
+
+vim.cmd([[
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+			\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+			\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+noremap <F12> :syntax sync fromstart<CR>
+]])
