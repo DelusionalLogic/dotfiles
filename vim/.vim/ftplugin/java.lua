@@ -78,6 +78,7 @@ local bundles = {
     vim.fn.glob(home .. "/.local/share/jdtls/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar", 1),
 };
 vim.list_extend(bundles, vim.split(vim.fn.glob(home .. "/.local/share/jdtls/vscode-java-test/server/*.jar", 1), "\n"))
+vim.list_extend(bundles, vim.split(vim.fn.glob(home .. "/.local/share/jdtls/pde/*.jar", 1), "\n"))
 
 config['init_options'] = {
   bundles = bundles,

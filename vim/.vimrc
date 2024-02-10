@@ -218,15 +218,6 @@ do
 	})
 end
 
-require('lspconfig')['rust_analyzer'].setup{
-	cmd = {"rustup", "run", "stable", "rust-analyzer"},
-	on_attach = on_attach,
-	capabilities = capabilities,
-	settings = {
-		["rust-analyzer"] = {}
-	}
-}
-
 require('lspconfig')['pyright'].setup{
     on_attach = on_attach,
 	capabilities = capabilities,
