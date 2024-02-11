@@ -5,8 +5,8 @@ alias mkdir='mkdir -p'
 
 alias cls='clear'
 
-alias l='ls -Xp --color=auto'
-alias ls='ls -Xp --color=auto'
+alias l='ls --color=auto'
+alias ls='ls --color=auto'
 
 alias open='xdg-open'
 

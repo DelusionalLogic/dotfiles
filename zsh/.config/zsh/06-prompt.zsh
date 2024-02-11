@@ -6,7 +6,7 @@ export FMT_ACTION="(%F{3}%a%f)"
 export FMT_PATH="%F{1}%R%F{2}/%S%f"
 
 function make_path() {
-	local dir="${PWD/#\/home\/delusional/~/}"
+	local dir="${PWD/#${HOME}/~/}"
 	local parts=(${(s|/|)dir})
 	local color=1
 	for part in "${parts[@]}"; do
