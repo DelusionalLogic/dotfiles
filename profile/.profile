@@ -44,12 +44,15 @@ PERL_MM_OPT="INSTALL_BASE=/home/delusional/perl5"; export PERL_MM_OPT;
 # export SSH_AUTH_SOCK=/run/user/1000/gnupg/S.gpg-agent.ssh
 
 #systemd
-if systemctl --user is-system-running; then
-	systemctl --user import-environment PATH
-	systemctl --user import-environment HOME
-	systemctl --user import-environment XDG_CONFIG_HOME
-	systemctl --user import-environment XDG_DATA_HOME
-	systemctl --user import-environment XDG_CACHE_HOME
+if command -v systemctl &> /dev/null; then
+	if systemctl --user is-system-running; then
+		systemctl --user import-environment PATH
+		systemctl --user import-environment HOME
+		systemctl --user import-environment XDG_CONFIG_HOME
+		systemctl --user import-environment XDG_DATA_HOME
+		systemctl --user import-environment XDG_CACHE_HOME
+	fi
 fi
 
 eval $(ssh-agent)
+source "$HOME/.cargo/env"
