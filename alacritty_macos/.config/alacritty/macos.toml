@@ -1,0 +1,10 @@
+[[keyboard.bindings]]
+action = "CreateNewWindow"
+key = "N"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "ToggleMaximized"
+key = "Z"
+mods = "Command|Control"
+
