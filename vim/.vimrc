@@ -7,7 +7,7 @@ vim.cmd([[
 call plug#begin('~/.vim/plugged')
 
 "Colors
-Plug 'arcticicestudio/nord-vim'
+Plug 'AlexvZyl/nordic.nvim', { 'branch': 'main' }
 
 "Language server support
 Plug 'hrsh7th/nvim-cmp'
@@ -28,7 +28,7 @@ Plug 'vimjas/vim-python-pep8-indent', {'for': 'python'}
 "Interface
 Plug 'francoiscabrol/ranger.vim'
 
-Plug 'vim-airline/vim-airline'
+Plug 'nvim-lualine/lualine.nvim'
 Plug 'tpope/vim-commentary'
 
 "Unite
@@ -51,7 +51,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-dispatch'
 
 "Fun icons
-Plug 'ryanoasis/vim-devicons'
+Plug 'nvim-tree/nvim-web-devicons'
 
 "Latex support
 Plug 'lervag/vimtex'
@@ -122,12 +122,34 @@ vim.opt.magic = true
 vim.opt.foldenable = true
 vim.opt.foldlevelstart = 10
 vim.opt.foldnestmax = 10
-vim.opt.foldmethod="marker"
+vim.opt.foldmethod = "marker"
 
 vim.opt.background = "dark"
--- Magic colorscheme option
-vim.g.nord_uniform_status_lines = 0
-vim.cmd("colorscheme nord")
+do
+	local C = require('nordic.colors')
+	local theme = require("nordic")
+	theme.setup({
+		italic_comments = false,
+		transparent_bg = true,
+		reduced_blue = true,
+		override = {
+			Keyword = { fg = C.blue1 },
+			Field = { link = "Normal" },
+			IncSearch = { bg = C.orange.base, fg = C.bg_visual, underline = true, bold = false },
+			Search = { bg = C.cyan.base, fg = C.bg_visual, underline = false, bold = false },
+			CurSearch = { link = "Search" },
+			Comment = { fg = C.red.base },
+			Delimiter = { link = "Normal" },
+			Cursor = { link = "Normal" },
+			MatchParen = { underline = false, bold = false },
+			["@operator"] = { link = "Function", },
+		},
+		cursorline = {
+			theme = "light",
+		}
+	})
+	theme.load()
+end
 
 vim.keymap.set("n", "<leader><space>", ":nohlsearch<CR>", {desc = "Remove highlights"})
 
@@ -170,10 +192,10 @@ on_attach = function(client, bufnr)
 end
 
 -- LSP clangd settings
-require('lspconfig').clangd.setup {
+require('lspconfig').clangd.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
-}
+})
 
 -- nvim-cmp
 do
@@ -223,7 +245,39 @@ require('lspconfig')['pyright'].setup{
 	capabilities = capabilities,
 }
 
+require('lspconfig')['gopls'].setup{
+    on_attach = on_attach,
+	capabilities = capabilities,
+}
+vim.api.nvim_create_autocmd({"BufWritePre"}, {
+	pattern = "*.go",
+	callback = function()
+		local params = vim.lsp.util.make_range_params()
+		params.context = {only = {"source.organizeImports"}}
+		-- buf_request_sync defaults to a 1000ms timeout. Depending on your
+		-- machine and codebase, you may want longer. Add an additional
+		-- argument after params if you find that you have to write the file
+		-- twice for changes to be saved.
+		-- E.g., vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
+		local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params)
+		for cid, res in pairs(result or {}) do
+			for _, r in pairs(res.result or {}) do
+				if r.edit then
+					local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
+					vim.lsp.util.apply_workspace_edit(r.edit, enc)
+				end
+			end
+		end
+		vim.lsp.buf.format({async = false})
+	end
+})
+
 require('leap').add_default_mappings(true)
+require('lualine').setup({
+	options = {
+		theme = "nordic"
+	}
+})
 
 vim.cmd([[
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
