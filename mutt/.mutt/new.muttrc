@@ -7,9 +7,9 @@ color indicator  yellow   brightblack
 
 set from      = "jesper@jnsn.dev"
 set sendmail  = "msmtp -a new"
-set mbox      = "+new/archive"
-set record    = "+new/INBOX.Sent"
-set postponed = "+new/INBOX.Draft"
+set mbox      = "+new/Archive"
+set record    = "+new/Sent"
+set postponed = "+new/Draft"
 
 macro index fj "<save-message>+new/Junk<enter>"               "mark message as spam"
 macro index fr "<save-message>+new/Receipt<enter>"            "File as receipt"
