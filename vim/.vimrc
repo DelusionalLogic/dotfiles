@@ -141,6 +141,7 @@ do
 			Comment = { fg = C.red.base },
 			Delimiter = { link = "Normal" },
 			Cursor = { link = "Normal" },
+			Macro = { link = "Normal" },
 			MatchParen = { underline = false, bold = false },
 			["@operator"] = { link = "Function", },
 		},
