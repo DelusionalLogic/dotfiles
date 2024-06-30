@@ -22,6 +22,7 @@ setopt promptsubst
 setopt completealiases
 
 # source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
+source <(fzf --zsh)
 
 # if the init script doesn't exist
 if ! zgenom saved; then
