@@ -1,5 +1,8 @@
 export GENCOMPL_PY=python3
 
+if ! [[ -d ~/.config/zgenom ]]; then
+	git clone "https://github.com/jandamm/zgenom.git" ~/.config/zgenom
+fi
 source ~/.config/zgenom/zgenom.zsh
 
 fpath=(~/.config/zsh/autocomplete $fpath)
