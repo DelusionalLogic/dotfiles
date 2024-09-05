@@ -1,1 +1,1 @@
-/home/delusional/.vimrc
+../.vimrc
