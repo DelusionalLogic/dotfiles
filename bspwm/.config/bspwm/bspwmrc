@@ -15,20 +15,21 @@ bspc config urgent_border_color  $(colorget 1)
 
 bspc config external_rules_command $HOME/.config/bspwm/external_rules
 
-bspc rule -a "*:jit"         state=floating
-bspc rule -a steam           state=floating desktop=5  follow=on
-bspc rule -a maps            state=floating
-bspc rule -a feh             state=floating
-bspc rule -a mplayer2        state=floating
-bspc rule -a mpv             state=floating
-bspc rule -a "*:vlc"         state=floating
-bspc rule -a "*:vis"         state=floating border=off "monitor=^2" sticky=on
-bspc rule -a "*:pavucontrol" state=floating
-bspc rule -a Kupfer.py       state=floating
-bspc rule -a Screenkey       manage=off
+bspc rule -a "*:jit"             state=floating
+bspc rule -a "*:steamwebhelper"  state=floating desktop=5  follow=on
+bspc rule -a maps                state=floating
+bspc rule -a feh                 state=floating
+bspc rule -a mplayer2            state=floating
+bspc rule -a mpv                 state=floating
+bspc rule -a "*:vlc"             state=floating
+bspc rule -a "*:vis"             state=floating border=off "monitor=^2" sticky=on
+bspc rule -a "*:pavucontrol"     state=floating
+bspc rule -a Kupfer.py           state=floating
+bspc rule -a Screenkey           manage=off
 bspc rule -a "Google Play Music Desktop Player" desktop=10 follow=off
 bspc rule -a "streamlink-twitch-gui"            desktop=6 border=on follow=off
-bspc rule -a "Zathura"       state=tiled
+bspc rule -a "Zathura"           state=tiled
+bspc rule -a "steam_app_1222670" state=floating
 
 # polkit
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &

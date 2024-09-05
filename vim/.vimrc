@@ -14,6 +14,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'neovim/nvim-lspconfig'
+Plug 'sourcegraph/sg.nvim', { 'do': 'nvim -l build/init.lua' }
 
 "Debugger
 Plug 'mfussenegger/nvim-jdtls'
@@ -60,6 +61,7 @@ Plug 'lervag/vimtex'
 " Required:
 call plug#end()
 ]])
+require("sg").setup({})
 
 
 vim.opt.backup = false
