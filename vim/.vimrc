@@ -3,6 +3,14 @@ vim.g.maplocalleader = ",,"
 
 vim.opt.compatible = false
 
+local platform_config = {
+}
+
+local ok, ns = pcall(require, 'platform_config')
+if ok then
+	ns(platform_config)
+end
+
 vim.cmd([[
 call plug#begin('~/.vim/plugged')
 
@@ -14,7 +22,6 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'neovim/nvim-lspconfig'
-Plug 'sourcegraph/sg.nvim', { 'do': 'nvim -l build/init.lua' }
 
 "Debugger
 Plug 'mfussenegger/nvim-jdtls'
@@ -41,7 +48,7 @@ Plug 'Shougo/neoyank.vim'
 " Telescope
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.4' }
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.x' }
 
 "Speed
 Plug 'ggandor/leap.nvim'
@@ -59,10 +66,11 @@ Plug 'nvim-tree/nvim-web-devicons'
 Plug 'lervag/vimtex'
 
 " Required:
+]])
+
+vim.cmd([[
 call plug#end()
 ]])
-require("sg").setup({})
-
 
 vim.opt.backup = false
 vim.opt.writebackup = false
@@ -273,6 +281,7 @@ do
 		}),
 		sources = {
 			{ name = 'nvim_lsp' },
+			{ name = 'cmp_ai' },
 		},
 		enabled = function()
 			return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" or require("cmp_dap").is_dap_buffer()
