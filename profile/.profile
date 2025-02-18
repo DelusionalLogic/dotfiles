@@ -4,7 +4,7 @@ export EDITOR=nvim
 export TERMINAL=alacritty
 
 export PAGER=less
-export BROWSER=firefox
+export BROWSER=firefox-beta
 #export MOZ_USE_OMTC=1
 
 export XDG_CONFIG_HOME="$HOME/.config"
