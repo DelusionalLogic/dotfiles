@@ -34,6 +34,9 @@ Plug 'rust-lang/rust.vim', {'for': 'rust'}
 "Python
 Plug 'vimjas/vim-python-pep8-indent', {'for': 'python'}
 
+Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
+
 "Interface
 Plug 'francoiscabrol/ranger.vim'
 
@@ -179,25 +182,24 @@ vim.opt.foldmethod = "marker"
 
 vim.opt.background = "dark"
 do
-	local C = require('nordic.colors')
 	local theme = require("nordic")
 	theme.setup({
 		italic_comments = false,
-		transparent_bg = true,
+		transparent = { bg = true, float = false },
 		reduced_blue = true,
-		override = {
-			Keyword = { fg = C.blue1 },
-			Field = { link = "Normal" },
-			IncSearch = { bg = C.orange.base, fg = C.bg_visual, underline = true, bold = false },
-			Search = { bg = C.cyan.base, fg = C.bg_visual, underline = false, bold = false },
-			CurSearch = { link = "Search" },
-			Comment = { fg = C.red.base },
-			Delimiter = { link = "Normal" },
-			Cursor = { link = "Normal" },
-			Macro = { link = "Normal" },
-			MatchParen = { underline = false, bold = false },
-			["@operator"] = { link = "Function", },
-		},
+		on_highlight = function(highlights, C)
+			highlights.Keyword = { fg = C.blue1 }
+			highlights.Field = { link = "Normal" }
+			highlights.IncSearch = { bg = C.orange.base, fg = C.bg_visual, underline = true, bold = false }
+			highlights.Search = { bg = C.cyan.base, fg = C.bg_visual, underline = false, bold = false }
+			highlights.CurSearch = { link = "Search" }
+			highlights.Comment = { fg = C.red.base }
+			highlights.Delimiter = { link = "Normal" }
+			highlights.Cursor = { link = "Normal" }
+			highlights.Macro = { link = "Normal" }
+			highlights.MatchParen = { underline = false, bold = false }
+			highlights["@operator"] = { link = "Function", }
+		end,
 		cursorline = {
 			theme = "light",
 		}
@@ -254,9 +256,11 @@ require('lspconfig').clangd.setup({
 -- nvim-cmp
 do
 	local cmp = require('cmp')
+	local luasnip = require('luasnip')
 	cmp.setup {
 		snippet = {
 			expand = function(args)
+				require('luasnip').lsp_expand(args.body)
 			end,
 		},
 		mapping = cmp.mapping.preset.insert({
@@ -267,6 +271,8 @@ do
 			['<Tab>'] = cmp.mapping(function(fallback)
 				if cmp.visible() then
 					cmp.select_next_item()
+				elseif luasnip.locally_jumpable(1) then
+					luasnip.jump(1)
 				else
 					fallback()
 				end
@@ -274,6 +280,8 @@ do
 			['<S-Tab>'] = cmp.mapping(function(fallback)
 				if cmp.visible() then
 					cmp.select_prev_item()
+				elseif luasnip.locally_jumpable(-1) then
+					luasnip.jump(1)
 				else
 					fallback()
 				end
@@ -281,7 +289,7 @@ do
 		}),
 		sources = {
 			{ name = 'nvim_lsp' },
-			{ name = 'cmp_ai' },
+			{ name = 'luasnip' },
 		},
 		enabled = function()
 			return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" or require("cmp_dap").is_dap_buffer()
@@ -340,3 +348,25 @@ map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans
 			\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 noremap <F12> :syntax sync fromstart<CR>
 ]])
+
+-- Snippets
+
+require("luasnip.loaders.from_lua").load({paths = "~/.config/nvim/snippets"})
+require("luasnip.loaders.from_snipmate").lazy_load()
+vim.api.nvim_create_user_command("LuaSnipEdit", function(opts)
+    require("luasnip.loaders").edit_snippet_files()
+end, {})
+vim.api.nvim_create_user_command("LuaSnipCreate", function(opts)
+    require("luasnip.loaders").edit_snippet_files({
+        extend = function(ft, paths)
+            if #paths == 0 then
+                return {
+                    { "$CONFIG/" .. ft .. ".snippets", string.format("~/.config/nvim/snippets/%s.snippets", ft) },
+                    { "$CONFIG/" .. ft .. ".lua", string.format("~/.config/nvim/snippets/%s.lua", ft) }
+                }
+            end
+
+            return {}
+        end
+    })
+end, {})
