@@ -6,19 +6,33 @@ BAD="$(tput setaf 1)"
 RESET="$(tput sgr0)"
 
 function create_session() {
-	# attempt to unlock, if succssful store session value
-	if s="$(FORCE_COLOR=3 bw unlock --raw)"; then
+	success="n"
+	# attempt to unlock, if successful store session value
+	if [[ -t 0 ]] && [[ -t 1 ]]; then
+		if s="$(FORCE_COLOR=3 bw unlock --raw)"; then
+			success="y"
+		fi
+	else
+		if s="$(/usr/lib/ssh/ssh-askpass)"; then
+			if s="$(FORCE_COLOR=3 bw unlock --raw <<<"$s")"; then
+				success="y"
+			fi
+		fi
+	fi
+
+	if [[ "$success" == "y" ]]; then
 		if [[ -z "$s" ]];  then
 			printf "\n%sNo session key created%s\n" "$BAD" "$RESET" >&2
 			exit 1
 		fi
 		k=$(keyctl add user bw:session "$s" @u)
-		keyctl timeout "$k" "$timeout"		#set timout
+		keyctl timeout "$k" "$timeout" #set timout
 		timeoutHrs=$((timeout/3600))
 		printf "Session key saved for %s%0.1f%s hours\n" "$GOOD" "$timeoutHrs" "$RESET" >&2
 		printf "%s" "$k"
 		return 0
 	fi
+
 	exit 1
 }
 
