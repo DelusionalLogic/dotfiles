@@ -1,0 +1,89 @@
+# Read `man 5 sway` for a complete reference.
+set $mod Mod4
+set $term alacritty
+set $menu rofi -show run -fuzzy -hide-scrollbar -color-enabled
+
+output * bg /home/delusional/Pictures/Wallpapers/wallhaven-589330.jpg fill
+
+input "type:pointer" {
+    accel_profile flat
+}
+focus_follows_mouse no
+
+bindsym $mod+Return exec $term
+
+bindsym $mod+w kill
+
+bindsym $mod+space exec $menu
+bindsym $mod+e exec ~/scripts/shutdown_rofi.sh
+
+floating_modifier $mod normal
+
+bindsym $mod+Shift+c reload
+
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+
+bindsym $mod+Ctrl+h splith
+bindsym $mod+Ctrl+l splith
+bindsym $mod+Ctrl+j splitv
+bindsym $mod+Ctrl+k splitv
+bindsym $mod+Ctrl+Space split none
+
+bindsym $mod+f fullscreen
+
+bindsym $mod+s floating enable
+bindsym $mod+d floating disable
+
+bindsym $mod+z focus parent
+bindsym $mod+x focus child
+
+bindsym $mod+Alt+l resize grow width 10ppt
+bindsym $mod+Alt+h resize shrink width 10ppt
+bindsym $mod+Alt+k resize grow height 10ppt
+bindsym $mod+Alt+j resize shrink height 10ppt
+
+bindsym --locked XF86AudioMute exec amixer -D pulse sset Master toggle
+bindsym --locked XF86AudioLowerVolume exec amixer -D pulse sset Master 5%-
+bindsym --locked XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+
+bindsym --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
+
+default_border pixel 1
+
+for_window [all] gaps inner all set 10
+
+for_window [class="steam"] floating enable
+for_window [app_id="mpv"] floating enable
+
+client.focused #EBCB8B #EBCB8B #FFFFFF #88C0D0
+
+include /etc/sway/config.d/*
