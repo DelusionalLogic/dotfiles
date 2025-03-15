@@ -591,7 +591,7 @@ semantic_escape_chars = ",│`|:\"' ()[]{}<>"
 [window]
 decorations = "full"
 dynamic_title = true
-opacity = 0.6
+opacity = 1
 
 [window.dimensions]
 columns = 80

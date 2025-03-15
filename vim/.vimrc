@@ -16,7 +16,6 @@ call plug#begin('~/.vim/plugged')
 
 "Colors
 Plug 'AlexvZyl/nordic.nvim', { 'branch': 'main' }
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 "Language server support
 Plug 'hrsh7th/nvim-cmp'
@@ -80,51 +79,10 @@ vim.opt.writebackup = false
 vim.opt.swapfile = false
 
 vim.opt.formatoptions = "trqn1j"
+vim.opt.cinoptions = "1m(1s"
 vim.opt.gdefault = true
 vim.opt.showcmd = true
 vim.cmd("syntax enable")
-
-require('nvim-treesitter.configs').setup({
-  -- A list of parser names, or "all" (the five listed parsers should always be installed)
-  ensure_installed = { "c", "lua", "vim", "vimdoc", "query" },
-
-  -- Install parsers synchronously (only applied to `ensure_installed`)
-  sync_install = false,
-
-  -- Automatically install missing parsers when entering buffer
-  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
-  auto_install = true,
-
-  -- List of parsers to ignore installing (or "all")
-  ignore_install = { },
-
-  ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
-  -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
-
-  highlight = {
-    enable = true,
-
-    -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
-    -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
-    -- the name of the parser)
-    -- list of language that will be disabled
-    disable = { },
-    -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
-    disable = function(lang, buf)
-        local max_filesize = 100 * 1024 -- 100 KB
-        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-        if ok and stats and stats.size > max_filesize then
-            return true
-        end
-    end,
-
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-})
 
 vim.opt.list=true
 vim.opt.listchars="tab:▸ ,eol:¬,extends:❯,precedes:❮"
@@ -225,7 +183,8 @@ capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 on_attach = function(client, bufnr)
-	vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+	-- client.server_capabilities.semanticTokensProvider = nil
+	-- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 	
 	-- Mappings.
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -304,6 +263,11 @@ do
 end
 
 require('lspconfig')['pyright'].setup{
+    on_attach = on_attach,
+	capabilities = capabilities,
+}
+
+require('lspconfig')['lemminx'].setup{
     on_attach = on_attach,
 	capabilities = capabilities,
 }
