@@ -18,6 +18,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'AlexvZyl/nordic.nvim', { 'branch': 'main' }
 
 "Language server support
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter-context'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'neovim/nvim-lspconfig'
@@ -66,6 +68,7 @@ Plug 'nvim-tree/nvim-web-devicons'
 
 "Latex support
 Plug 'lervag/vimtex'
+
 
 " Required:
 ]])
@@ -173,6 +176,11 @@ vim.keymap.set("n", "k", "gk", {desc = "Go up"})
 
 vim.keymap.set("c", "w!!", "w !sudo tee %", {desc = "Save as root"})
 
+require('treesitter-context').setup({
+	enable = true,
+	mode = 'topline',
+})
+
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', 'ff', builtin.live_grep, {})
 
@@ -185,6 +193,7 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 on_attach = function(client, bufnr)
 	-- client.server_capabilities.semanticTokensProvider = nil
 	-- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+	vim.opt.formatexpr = ""
 	
 	-- Mappings.
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -334,3 +343,6 @@ vim.api.nvim_create_user_command("LuaSnipCreate", function(opts)
         end
     })
 end, {})
+
+-- Typst LSP
+vim.lsp.enable('tinymist')
