@@ -4,6 +4,11 @@ set $term alacritty
 set $menu rofi -show run -fuzzy -hide-scrollbar -color-enabled
 
 output * bg /home/delusional/Pictures/Wallpapers/wallhaven-589330.jpg fill
+output * allow_tearing yes
+output * render_bit_depth 10
+
+output * hdr off
+output * adaptive_sync off
 
 input "type:pointer" {
     accel_profile flat
@@ -11,15 +16,20 @@ input "type:pointer" {
 focus_follows_mouse no
 
 bindsym $mod+Return exec $term
+# exec WAYLAND_DEBUG=0 firefox-beta -P test
 
 bindsym $mod+w kill
 
 bindsym $mod+space exec $menu
 bindsym $mod+e exec ~/scripts/shutdown_rofi.sh
+bindsym $mod+p exec rofi -modi bitwarden:rofi-bitwarden -show bitwarden
 
 floating_modifier $mod normal
 
 bindsym $mod+Shift+c reload
+
+bindsym $mod+Shift+t output DP-1 hdr toggle
+bindsym $mod+Shift+y output DP-1 adaptive_sync toggle
 
 bindsym $mod+h focus left
 bindsym $mod+j focus down
@@ -42,6 +52,9 @@ bindsym $mod+8 workspace number 8
 bindsym $mod+9 workspace number 9
 bindsym $mod+0 workspace number 10
 
+bindsym $mod+m mark --toggle '`'
+bindsym $mod+n move container to mark '`'
+
 bindsym $mod+Shift+1 move container to workspace number 1
 bindsym $mod+Shift+2 move container to workspace number 2
 bindsym $mod+Shift+3 move container to workspace number 3
@@ -53,11 +66,11 @@ bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 
-bindsym $mod+Ctrl+h splith
-bindsym $mod+Ctrl+l splith
-bindsym $mod+Ctrl+j splitv
-bindsym $mod+Ctrl+k splitv
-bindsym $mod+Ctrl+Space split none
+bindsym $mod+i split toggle
+bindsym $mod+c layout splith
+bindsym $mod+v layout splitv
+bindsym $mod+t layout tabbed
+bindsym $mod+r split none
 
 bindsym $mod+f fullscreen
 
@@ -66,6 +79,7 @@ bindsym $mod+d floating disable
 
 bindsym $mod+z focus parent
 bindsym $mod+x focus child
+bindsym $mod+a focus mode_toggle
 
 bindsym $mod+Alt+l resize grow width 10ppt
 bindsym $mod+Alt+h resize shrink width 10ppt
@@ -82,6 +96,9 @@ default_border pixel 1
 for_window [all] gaps inner all set 10
 
 for_window [class="steam"] floating enable
+for_window [class="Kaizen.bin.x86_64"] floating enable
+for_window [class="UVSNirmana.bin.x86_64"] floating enable
+for_window [class="Display"] floating enable
 for_window [app_id="mpv"] floating enable
 
 client.focused #EBCB8B #EBCB8B #FFFFFF #88C0D0
