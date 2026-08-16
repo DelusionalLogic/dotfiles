@@ -25,8 +25,20 @@
 	recurse = true
 [merge]
 	tool = nvimdiff
+	conflictstyle = zdiff3
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
+[diff]
+	algorithm = histogram
+	colorMoved = plain
+	mnemonicprefix = true
+[commit]
+	verbose = true
+[rebase]
+	autoStash = true
+	autoSquash = true
+[init]
+	defaultBranch = main
