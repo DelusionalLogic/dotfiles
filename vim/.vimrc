@@ -52,10 +52,10 @@ Plug 'Shougo/neoyank.vim'
 " Telescope
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.x' }
+Plug 'nvim-telescope/telescope.nvim'
 
 "Speed
-Plug 'ggandor/leap.nvim'
+Plug 'https://codeberg.org/andyg/leap.nvim'
 Plug 'tpope/vim-surround'
 
 "Integration
@@ -106,7 +106,6 @@ vim.api.nvim_create_autocmd({"InsertLeave"}, {
 	end,
 })
 
-vim.opt.modeline = true
 vim.opt.scrolloff = 7
 
 vim.opt.tabstop = 4
@@ -187,8 +186,7 @@ vim.keymap.set('n', 'ff', builtin.live_grep, {})
 require('gitsigns').setup()
 
 -- Common LSP settings
-capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 on_attach = function(client, bufnr)
 	-- client.server_capabilities.semanticTokensProvider = nil
@@ -216,10 +214,11 @@ on_attach = function(client, bufnr)
 end
 
 -- LSP clangd settings
-require('lspconfig').clangd.setup({
+vim.lsp.config("clangd", {
 	on_attach = on_attach,
 	capabilities = capabilities,
 })
+vim.lsp.enable("clangd")
 
 -- nvim-cmp
 do
@@ -271,20 +270,20 @@ do
 	})
 end
 
-require('lspconfig')['pyright'].setup{
+vim.lsp.config('pyright', {
     on_attach = on_attach,
 	capabilities = capabilities,
-}
+})
 
-require('lspconfig')['lemminx'].setup{
+vim.lsp.config('lemminx', {
     on_attach = on_attach,
 	capabilities = capabilities,
-}
+})
 
-require('lspconfig')['gopls'].setup{
+vim.lsp.config('gopls', {
     on_attach = on_attach,
 	capabilities = capabilities,
-}
+})
 vim.api.nvim_create_autocmd({"BufWritePre"}, {
 	pattern = "*.go",
 	callback = function()
@@ -308,7 +307,39 @@ vim.api.nvim_create_autocmd({"BufWritePre"}, {
 	end
 })
 
-require('leap').add_default_mappings(true)
+-- Vim Leap [[
+-- Jump
+vim.keymap.set({ 'n', 'x', 'o' }, 's', '<Plug>(leap)')
+vim.keymap.set('n',               'S', '<Plug>(leap-from-window)')
+
+-- Visit (remote operations)
+vim.keymap.set({ 'n', 'o' }, 'gs', '<Plug>(leap-visit)')
+vim.keymap.set({ 'n', 'o' }, 'gS', '<Plug>(leap-visit-linewise)')
+vim.keymap.set({ 'x', 'o' }, 'ar', '<Plug>(leap-visit-text-object)')
+vim.keymap.set({ 'x', 'o' }, 'ir', '<Plug>(leap-visit-inner-text-object)')
+vim.keymap.set({ 'o' },      'rr', '<Plug>(leap-visit-line)')
+
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'VisitDone',
+  group = vim.api.nvim_create_augroup('VisitorMode', {}),
+  callback = function(event)
+    if vim.v.operator == 'y' and event.data.register == '"' then
+      vim.cmd('normal! p')
+    end
+  end,
+})
+
+-- Treeselect
+-- Tip: If you have set up remote text objects (`ar`/`ir`), `arn` will
+-- work as expected (visit node).
+vim.keymap.set({ 'x', 'o' }, 'an', function()
+  require('leap.treesitter').select {
+    opts = require('leap.user').with_traversal_keys('n', 'N')
+  }
+end)
+
+-- ]]
+
 require('lualine').setup({
 	options = {
 		theme = "nordic"

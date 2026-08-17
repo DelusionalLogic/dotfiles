@@ -62,8 +62,12 @@ local config = {
                 path = "/usr/lib/jvm/java-17-openjdk/",
             },
             {
-                name = "JavaSE-20",
-                path = "/usr/lib/jvm/java-20-openjdk/",
+                name = "JavaSE-21",
+                path = "/usr/lib/jvm/java-21-openjdk/",
+            },
+            {
+                name = "JavaSE-25",
+                path = "/usr/lib/jvm/java-25-openjdk/",
             },
         },
     },
@@ -72,16 +76,35 @@ local config = {
 config['on_attach'] = function(client, bufnr)
     require('jdtls').setup_dap({ hotcodereplace = 'auto' })
     on_attach(client, bufnr)
+
+    local bufopts = { noremap=true, silent=true, buffer=bufnr }
+    local jdtls = require("jdtls")
+    vim.keymap.set('n', '<leader>df', jdtls.test_class, bufopts)
+    vim.keymap.set('n', '<leader>dn', jdtls.test_nearest_method, bufopts)
+
+    local dap = require("dap")
+    vim.keymap.set('n', '<leader>db', dap.toggle_breakpoint, bufopts)
+    vim.keymap.set('n', '<leader>do', dap.repl.open, bufopts)
 end
 
 local bundles = {
-    vim.fn.glob(home .. "/.local/share/jdtls/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar", 1),
+    "/usr/share/java-debug/com.microsoft.java.debug.plugin.jar",
 };
-vim.list_extend(bundles, vim.split(vim.fn.glob(home .. "/.local/share/jdtls/vscode-java-test/server/*.jar", 1), "\n"))
-vim.list_extend(bundles, vim.split(vim.fn.glob(home .. "/.local/share/jdtls/pde/*.jar", 1), "\n"))
+
+local java_test_bundles = vim.split(vim.fn.glob(home .. "/.local/share/jdtls/vscode-java-test/server/*.jar", 1), "\n")
+for _, java_test_jar in ipairs(java_test_bundles) do
+    local fname = vim.fn.fnamemodify(java_test_jar, ":t")
+
+    if fname == "com.microsoft.java.test.runner-jar-with-dependencies.jar" then
+    elseif fname == "jacocoagent.jar" then
+    else
+        table.insert(bundles, java_test_jar)
+    end
+
+end
 
 config['init_options'] = {
-  bundles = bundles,
+    bundles = bundles,
 }
 
 require('jdtls').start_or_attach(config)
