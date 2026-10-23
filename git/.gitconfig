@@ -42,3 +42,5 @@
 	autoSquash = true
 [init]
 	defaultBranch = main
+[safe]
+	directory = /home/agent/libmusic/.git

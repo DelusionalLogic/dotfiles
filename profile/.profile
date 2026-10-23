@@ -45,7 +45,7 @@ PERL_MM_OPT="INSTALL_BASE=/home/delusional/perl5"; export PERL_MM_OPT;
 
 #systemd
 if command -v systemctl &> /dev/null; then
-	if systemctl --user is-system-running; then
+	if systemctl --user is-system-running &> /dev/null; then
 		systemctl --user import-environment PATH
 		systemctl --user import-environment HOME
 		systemctl --user import-environment XDG_CONFIG_HOME
@@ -54,5 +54,5 @@ if command -v systemctl &> /dev/null; then
 	fi
 fi
 
-eval $(ssh-agent)
-source "$HOME/.cargo/env"
+SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+# eval $(ssh-agent) &> /dev/null
